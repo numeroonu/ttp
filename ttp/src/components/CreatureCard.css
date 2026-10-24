@@ -1,0 +1,182 @@
+.ccard {
+  --rx: 0deg;
+  --ry: 0deg;
+  --gx: 50%;
+  --gy: 30%;
+  perspective: 900px;
+  height: 100%;
+}
+
+.ccard__link {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: var(--papel);
+  background: linear-gradient(180deg, var(--anino), #120f11);
+  border: 1px solid rgba(138, 133, 144, 0.14);
+  border-radius: 4px;
+  overflow: hidden;
+  transform: rotateX(var(--rx)) rotateY(var(--ry));
+  transform-style: preserve-3d;
+  transition: transform 0.5s var(--ease-out), border-color 0.5s, box-shadow 0.6s;
+}
+
+/* Candle glow that follows the cursor */
+.ccard__link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(circle 220px at var(--gx) var(--gy), rgba(224, 163, 59, 0.16), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.ccard:hover .ccard__link {
+  border-color: rgba(224, 163, 59, 0.45);
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.9), 0 0 40px -10px rgba(139, 30, 30, 0.5);
+}
+.ccard:hover .ccard__link::before { opacity: 1; }
+
+/* Art area */
+.ccard__art {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #070608;
+}
+
+.ccard__art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(0.6) brightness(0.55) contrast(1.15);
+  transform: scale(1.05);
+  transition: filter 0.8s var(--ease-out), transform 1.2s var(--ease-out);
+}
+.ccard:hover .ccard__art img {
+  filter: grayscale(0.1) brightness(0.85) contrast(1.1);
+  transform: scale(1.12);
+}
+
+.ccard__placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 55%, rgba(139, 30, 30, 0.18), transparent 70%),
+    radial-gradient(ellipse at 50% 120%, rgba(138, 133, 144, 0.12), transparent 60%),
+    #070608;
+}
+
+.ccard__watermark {
+  position: absolute;
+  font-size: clamp(54px, 7vw, 84px);
+  letter-spacing: 0.1em;
+  color: rgba(232, 220, 196, 0.05);
+  transition: color 0.8s, transform 1.2s var(--ease-out);
+  white-space: nowrap;
+}
+.ccard:hover .ccard__watermark {
+  color: rgba(224, 163, 59, 0.12);
+  transform: scale(1.08);
+}
+
+.ccard__eyes {
+  position: relative;
+  transition: transform 0.6s var(--ease-out);
+}
+.ccard:hover .ccard__eyes { transform: scale(1.25); }
+
+.ccard__num {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  font-family: var(--font-heading-sc);
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  color: var(--dugo-bright);
+}
+
+/* Text */
+.ccard__body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 22px 22px 24px;
+}
+
+.ccard__baybayin {
+  font-size: 13px;
+  color: var(--kandila);
+  opacity: 0.7;
+}
+
+.ccard__name {
+  margin-top: 6px;
+  font-size: 32px;
+  transition: color 0.4s, text-shadow 0.4s;
+}
+.ccard:hover .ccard__name {
+  color: var(--kandila);
+  text-shadow: 0 0 20px rgba(224, 163, 59, 0.4);
+}
+
+.ccard__region {
+  margin-top: 4px;
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--usok);
+}
+
+.ccard__teaser {
+  margin-top: 14px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(232, 220, 196, 0.82);
+}
+
+/* Revealed on hover (always shown on touch screens) */
+.ccard__reveal {
+  display: grid;
+  grid-template-rows: 0fr 0fr;
+  margin-top: auto;
+  transition: grid-template-rows 0.6s var(--ease-out);
+}
+.ccard__reveal > * { overflow: hidden; min-height: 0; }
+.ccard:hover .ccard__reveal,
+.ccard:focus-within .ccard__reveal { grid-template-rows: 1fr 1fr; }
+
+.ccard__weak {
+  padding-top: 16px;
+  font-family: var(--font-note);
+  font-size: 20px;
+  line-height: 1.35;
+  color: var(--papel);
+}
+.ccard__weak span {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--dugo-bright);
+}
+
+.ccard__more {
+  display: block;
+  padding-top: 12px;
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--kandila);
+}
+
+@media (hover: none) {
+  .ccard__reveal { grid-template-rows: 1fr 1fr; }
+}

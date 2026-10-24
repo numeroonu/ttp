@@ -1,0 +1,231 @@
+/* =========================================================
+   TABI-TABI PO · Global styles
+   Colors and fonts come from our design doc.
+   ========================================================= */
+
+:root {
+  /* Color palette */
+  --hatinggabi: #0b0a0d;      /* main background */
+  --anino: #1a1619;           /* cards, navbar, sections */
+  --dugo: #8b1e1e;            /* accents, borders */
+  --dugo-bright: #b3282d;     /* hover, warnings */
+  --kandila: #e0a33b;         /* buttons, links, glow */
+  --usok: #8a8590;            /* secondary text, fog */
+  --papel: #e8dcc4;           /* body text, journal pages */
+  --tinta: #3b2a1e;           /* text on paper */
+
+  /* Fonts */
+  --font-heading: 'IM Fell English', 'EB Garamond', Georgia, serif;
+  --font-heading-sc: 'IM Fell English SC', 'IM Fell English', Georgia, serif;
+  --font-body: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  --font-note: 'Caveat', 'Segoe Print', cursive;
+  --font-baybayin: 'Noto Sans Tagalog', sans-serif;
+
+  /* Layout */
+  --gutter: clamp(16px, 5vw, 64px);
+  --max: 1200px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--hatinggabi);
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--hatinggabi);
+  color: var(--papel);
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Film-grain texture over the whole site */
+body::after {
+  content: '';
+  position: fixed;
+  inset: -50%;
+  z-index: 9000;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 1.2s steps(6) infinite;
+}
+
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-3%, 2%); }
+  40% { transform: translate(2%, -3%); }
+  60% { transform: translate(-2%, -1%); }
+  80% { transform: translate(3%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+p { margin: 0; }
+
+a {
+  color: var(--kandila);
+  text-decoration: none;
+}
+
+img { max-width: 100%; display: block; }
+
+button { font: inherit; }
+
+::selection {
+  background: var(--dugo);
+  color: var(--papel);
+}
+
+:focus-visible {
+  outline: 2px solid var(--kandila);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--hatinggabi); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--dugo), var(--anino));
+  border-radius: 10px;
+}
+
+/* ---------- Reusable pieces ---------- */
+
+.container {
+  width: 100%;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-heading-sc);
+  font-size: 15px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--kandila);
+}
+
+.kicker::before {
+  content: '';
+  width: 36px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--kandila));
+}
+
+.baybayin {
+  font-family: var(--font-baybayin);
+  letter-spacing: 0.25em;
+}
+
+/* Glowing amber button */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 34px;
+  border: 1px solid var(--kandila);
+  border-radius: 2px;
+  background: rgba(224, 163, 59, 0.08);
+  color: var(--kandila);
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer;
+  overflow: hidden;
+  isolation: isolate;
+  transition: color 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out), border-color 0.5s;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(circle at 50% 120%, var(--kandila), #b8741f 70%);
+  transform: translateY(101%);
+  transition: transform 0.6s var(--ease-out);
+}
+
+.btn:hover {
+  color: var(--hatinggabi);
+  box-shadow: 0 0 30px rgba(224, 163, 59, 0.45), 0 0 90px rgba(224, 163, 59, 0.2);
+}
+
+.btn:hover::before { transform: translateY(0); }
+
+.btn .btn__arrow { transition: transform 0.5s var(--ease-out); }
+.btn:hover .btn__arrow { transform: translateX(5px); }
+
+.btn--ghost {
+  border-color: rgba(138, 133, 144, 0.5);
+  background: transparent;
+  color: var(--papel);
+}
+
+.btn--ghost::before { background: var(--papel); }
+.btn--ghost:hover {
+  border-color: var(--papel);
+  box-shadow: 0 0 30px rgba(232, 220, 196, 0.2);
+}
+
+/* "Emerging from the shadows" scroll reveal */
+.reveal {
+  opacity: 0;
+  filter: blur(10px) brightness(0.3);
+  transform: translateY(28px);
+  transition:
+    opacity 1.3s var(--ease-out),
+    filter 1.5s var(--ease-out),
+    transform 1.3s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
+}
+
+.reveal.is-in {
+  opacity: 1;
+  filter: none;
+  transform: none;
+}
+
+/* Respect people who turn off animations on their device */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal { opacity: 1; filter: none; transform: none; }
+}

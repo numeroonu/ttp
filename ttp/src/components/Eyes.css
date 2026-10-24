@@ -1,0 +1,73 @@
+.eyes {
+  position: absolute;
+  opacity: 0;
+  animation: eyes-appear 1.6s var(--ease-out) forwards;
+  animation-delay: var(--d);
+  pointer-events: none;
+}
+
+.eyes__lids {
+  display: flex;
+  gap: calc(13px * var(--s));
+  transition: transform 0.3s var(--ease-out), opacity 0.4s;
+}
+
+/* Eyes close and hide when your light gets too close */
+.eyes.is-shy .eyes__lids {
+  transform: scaleY(0.04);
+  opacity: 0;
+}
+
+.eye {
+  position: relative;
+  display: block;
+  width: calc(20px * var(--s));
+  height: calc(8px * var(--s));
+  border-radius: 60% 40% 60% 40% / 100% 100% 100% 100%;
+  overflow: hidden;
+  animation: blink var(--blink) ease-in-out infinite;
+  animation-delay: calc(var(--d) + 1.5s);
+}
+
+.eye:last-child {
+  transform: scaleX(-1);
+  border-radius: 60% 40% 60% 40% / 100% 100% 100% 100%;
+}
+
+.eyes--red .eye {
+  background: radial-gradient(ellipse at 50% 50%, #ffcf8a 0%, #e0a33b 25%, #b3282d 60%, #4a0c0c 100%);
+  box-shadow: 0 0 calc(10px * var(--s)) rgba(179, 40, 45, 0.9), 0 0 calc(26px * var(--s)) rgba(139, 30, 30, 0.5);
+}
+
+.eyes--amber .eye {
+  background: radial-gradient(ellipse at 50% 50%, #fff3c4 0%, #e0a33b 40%, #7a4a10 100%);
+  box-shadow: 0 0 calc(10px * var(--s)) rgba(224, 163, 59, 0.9), 0 0 calc(26px * var(--s)) rgba(224, 163, 59, 0.4);
+}
+
+/* Slit pupil, moved by --px and --py from JavaScript */
+.eye__pupil {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(2.6px * var(--s));
+  height: calc(9px * var(--s));
+  border-radius: 50%;
+  background: #0b0a0d;
+  transform: translate(calc(-50% + var(--px, 0px)), calc(-50% + var(--py, 0px)));
+  transition: transform 0.18s linear;
+}
+
+.eye:last-child .eye__pupil {
+  transform: translate(calc(-50% - var(--px, 0px)), calc(-50% + var(--py, 0px)));
+}
+
+@keyframes eyes-appear {
+  0% { opacity: 0; filter: blur(6px); }
+  100% { opacity: 1; filter: blur(0); }
+}
+
+@keyframes blink {
+  0%, 90%, 100% { scale: 1 1; }
+  93% { scale: 1 0.06; }
+  96% { scale: 1 1; }
+}

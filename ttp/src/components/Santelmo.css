@@ -1,0 +1,30 @@
+.santelmo {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.santelmo__orb {
+  position: absolute;
+  border-radius: 50%;
+  background: #ffd98f;
+  box-shadow: 0 0 8px 2px rgba(224, 163, 59, 0.8), 0 0 24px 6px rgba(224, 163, 59, 0.3);
+  opacity: 0;
+  animation-name: santelmo-float;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.santelmo__orb.is-red {
+  background: #ff9b85;
+  box-shadow: 0 0 8px 2px rgba(179, 40, 45, 0.9), 0 0 26px 8px rgba(139, 30, 30, 0.4);
+}
+
+@keyframes santelmo-float {
+  0% { opacity: 0; transform: translate(0, 0) scale(0.6); }
+  15% { opacity: 0.9; }
+  50% { opacity: 0.5; transform: translate(calc(var(--dx) * 0.5), calc(var(--dy) * 0.6)) scale(1); }
+  70% { opacity: 0.95; }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.4); }
+}

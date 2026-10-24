@@ -1,0 +1,52 @@
+.fog {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: var(--fog);
+}
+
+.fog__layer {
+  position: absolute;
+  left: -50%;
+  width: 200%;
+  height: 60%;
+  background-repeat: repeat-x;
+  background-size: 50% 100%;
+  will-change: transform;
+}
+
+.fog__layer--1 {
+  bottom: -8%;
+  opacity: 0.55;
+  background-image:
+    radial-gradient(ellipse 30% 45% at 20% 60%, rgba(138, 133, 144, 0.35), transparent 70%),
+    radial-gradient(ellipse 25% 40% at 55% 70%, rgba(138, 133, 144, 0.3), transparent 70%),
+    radial-gradient(ellipse 35% 50% at 85% 55%, rgba(138, 133, 144, 0.32), transparent 70%);
+  animation: fog-drift 46s linear infinite;
+}
+
+.fog__layer--2 {
+  bottom: 5%;
+  opacity: 0.4;
+  background-image:
+    radial-gradient(ellipse 28% 38% at 10% 50%, rgba(160, 150, 165, 0.3), transparent 70%),
+    radial-gradient(ellipse 32% 44% at 45% 60%, rgba(160, 150, 165, 0.28), transparent 70%),
+    radial-gradient(ellipse 26% 36% at 78% 45%, rgba(160, 150, 165, 0.3), transparent 70%);
+  animation: fog-drift 70s linear infinite reverse;
+}
+
+.fog__layer--3 {
+  bottom: 18%;
+  opacity: 0.22;
+  filter: blur(8px);
+  background-image:
+    radial-gradient(ellipse 40% 30% at 30% 50%, rgba(180, 160, 170, 0.35), transparent 70%),
+    radial-gradient(ellipse 30% 26% at 75% 60%, rgba(139, 30, 30, 0.25), transparent 70%);
+  animation: fog-drift 100s linear infinite;
+}
+
+@keyframes fog-drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
