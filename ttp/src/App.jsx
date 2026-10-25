@@ -5,6 +5,13 @@ import LoadingScreen from './components/LoadingScreen'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Home from './pages/Home'
+import Creatures from './pages/Creatures'
+import MapOfMyths from './pages/MapOfMyths'
+import Superstitions from './pages/Superstitions'
+import Origins from './pages/Origins'
+import ModernLegends from './pages/ModernLegends'
+import Podcasts from './pages/Podcasts'
+import About from './pages/About'
 import Placeholder from './pages/Placeholder'
 
 /*
@@ -52,30 +59,14 @@ export default function App() {
       <main>
         <Routes>
           <Route path="/" element={<Home ready={!showIntro} />} />
-          <Route
-            path="/creatures"
-            element={<Placeholder title="The Creatures" filipino="Ang mga Nilalang" owner="Jhessa" />}
-          />
-          <Route
-            path="/map"
-            element={<Placeholder title="Map of Myths" filipino="Mapa ng mga Alamat" owner="Jhessa" />}
-          />
-          <Route
-            path="/superstitions"
-            element={<Placeholder title="Protection & Superstitions" filipino="Mga Pamahiin" owner="Cyrelle" />}
-          />
-          <Route
-            path="/origins"
-            element={<Placeholder title="Origins of Philippine Folklore" filipino="Ang Pinagmulan" owner="Cyrelle" />}
-          />
-          <Route
-            path="/modern-legends"
-            element={<Placeholder title="Modern Legends" filipino="Mga Makabagong Alamat" owner="Cyrelle" />}
-          />
-          <Route
-            path="/about"
-            element={<Placeholder title="About Us & Sources" filipino="Tungkol sa Amin" owner="Cyrelle" />}
-          />
+          <Route path="/creatures" element={<Creatures />} />
+          <Route path="/map" element={<MapOfMyths />} />
+          <Route path="/superstitions" element={<Superstitions />} />
+          <Route path="/origins" element={<Origins />} />
+          <Route path="/modern-legends" element={<ModernLegends />} />
+          <Route path="/podcasts" element={<Podcasts />} />
+          <Route path="/stories" element={<Podcasts />} />
+          <Route path="/about" element={<About />} />
           <Route
             path="*"
             element={<Placeholder title="Naligaw ka." filipino="You got lost" owner={null} lost />}

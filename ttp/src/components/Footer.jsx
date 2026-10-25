@@ -1,8 +1,12 @@
 import { Link } from 'react-router-dom'
-import { NAV_LINKS } from '../data/navLinks'
+import { getLocalizedNavLinks } from '../data/navLinks'
+import { useLanguage } from '../context/useLanguage'
 import './Footer.css'
 
 export default function Footer() {
+  const { language, t } = useLanguage()
+  const navLinks = getLocalizedNavLinks(language)
+
   return (
     <footer className="footer">
       <div className="footer__roots" aria-hidden="true" />
@@ -10,24 +14,23 @@ export default function Footer() {
         <div className="footer__brand">
           <p className="footer__baybayin baybayin" aria-hidden="true">ᜆᜊᜒ ᜆᜊᜒ ᜉᜓ</p>
           <p className="footer__logo">Tabi-Tabi Po</p>
-          <p className="footer__tag">Ang Madilim na Alamat ng Pilipinas</p>
+          <p className="footer__tag">{t('footer.tag')}</p>
         </div>
 
         <nav className="footer__nav" aria-label="Footer">
-          {NAV_LINKS.map((l) => (
+          {navLinks.map((l) => (
             <Link key={l.to} to={l.to}>{l.label}</Link>
           ))}
         </nav>
 
         <p className="footer__note">
-          Folklore is shared heritage, not fact, and never a reason to stereotype any province or its people.
-          These stories belong to all of us.
+          {t('footer.note')}
         </p>
       </div>
 
       <div className="container footer__bottom">
-        <span>A Cultural Heritage project by Jhessa &amp; Cyrelle · 2026</span>
-        <Link to="/about">Sources &amp; credits</Link>
+        <span>{t('footer.credits')}</span>
+        <Link to="/about">{t('footer.sourcesLink')}</Link>
       </div>
     </footer>
   )

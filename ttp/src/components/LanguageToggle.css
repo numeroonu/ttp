@@ -1,0 +1,99 @@
+/* Segmented language switch with a sliding thumb */
+
+.lang-toggle {
+  --h: 40px;
+  --pad: 3px;
+  position: relative;
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+  height: var(--h);
+  padding: var(--pad);
+  background: rgba(14, 11, 16, 0.72);
+  border: 1px solid rgba(212, 151, 59, 0.28);
+  border-radius: 999px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5), 0 0 12px rgba(212, 151, 59, 0.06);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  user-select: none;
+  isolation: isolate;
+}
+
+.lang-toggle:hover,
+.lang-toggle:focus-within {
+  border-color: rgba(212, 151, 59, 0.55);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5), 0 0 16px rgba(212, 151, 59, 0.14);
+}
+
+/* the sliding golden pill */
+.lang-toggle__thumb {
+  position: absolute;
+  z-index: 0;
+  top: var(--pad);
+  bottom: var(--pad);
+  left: var(--pad);
+  width: calc(50% - var(--pad));
+  border-radius: 999px;
+  background: linear-gradient(135deg, #f0b455 0%, #d4973b 55%, #c9822a 100%);
+  box-shadow: 0 0 14px rgba(212, 151, 59, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.lang-toggle[data-active='en'] .lang-toggle__thumb {
+  transform: translateX(100%);
+}
+
+.lang-toggle__btn {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 46px;
+  padding: 0 14px;
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  color: rgba(240, 230, 215, 0.62);
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  outline: none;
+}
+
+.lang-toggle__btn:hover { color: #f7e7ce; }
+
+.lang-toggle__btn:focus-visible {
+  outline: 2px solid #f7e7ce;
+  outline-offset: -2px;
+}
+
+.lang-toggle__btn.is-active {
+  color: #1a1012;
+  font-weight: 700;
+}
+
+.lang-toggle__btn.is-active:hover { color: #1a1012; }
+
+/* Compact variant */
+.lang-toggle--compact { --h: 32px; --pad: 2px; }
+.lang-toggle--compact .lang-toggle__btn {
+  min-width: 38px;
+  padding: 0 10px;
+  font-size: 0.66rem;
+}
+
+@media (max-width: 640px) {
+  .lang-toggle__btn { min-width: 44px; padding: 0 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lang-toggle__thumb { transition: none; }
+}

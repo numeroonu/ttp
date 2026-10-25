@@ -1,0 +1,435 @@
+/* =========================================================
+   TABI-TABI PO · About & Sources
+   Reads like a colophon: mission and credits up top, an
+   ethics note that is hard to miss, then the bibliography
+   set as a reference list rather than a wall of cards.
+   ========================================================= */
+
+.about-page {
+  --about-surface: #141014;
+  --about-line: rgba(138, 133, 144, 0.2);
+  --about-text: rgba(232, 220, 196, 0.9);
+  --about-ember: #e0776b;
+
+  position: relative;
+  min-height: 100vh;
+  padding-bottom: 72px;
+  background-color: var(--hatinggabi);
+}
+
+/* ---------- Header ---------- */
+
+.about-header {
+  position: relative;
+  padding: 104px 0 32px;
+  text-align: center;
+  background:
+    radial-gradient(ellipse 60% 75% at 50% 0%, rgba(139, 30, 30, 0.24) 0%, transparent 70%);
+  border-bottom: 1px solid rgba(138, 133, 144, 0.15);
+}
+
+.about-header__baybayin {
+  margin: 6px 0 10px;
+  font-size: 22px;
+  color: rgba(224, 163, 59, 0.56);
+}
+
+.about-header__title {
+  margin-bottom: 8px;
+  font-size: clamp(34px, 5vw, 54px);
+  line-height: 1.08;
+  letter-spacing: 0.02em;
+  color: var(--papel);
+}
+
+.about-header__title em {
+  font-style: italic;
+  color: var(--kandila);
+  text-shadow: 0 0 28px rgba(224, 163, 59, 0.35);
+}
+
+.about-header__subtitle {
+  margin-bottom: 12px;
+  font-family: var(--font-heading-sc);
+  font-size: clamp(14px, 1.8vw, 17px);
+  letter-spacing: 0.14em;
+  color: var(--usok);
+}
+
+.about-header__desc {
+  max-width: 62ch;
+  margin: 0 auto;
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(232, 220, 196, 0.86);
+}
+
+/* ---------- Layout ---------- */
+
+.about-main {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin-top: 32px;
+}
+
+.about-card {
+  padding: 26px 30px;
+  background: var(--about-surface);
+  border: 1px solid var(--about-line);
+  border-radius: 8px;
+}
+
+/* ---------- Mission + credits ---------- */
+
+.about-card--mission {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  align-items: start;
+  gap: 36px;
+  background:
+    radial-gradient(ellipse 50% 90% at 0% 0%, rgba(224, 163, 59, 0.09) 0%, transparent 70%),
+    var(--about-surface);
+}
+
+.about-mission__text h2 {
+  position: relative;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  font-size: clamp(26px, 3.2vw, 36px);
+  line-height: 1.15;
+  color: var(--papel);
+}
+
+/* short gold rule under the heading */
+.about-mission__text h2::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 56px;
+  height: 2px;
+  background: var(--kandila);
+  box-shadow: 0 0 12px rgba(224, 163, 59, 0.5);
+}
+
+.about-mission__text p {
+  max-width: 62ch;
+  margin-bottom: 10px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--about-text);
+}
+
+/* first paragraph is the statement; the second is supporting detail */
+.about-mission__text p:first-of-type {
+  margin-bottom: 14px;
+  font-family: var(--font-heading);
+  font-size: clamp(17px, 1.7vw, 20px);
+  line-height: 1.6;
+  color: var(--papel);
+}
+
+.about-mission__text p:last-child {
+  margin-bottom: 0;
+}
+
+/* Credits panel, set like a title-page imprint */
+.about-card__aside {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 18px;
+  text-align: center;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(224, 163, 59, 0.14) 0%, transparent 75%),
+    rgba(11, 10, 13, 0.7);
+  border: 1px solid rgba(224, 163, 59, 0.3);
+  border-radius: 8px;
+}
+
+.about-creators {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.about-creators__label {
+  width: 100%;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(224, 163, 59, 0.3);
+  font-family: var(--font-heading-sc);
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  color: var(--kandila);
+}
+
+.about-creators__list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  margin: 6px 0 4px;
+  padding: 0;
+  list-style: none;
+}
+
+.about-creators__list li {
+  font-size: 14.5px;
+  line-height: 1.4;
+  color: var(--papel);
+}
+
+.about-creators__list strong {
+  font-weight: 600;
+}
+
+.about-creators__note {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--usok);
+}
+
+/* ---------- Ethics note ---------- */
+
+.about-card--ethics {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  align-items: start;
+  gap: 36px;
+  background:
+    radial-gradient(ellipse 45% 100% at 0% 0%, rgba(139, 30, 30, 0.22) 0%, transparent 75%),
+    var(--about-surface);
+  border-color: rgba(224, 119, 107, 0.4);
+}
+
+.about-ethics__head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.about-ethics-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  border: 1px solid rgba(224, 119, 107, 0.45);
+  border-radius: 999px;
+  background: rgba(224, 119, 107, 0.1);
+  color: var(--about-ember);
+  font-family: var(--font-heading-sc);
+  font-size: 13.5px;
+  letter-spacing: 0.05em;
+}
+
+.about-card--ethics h3 {
+  font-size: clamp(22px, 2.8vw, 31px);
+  line-height: 1.2;
+  color: var(--papel);
+}
+
+/* a quiet vertical rule separates the heading from the explanation */
+.about-ethics__body {
+  padding-left: 32px;
+  border-left: 1px solid rgba(224, 119, 107, 0.3);
+}
+
+.about-ethics__body p {
+  max-width: 62ch;
+  margin-bottom: 10px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--about-text);
+}
+
+.about-ethics__body p:first-child {
+  color: var(--papel);
+  font-size: 16px;
+}
+
+.about-ethics__body p:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- Bibliography ---------- */
+
+.about-directory__head {
+  max-width: 62ch;
+  margin: 0 auto 18px;
+  text-align: center;
+}
+
+.about-directory__head h2 {
+  margin: 4px 0 8px;
+  font-size: clamp(24px, 3vw, 32px);
+  line-height: 1.15;
+  color: var(--papel);
+}
+
+.about-directory__head p:last-child {
+  font-size: 17px;
+  line-height: 1.8;
+  color: var(--usok);
+}
+
+/* A reference list: type of source on the left, the work on the right */
+.about-sources-grid {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--about-line);
+}
+
+.about-source-card {
+  display: grid;
+  grid-template-columns: minmax(150px, 190px) minmax(0, 1fr);
+  gap: 6px 28px;
+  padding: 14px 6px;
+  border-bottom: 1px solid var(--about-line);
+  transition: background 0.25s;
+}
+
+.about-source-card:hover {
+  background: rgba(224, 163, 59, 0.04);
+}
+
+.about-source-card__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.about-source-cat {
+  font-family: var(--font-heading-sc);
+  font-size: 13px;
+  line-height: 1.35;
+  letter-spacing: 0.03em;
+  color: var(--kandila);
+}
+
+.about-source-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.about-source-title {
+  font-family: var(--font-heading);
+  font-size: clamp(17px, 1.8vw, 20px);
+  line-height: 1.25;
+  color: var(--papel);
+}
+
+.about-source-author {
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--usok);
+}
+
+.about-source-author strong {
+  font-weight: 600;
+  color: var(--papel);
+}
+
+.about-source-desc {
+  max-width: 68ch;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--about-text);
+}
+
+.about-source-link {
+  display: inline-block;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--kandila);
+  text-decoration: underline;
+  text-decoration-color: rgba(224, 163, 59, 0.4);
+  text-underline-offset: 4px;
+  transition: color 0.2s, text-decoration-color 0.2s;
+}
+
+.about-source-link:hover {
+  color: var(--papel);
+  text-decoration-color: currentColor;
+}
+
+/* ---------- CTA ---------- */
+
+.about-nav-cta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* ---------- Keyboard focus ---------- */
+
+.about-source-link:focus-visible {
+  outline: 2px solid var(--kandila);
+  outline-offset: 4px;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 960px) {
+  .about-card--mission,
+  .about-card--ethics {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .about-ethics__body {
+    padding-left: 0;
+    padding-top: 16px;
+    border-left: 0;
+    border-top: 1px solid rgba(224, 119, 107, 0.3);
+  }
+
+  .about-card__aside {
+    max-width: 420px;
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-header {
+    padding: 88px 0 28px;
+  }
+
+  .about-main {
+    gap: 22px;
+  }
+
+  .about-card {
+    padding: 20px 16px;
+  }
+
+  .about-source-card {
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding: 14px 0;
+  }
+
+  .about-source-card__meta {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-source-card,
+  .about-source-link {
+    transition: none;
+  }
+}

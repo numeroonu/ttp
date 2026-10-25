@@ -1,6 +1,8 @@
 import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import Eyes from './Eyes'
+import { useLanguage } from '../context/useLanguage'
+import { getLocalizedCreature } from '../data/creatureTranslations'
 import './CreatureCard.css'
 
 /**
@@ -11,6 +13,9 @@ import './CreatureCard.css'
  */
 export default function CreatureCard({ creature, index = 0 }) {
   const ref = useRef(null)
+  const { language, isFilipino } = useLanguage()
+
+  const localized = getLocalizedCreature(creature, language)
 
   const onMove = (e) => {
     const el = ref.current
@@ -39,16 +44,25 @@ export default function CreatureCard({ creature, index = 0 }) {
       onPointerLeave={onLeave}
       style={{ '--i': index }}
     >
-      <Link to={`/creatures#${creature.id}`} className="ccard__link" aria-label={`Read about the ${creature.name}`}>
+      <Link
+        to={`/creatures#${localized.id}`}
+        className="ccard__link"
+        aria-label={isFilipino ? `Basahin ang tungkol sa ${localized.name}` : `Read about the ${localized.name}`}
+      >
         <div className="ccard__art">
-          {creature.image ? (
-            <img src={creature.image} alt={`Illustration of the ${creature.name}`} loading="lazy" />
+          {localized.image ? (
+            <img
+              src={localized.image}
+              alt={`Illustration of the ${localized.name}`}
+              loading="lazy"
+              referrerPolicy="no-referrer"
+            />
           ) : (
             <div className="ccard__placeholder" aria-hidden="true">
-              <span className="ccard__watermark baybayin">{creature.baybayin}</span>
+              <span className="ccard__watermark baybayin">{localized.baybayin}</span>
               <Eyes
                 size={1.5}
-                color={creature.eyes}
+                color={localized.eyes}
                 blink={4 + index * 1.3}
                 delay={0.3 + index * 0.2}
                 className="ccard__eyes"
@@ -59,18 +73,18 @@ export default function CreatureCard({ creature, index = 0 }) {
         </div>
 
         <div className="ccard__body">
-          <p className="ccard__baybayin baybayin" aria-hidden="true">{creature.baybayin}</p>
-          <h3 className="ccard__name">{creature.name}</h3>
-          <p className="ccard__region">{creature.region}</p>
-          <p className="ccard__teaser">{creature.teaser}</p>
+          <p className="ccard__baybayin baybayin" aria-hidden="true">{localized.baybayin}</p>
+          <h3 className="ccard__name">{localized.name}</h3>
+          <p className="ccard__region">{localized.region}</p>
+          <p className="ccard__teaser">{localized.teaser}</p>
 
           <div className="ccard__reveal">
             <p className="ccard__weak">
-              <span>Kahinaan</span>
-              {creature.weakness}
+              <span>{isFilipino ? 'Kahinaan' : 'Weakness'}</span>
+              {localized.weakness}
             </p>
             <span className="ccard__more">
-              Basahin ang kwento <span aria-hidden="true">→</span>
+              {isFilipino ? 'Basahin ang tala' : 'Read field notes'} <span aria-hidden="true">→</span>
             </span>
           </div>
         </div>

@@ -1,43 +1,71 @@
+/* ───────────────────────────────────────────────
+   Navbar — Tabi-Tabi Po
+   Breakpoint is 1180px so 7 links never wrap.
+   ─────────────────────────────────────────────── */
+
 .nav {
+  --progress: 0;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
-  transition: background 0.5s ease, backdrop-filter 0.5s ease, border-color 0.5s;
   border-bottom: 1px solid transparent;
+  transition: background 0.5s ease, backdrop-filter 0.5s ease, border-color 0.5s ease,
+    box-shadow 0.5s ease;
 }
 
 .nav.is-scrolled,
 .nav.is-open {
-  background: rgba(26, 22, 25, 0.78);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(20, 16, 19, 0.82);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
   border-bottom-color: rgba(139, 30, 30, 0.35);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
 
+/* Reading-progress ember along the bottom edge */
+.nav::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, var(--kandila), #ffd27a);
+  box-shadow: 0 0 10px var(--kandila);
+  transform: scaleX(var(--progress));
+  transform-origin: left;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.nav.is-scrolled::after { opacity: 1; }
+
 .nav__inner {
-  max-width: 1400px;
+  max-width: 1680px;
   margin: 0 auto;
   padding: 18px var(--gutter);
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 28px;
   transition: padding 0.4s ease;
 }
 
-.nav.is-scrolled .nav__inner { padding-top: 12px; padding-bottom: 12px; }
+.nav.is-scrolled .nav__inner { padding-top: 10px; padding-bottom: 10px; }
 
-/* Logo */
+/* ── Logo ───────────────────────────────────── */
 .nav__logo {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-shrink: 0;
   color: var(--papel);
   font-family: var(--font-heading-sc);
   font-size: 22px;
   letter-spacing: 0.06em;
   white-space: nowrap;
+  text-decoration: none;
 }
 
 .nav__logo-text {
@@ -63,129 +91,201 @@
   transform-origin: 50% 90%;
 }
 
-/* Links */
+/* ── Links ──────────────────────────────────── */
 .nav__links {
   display: flex;
-  gap: 4px;
+  align-items: center;
+  gap: 2px;
   margin-left: auto;
 }
 
 .nav__link {
   position: relative;
-  padding: 8px 12px;
+  padding: 10px 11px;
   color: var(--usok);
-  font-size: 15px;
-  letter-spacing: 0.06em;
-  transition: color 0.3s;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;            /* fixes the two-line wrapping */
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
 
+/* underline grows from the centre */
 .nav__link::after {
   content: '';
   position: absolute;
-  left: 12px;
-  right: 12px;
-  bottom: 2px;
+  left: 11px;
+  right: 11px;
+  bottom: 3px;
   height: 1px;
   background: var(--kandila);
   box-shadow: 0 0 8px var(--kandila);
   transform: scaleX(0);
+  transform-origin: center;
   transition: transform 0.45s var(--ease-out);
+}
+
+/* ember dot for the active page */
+.nav__link::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  border-radius: 50%;
+  background: var(--kandila);
+  box-shadow: 0 0 8px 1px var(--kandila);
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity 0.3s ease, transform 0.4s var(--ease-out);
 }
 
 .nav__link:hover { color: var(--papel); }
 .nav__link:hover::after,
 .nav__link.active::after { transform: scaleX(1); }
 .nav__link.active { color: var(--kandila); }
+.nav__link.active::before { opacity: 1; transform: scale(1); }
 
-/* Sound + burger */
+.nav__link:focus-visible {
+  outline: 2px solid var(--kandila);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* ── Actions (language + sound + burger) ────── */
 .nav__actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* thin divider between links and actions on desktop */
+.nav:not(.is-collapsed) .nav__actions {
+  padding-left: 18px;
+  border-left: 1px solid rgba(138, 133, 144, 0.22);
 }
 
 .nav__sound {
+  position: relative;
   display: grid;
   place-items: center;
   width: 40px;
   height: 40px;
-  border: 1px solid rgba(138, 133, 144, 0.35);
+  padding: 0;
+  border: 1px solid rgba(212, 151, 59, 0.28);
   border-radius: 50%;
-  background: transparent;
+  background: rgba(14, 11, 16, 0.6);
+  color: var(--usok);
   cursor: pointer;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease,
+    background 0.3s ease;
 }
 
-.nav__sound:hover,
+.nav__sound:hover {
+  color: var(--papel);
+  border-color: rgba(212, 151, 59, 0.6);
+}
+
+.nav__sound:focus-visible {
+  outline: 2px solid var(--kandila);
+  outline-offset: 2px;
+}
+
 .nav__sound.is-on {
+  color: var(--kandila);
   border-color: var(--kandila);
-  box-shadow: 0 0 16px rgba(224, 163, 59, 0.3);
+  background: rgba(224, 163, 59, 0.1);
+  box-shadow: 0 0 18px rgba(224, 163, 59, 0.3);
 }
 
-.nav__sound-bars {
-  display: flex;
-  align-items: flex-end;
-  gap: 2px;
-  height: 14px;
+.nav__sound-icon {
+  width: 18px;
+  height: 18px;
+  overflow: visible;
 }
 
-.nav__sound-bars span {
-  width: 2px;
-  height: 4px;
-  background: var(--usok);
-  transition: background 0.3s;
+/* sound waves: hidden when off, pulsing when on */
+.nav__sound-wave {
+  opacity: 0;
+  transform-origin: 9px 12px;
+  transition: opacity 0.3s ease;
+}
+.nav__sound.is-on .nav__sound-wave { opacity: 1; animation: wave 1.6s ease-in-out infinite; }
+.nav__sound.is-on .nav__sound-wave--2 { animation-delay: 0.25s; }
+
+/* mute slash: visible when off */
+.nav__sound-mute {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+.nav__sound.is-on .nav__sound-mute { opacity: 0; }
+
+@keyframes wave {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
 }
 
-.nav__sound-bars span:nth-child(2) { height: 9px; }
-.nav__sound-bars span:nth-child(3) { height: 6px; }
-.nav__sound-bars span:nth-child(4) { height: 11px; }
-
-.nav__sound.is-on .nav__sound-bars span {
-  background: var(--kandila);
-  animation: bars 1s ease-in-out infinite alternate;
-}
-.nav__sound.is-on .nav__sound-bars span:nth-child(2) { animation-delay: -0.3s; }
-.nav__sound.is-on .nav__sound-bars span:nth-child(3) { animation-delay: -0.6s; }
-.nav__sound.is-on .nav__sound-bars span:nth-child(4) { animation-delay: -0.15s; }
-
-@keyframes bars {
-  from { height: 3px; }
-  to { height: 14px; }
-}
-
+/* ── Burger ─────────────────────────────────── */
 .nav__burger {
   display: none;
   position: relative;
   width: 40px;
   height: 40px;
-  border: 0;
-  background: none;
+  border: 1px solid rgba(138, 133, 144, 0.3);
+  border-radius: 50%;
+  background: rgba(14, 11, 16, 0.6);
   cursor: pointer;
+  transition: border-color 0.3s ease;
 }
+.nav__burger:hover { border-color: rgba(212, 151, 59, 0.55); }
+.nav__burger:focus-visible { outline: 2px solid var(--kandila); outline-offset: 2px; }
 
 .nav__burger span {
   position: absolute;
-  left: 9px;
-  right: 9px;
+  left: 11px;
+  right: 11px;
   height: 1.5px;
+  border-radius: 2px;
   background: var(--papel);
   transition: transform 0.4s var(--ease-out), top 0.4s var(--ease-out);
 }
-.nav__burger span:first-child { top: 15px; }
-.nav__burger span:last-child { top: 24px; }
+.nav__burger span:first-child { top: 16px; }
+.nav__burger span:last-child { top: 23px; }
 .nav.is-open .nav__burger span:first-child { top: 19.5px; transform: rotate(45deg); }
 .nav.is-open .nav__burger span:last-child { top: 19.5px; transform: rotate(-45deg); }
 
-/* Mobile menu */
+/* ── Mobile menu ────────────────────────────── */
 .nav__mobile {
   display: flex;
   flex-direction: column;
-  padding: 12px var(--gutter) 32px;
-  height: calc(100svh - 76px);
+  padding: 8px var(--gutter) 32px;
+  height: calc(100svh - 68px);
   overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .nav__mobile[hidden] { display: none; }
+
+.nav__mobile-lang-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0 18px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(212, 151, 59, 0.2);
+}
+
+.nav__mobile-lang-label {
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--kandila);
+  font-weight: 600;
+}
 
 .nav__mobile-link {
   display: flex;
@@ -196,12 +296,15 @@
   color: var(--papel);
   font-family: var(--font-heading);
   font-size: 30px;
+  text-decoration: none;
   opacity: 0;
   transform: translateX(-12px);
   animation: menu-in 0.6s var(--ease-out) forwards;
   animation-delay: calc(var(--i) * 0.05s);
+  transition: color 0.3s ease, padding-left 0.3s var(--ease-out);
 }
 
+.nav__mobile-link:hover { padding-left: 6px; color: var(--kandila); }
 .nav__mobile-link.active { color: var(--kandila); }
 
 .nav__mobile-num {
@@ -215,12 +318,32 @@
   to { opacity: 1; transform: none; }
 }
 
-@media (max-width: 1080px) {
-  .nav__links { display: none; }
-  .nav__actions { margin-left: auto; }
-  .nav__burger { display: block; }
+/* ── Breakpoints ────────────────────────────── */
+/* Collapsed state is set by JS (Navbar.jsx) when the links don't fit.
+   The links stay rendered but out of flow so they can still be measured. */
+.nav.is-collapsed .nav__links {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: max-content;
+  margin: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.nav.is-collapsed .nav__actions { margin-left: auto; }
+.nav.is-collapsed .nav__burger { display: block; }
+.nav:not(.is-collapsed) .nav__mobile { display: none !important; }
+
+/* Phones: the language toggle moves into the menu */
+@media (max-width: 640px) {
+  .nav__actions .lang-toggle { display: none; }
+}
+@media (min-width: 641px) {
+  .nav__mobile-lang-wrap { display: none; }
 }
 
-@media (min-width: 1081px) {
-  .nav__mobile { display: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .nav__logo-flame,
+  .nav__sound.is-on .nav__sound-wave { animation: none; }
+  .nav__mobile-link { animation-duration: 0.01s; animation-delay: 0s; }
 }

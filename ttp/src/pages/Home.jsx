@@ -9,9 +9,13 @@ import Fog from '../components/Fog'
 import Reveal from '../components/Reveal'
 import Santelmo from '../components/Santelmo'
 import { creatures, featuredCreatures } from '../data/creatures'
+import { useLanguage } from '../context/useLanguage'
 import './Home.css'
 
 const TITLE = 'Tabi-Tabi Po'
+
+// Diwata is not shown on the home page
+const isDiwata = (c) => `${c.id ?? ''} ${c.name ?? ''}`.toLowerCase().includes('diwata')
 
 // Eyes hiding in the trees of the hero. They close when your light comes near.
 const HERO_EYES = [
@@ -23,39 +27,9 @@ const HERO_EYES = [
   { x: 27, y: 82, size: 0.45, blink: 5, delay: 2.4 },
 ]
 
-const EXPLORE = [
-  {
-    to: '/map',
-    num: 'I',
-    title: 'Map of Myths',
-    filipino: 'Mapa ng mga Alamat',
-    text: 'Find out which creatures haunt Luzon, the Visayas, and Mindanao.',
-  },
-  {
-    to: '/superstitions',
-    num: 'II',
-    title: 'Protection & Superstitions',
-    filipino: 'Mga Pamahiin',
-    text: 'Salt, garlic, buntot pagi, and why we still say “tabi-tabi po.”',
-  },
-  {
-    to: '/origins',
-    num: 'III',
-    title: 'Origins',
-    filipino: 'Ang Pinagmulan',
-    text: 'From the anito and the babaylan to the stories changed by colonization.',
-  },
-  {
-    to: '/modern-legends',
-    num: 'IV',
-    title: 'Modern Legends',
-    filipino: 'Makabagong Alamat',
-    text: 'The White Lady of Balete Drive, haunted schools, and Trese.',
-  },
-]
-
 export default function Home({ ready = true }) {
   const heroRef = useRef(null)
+  const { isFilipino, t } = useLanguage()
 
   // Scroll position -> CSS variable (drives parallax and the moon eclipse)
   useEffect(() => {
@@ -96,7 +70,56 @@ export default function Home({ ready = true }) {
     document.getElementById('kababalaghan')?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const marqueeItems = creatures.map((c) => c.name)
+  const marqueeItems = creatures.filter((c) => !isDiwata(c)).map((c) => c.name)
+  const homeFeatured = featuredCreatures.filter((c) => !isDiwata(c)).slice(0, 4)
+
+  const exploreItems = [
+    {
+      to: '/map',
+      num: 'I',
+      title: isFilipino ? 'Mapa ng mga Alamat' : 'Map of Myths',
+      filipino: 'Mapa ng mga Alamat',
+      text: isFilipino
+        ? 'Tuklasin kung anong mga nilalang ang nananahan sa Luzon, Visayas, at Mindanao.'
+        : 'Find out which creatures haunt Luzon, the Visayas, and Mindanao.',
+    },
+    {
+      to: '/superstitions',
+      num: 'II',
+      title: isFilipino ? 'Mga Pamahiin at Panlaban' : 'Protection & Superstitions',
+      filipino: 'Mga Pamahiin',
+      text: isFilipino
+        ? 'Asin, bawang, buntot pagi, at kung bakit binibigkas pa rin natin ang “tabi-tabi po.”'
+        : 'Salt, garlic, buntot pagi, and why we still say “tabi-tabi po.”',
+    },
+    {
+      to: '/origins',
+      num: 'III',
+      title: isFilipino ? 'Ang Pinagmulan' : 'Origins',
+      filipino: 'Ang Pinagmulan',
+      text: isFilipino
+        ? 'Mula sa anito at babaylan hanggang sa mga kwentong binago ng pananakop.'
+        : 'From the anito and the babaylan to the stories changed by colonization.',
+    },
+    {
+      to: '/modern-legends',
+      num: 'IV',
+      title: isFilipino ? 'Makabagong Alamat' : 'Modern Legends',
+      filipino: 'Makabagong Alamat',
+      text: isFilipino
+        ? 'Ang White Lady ng Balete Drive, mga multo sa unibersidad, at ang mundo ni Trese.'
+        : 'The White Lady of Balete Drive, haunted schools, and Trese.',
+    },
+    {
+      to: '/podcasts',
+      num: 'V',
+      title: isFilipino ? 'Kwento sa Hatinggabi' : 'Podcasts & Stories',
+      filipino: 'Kwento sa Hatinggabi',
+      text: isFilipino
+        ? 'Makinig sa mga audio chronicle, totoong kwento ng engkwentro, at pagsusuri ng alamat.'
+        : 'Listen to immersive midnight audio, real encounters, and folklore discussions.',
+    },
+  ]
 
   return (
     <div className={`home ${ready ? 'is-ready' : ''}`}>
@@ -112,8 +135,7 @@ export default function Home({ ready = true }) {
             <div className="hero__moon-shadow" />
           </div>
           <p className="hero__moon-note">
-            Ginigising ang Bakunawa…
-            <span>the moon-eating serpent stirs</span>
+            {t('home.moonNote')}
           </p>
         </div>
 
@@ -133,7 +155,7 @@ export default function Home({ ready = true }) {
         {/* Nuno sa punso: a small anthill mound with tiny eyes */}
         <div className="hero__punso" aria-hidden="true">
           <Eyes size={0.35} color="amber" blink={3.5} delay={2.5} shyRadius={90} className="hero__punso-eyes" />
-          <span className="hero__punso-note">tabi-tabi po…</span>
+          <span className="hero__punso-note">{t('home.punsoNote')}</span>
         </div>
 
         {/* Darkness with a candle-light hole that follows your cursor */}
@@ -169,27 +191,27 @@ export default function Home({ ready = true }) {
           </h1>
 
           <p className="hero__subtitle">
-            Ang Madilim na Alamat ng Pilipinas
-            <span>The Dark Folklore of the Philippines</span>
+            {t('home.subHero')}
+            <span>{isFilipino ? 'The Dark Folklore of the Philippines' : 'Ang Madilim na Alamat ng Pilipinas'}</span>
           </p>
 
           <p className="hero__tagline">
-            Bago ka pumasok, magpaalam ka muna.
+            {t('home.tagline')}
           </p>
 
           <div className="hero__actions">
             <Link to="/creatures" className="btn">
-              Enter if you dare <span className="btn__arrow" aria-hidden="true">→</span>
+              {t('home.enterBtn')} <span className="btn__arrow" aria-hidden="true">→</span>
             </Link>
             <button type="button" className="btn btn--ghost" onClick={scrollToIntro}>
-              Alamin ang Kwento
+              {t('home.learnBtn')}
             </button>
           </div>
         </div>
 
         <button type="button" className="hero__scroll" onClick={scrollToIntro}>
           <span className="hero__scroll-line" aria-hidden="true" />
-          Mag-scroll kung may lakas ng loob
+          {t('home.scrollNote')}
         </button>
 
         <div className="hero__ground" aria-hidden="true" />
@@ -199,40 +221,35 @@ export default function Home({ ready = true }) {
       <section className="intro" id="kababalaghan">
         <div className="container intro__grid">
           <div className="intro__text">
-            <Reveal><p className="kicker">Ang Simula</p></Reveal>
+            <Reveal><p className="kicker">{t('home.introKicker')}</p></Reveal>
             <Reveal delay={0.1}>
               <h2 className="section-title">
-                Ano ang <em>Kababalaghan?</em>
+                {t('home.introTitle')} <em>{t('home.introTitleEm')}</em>
               </h2>
             </Reveal>
             <Reveal delay={0.2}>
               <p className="intro__lead">
-                Long before electric lights reached the provinces, Filipinos told stories by the gasera: of
-                shapeshifters who walk among us by day, of giants smoking in old trees, of spirits you must greet
-                before you pass.
+                {t('home.introLead')}
               </p>
             </Reveal>
             <Reveal delay={0.3}>
               <p className="intro__body">
-                These stories are more than scares. They are oral heritage, passed down from our ancestors and
-                carrying their beliefs, their fears, and their values. This site is an albularyo’s journal of those
-                stories: where they come from, what they warn us about, and why so many of us still whisper
-                “tabi-tabi po” today.
+                {t('home.introBody')}
               </p>
             </Reveal>
 
             <Reveal delay={0.4} className="intro__stats">
               <div>
                 <strong>{creatures.length}</strong>
-                <span>Nilalang</span>
+                <span>{t('home.statCreatures')}</span>
               </div>
               <div>
                 <strong>3</strong>
-                <span>Kapuluan</span>
+                <span>{t('home.statIslands')}</span>
               </div>
               <div>
                 <strong>∞</strong>
-                <span>Kwento</span>
+                <span>{t('home.statStories')}</span>
               </div>
             </Reveal>
           </div>
@@ -240,17 +257,16 @@ export default function Home({ ready = true }) {
           <div className="intro__notes">
             <Reveal delay={0.2} className="note note--1">
               <span className="note__pin" aria-hidden="true" />
-              <p className="note__word">Tabi-tabi po</p>
+              <p className="note__word">{t('home.note1Word')}</p>
               <p className="note__def">
-                A phrase of respect, like “excuse me, may I pass?” Said when walking past anthills, big trees, or
-                dark places, so unseen spirits like the nuno sa punso are not offended.
+                {t('home.note1Def')}
               </p>
             </Reveal>
             <Reveal delay={0.4} className="note note--2">
               <span className="note__pin" aria-hidden="true" />
-              <p className="note__word">Kababalaghan</p>
+              <p className="note__word">{t('home.note2Word')}</p>
               <p className="note__def">
-                Things strange, wondrous, or supernatural. Events that cannot be explained.
+                {t('home.note2Def')}
               </p>
             </Reveal>
           </div>
@@ -278,23 +294,22 @@ export default function Home({ ready = true }) {
         <div className="container">
           <div className="featured__head">
             <div>
-              <Reveal><p className="kicker">Mga Nilalang ng Gabi</p></Reveal>
+              <Reveal><p className="kicker">{t('home.featuredKicker')}</p></Reveal>
               <Reveal delay={0.1}>
                 <h2 className="section-title">
-                  Those Who Wait <em>in the Dark</em>
+                  {t('home.featuredTitle')} <em>{t('home.featuredTitleEm')}</em>
                 </h2>
               </Reveal>
             </div>
             <Reveal delay={0.2}>
               <p className="featured__intro">
-                Four of the most feared creatures in Philippine folklore. Hover over them, if you dare, to learn how
-                our elders kept them away.
+                {t('home.featuredIntro')}
               </p>
             </Reveal>
           </div>
 
           <div className="featured__grid">
-            {featuredCreatures.map((c, i) => (
+            {homeFeatured.map((c, i) => (
               <Reveal key={c.id} delay={0.12 * i}>
                 <CreatureCard creature={c} index={i} />
               </Reveal>
@@ -303,9 +318,9 @@ export default function Home({ ready = true }) {
 
           <Reveal className="featured__all">
             <Link to="/creatures" className="btn btn--ghost">
-              Buksan ang Talaarawan <span className="btn__arrow" aria-hidden="true">→</span>
+              {t('home.openJournalBtn')} <span className="btn__arrow" aria-hidden="true">→</span>
             </Link>
-            <span>Open the albularyo’s journal to meet all {creatures.length} creatures</span>
+            <span>{t('home.openJournalDesc')}</span>
           </Reveal>
         </div>
       </section>
@@ -313,15 +328,15 @@ export default function Home({ ready = true }) {
       {/* =================== EXPLORE =================== */}
       <section className="explore">
         <div className="container">
-          <Reveal><p className="kicker">Galugarin</p></Reveal>
+          <Reveal><p className="kicker">{t('home.exploreKicker')}</p></Reveal>
           <Reveal delay={0.1}>
             <h2 className="section-title">
-              Go Deeper <em>Into the Dark</em>
+              {t('home.exploreTitle')} <em>{t('home.exploreTitleEm')}</em>
             </h2>
           </Reveal>
 
           <div className="explore__grid">
-            {EXPLORE.map((item, i) => (
+            {exploreItems.map((item, i) => (
               <Reveal key={item.to} delay={0.1 * i}>
                 <Link
                   to={item.to}
@@ -352,16 +367,16 @@ export default function Home({ ready = true }) {
             <Candle size={1} />
           </Reveal>
           <Reveal delay={0.15}>
-            <h2 className="finale__title">Handa ka na ba?</h2>
+            <h2 className="finale__title">{t('home.finaleTitle')}</h2>
           </Reveal>
           <Reveal delay={0.25}>
             <p className="finale__text">
-              The creatures are waiting in the albularyo’s journal. Just remember to ask permission first.
+              {t('home.finaleText')}
             </p>
           </Reveal>
           <Reveal delay={0.35}>
             <Link to="/creatures" className="btn">
-              Enter if you dare <span className="btn__arrow" aria-hidden="true">→</span>
+              {t('home.finaleBtn')} <span className="btn__arrow" aria-hidden="true">→</span>
             </Link>
           </Reveal>
         </div>

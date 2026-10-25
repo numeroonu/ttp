@@ -1,0 +1,6 @@
+{
+  "name": "Tabi-Tabi Po",
+  "description": "An immersive journey into the dark folklore, mythical creatures, and ancient superstitions of the Philippines.",
+  "permissions": [],
+  "capabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
