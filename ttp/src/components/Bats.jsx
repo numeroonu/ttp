@@ -23,7 +23,7 @@ function makeBats(count) {
       y,
       dx: x * 7,
       dy: y * 7,
-      delay: rand() * 0.6,
+      delay: rand() * 2.2,
       duration: 1.6 + rand() * 0.3,
       flap: 0.13 + rand() * 0.06,
       tilt: (rand() - 0.5) * 30,
@@ -32,7 +32,7 @@ function makeBats(count) {
   return bats
 }
 
-const BATS = makeBats(24)
+const BATS = makeBats(30)
 
 const WING = 'M50 22 C40 10 25 6 3 13 C11 17 13 23 11 30 C18 25 24 27 28 34 C32 28 40 28 47 31 Z'
 

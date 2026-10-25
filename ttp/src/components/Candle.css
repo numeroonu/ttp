@@ -110,12 +110,18 @@
     linear-gradient(#efe4cc, #b9a57f 70%, #6e5c41);
 }
 
-.candle.is-lit .candle__body {
-  background:
-    radial-gradient(ellipse 90% 40% at 50% 0%, rgba(255, 200, 110, 0.55), transparent 70%),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.55) 0%, transparent 28%, rgba(255, 240, 210, 0.12) 46%, transparent 62%, rgba(0, 0, 0, 0.6) 100%),
-    linear-gradient(#efe4cc, #b9a57f 70%, #6e5c41);
+/* Warm light from the flame on the top of the wax */
+.candle__body::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(ellipse 90% 40% at 50% 0%, rgba(255, 200, 110, 0.55), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.9s ease;
 }
+
+.candle.is-lit .candle__body::after { opacity: 1; }
 
 .candle__drip {
   position: absolute;
@@ -146,6 +152,23 @@
 
 .candle.is-out .candle__glow {
   animation: glow-blown 2s ease-in-out forwards;
+}
+
+.candle.is-out .candle__body::after {
+  animation: wax-blown 2s ease-in-out forwards;
+}
+
+/* Same timing as the flame: out, weak flicker, out */
+@keyframes wax-blown {
+  0%, 10% { opacity: 1; }
+  28%, 38% { opacity: 0; }
+  50% { opacity: 0.45; }
+  56% { opacity: 0.3; }
+  62% { opacity: 0.45; }
+  68% { opacity: 0.25; }
+  74% { opacity: 0.4; }
+  80% { opacity: 0.2; }
+  100% { opacity: 0; }
 }
 
 /* Blown out, then a small, weak flame catches again and struggles against the air before dying */

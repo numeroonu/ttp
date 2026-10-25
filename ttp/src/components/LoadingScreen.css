@@ -66,7 +66,57 @@
   transition: opacity 1.6s ease, filter 1.6s ease;
 }
 
-.loader.is-dark .loader__vignette { opacity: 0.25; }
+/* The room's light follows the flame (same 2s timing as the candle's "blown"
+   animation): dark when it goes out, a weak flicker while the small flame
+   fights the air, then dark for good */
+.loader__shade {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 30%, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.75) 70%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loader.is-dark .loader__shade { animation: room-blown 2s ease-in-out forwards; }
+.loader.is-dark .loader__vignette { animation: vignette-blown 2s ease-in-out forwards; }
+.loader.is-dark .loader__words { animation: words-blown 2s ease-in-out forwards; }
+
+@keyframes room-blown {
+  0%, 10% { opacity: 0; }
+  28%, 38% { opacity: 1; }
+  50% { opacity: 0.55; }
+  56% { opacity: 0.75; }
+  62% { opacity: 0.55; }
+  68% { opacity: 0.8; }
+  74% { opacity: 0.62; }
+  80% { opacity: 0.85; }
+  100% { opacity: 1; }
+}
+
+@keyframes vignette-blown {
+  0%, 10% { opacity: 1; }
+  28%, 38% { opacity: 0.25; }
+  50% { opacity: 0.6; }
+  56% { opacity: 0.4; }
+  62% { opacity: 0.6; }
+  68% { opacity: 0.35; }
+  74% { opacity: 0.5; }
+  80% { opacity: 0.3; }
+  100% { opacity: 0.25; }
+}
+
+/* The words lose some light too, but stay readable */
+@keyframes words-blown {
+  0%, 10% { filter: brightness(1); }
+  28%, 38% { filter: brightness(0.7); }
+  50% { filter: brightness(0.9); }
+  56% { filter: brightness(0.8); }
+  62% { filter: brightness(0.9); }
+  68% { filter: brightness(0.78); }
+  74% { filter: brightness(0.86); }
+  80% { filter: brightness(0.76); }
+  100% { filter: brightness(0.85); }
+}
 
 /* Only the small details dim; the title and "Makikiraan po kami." stay bright */
 .loader.is-dark .loader__baybayin,

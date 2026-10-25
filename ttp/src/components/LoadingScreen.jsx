@@ -37,7 +37,7 @@ import './LoadingScreen.css'
  * and the light swallows the screen to reveal the Home page.
  */
 
-const PHASE_TIMES = [2800, 3800, 4800, 6600, 8300, 10500, 11900]
+const PHASE_TIMES = [4600, 5600, 6600, 8400, 10100, 12300, 13700]
 const LAST_PHASE = PHASE_TIMES.length
 const EXIT_DURATION = 2300
 
@@ -88,9 +88,9 @@ export default function LoadingScreen({ onFinish }) {
       setSoundOn(true)
       const elapsed = (performance.now() - t0) / 1000
       // The swarm, and the last bat rushing in; both cut dead at the black screen
-      if (elapsed < 2.6) {
-        playBats(Math.max(0, 0.3 - elapsed), 2.8 - elapsed)
-        if (elapsed < 2.2) playWhoosh(Math.max(0, 1.6 - elapsed), 2.8 - elapsed)
+      if (elapsed < 4.4) {
+        playBats(Math.max(0, 0.3 - elapsed), 4.6 - elapsed)
+        if (elapsed < 4) playWhoosh(Math.max(0, 3.4 - elapsed), 4.6 - elapsed)
       }
       if (phaseRef.current >= 2) playDrone()
       if (phaseRef.current >= 6) darkenDrone()
@@ -187,6 +187,8 @@ export default function LoadingScreen({ onFinish }) {
       aria-label="Tabi-tabi po. Ask permission to enter the site."
     >
       <div className="loader__vignette" />
+      {/* Darkness that follows the candle light when it is blown out */}
+      <div className="loader__shade" />
 
 
       {/* Bats bursting out of the balete tree */}
