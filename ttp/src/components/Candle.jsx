@@ -4,11 +4,12 @@ import './Candle.css'
  * A flickering candle made with pure CSS.
  * size: number that scales the candle (1 = normal)
  * lit: false shows an unlit candle (used for the "ignite" moment)
+ * out: true when a lit candle has just been blown out
  */
-export default function Candle({ size = 1, lit = true, className = '' }) {
+export default function Candle({ size = 1, lit = true, out = false, className = '' }) {
   return (
     <div
-      className={`candle ${lit ? 'is-lit' : ''} ${className}`}
+      className={`candle ${lit ? 'is-lit' : ''} ${out ? 'is-out' : ''} ${className}`}
       style={{ '--candle-scale': size }}
       aria-hidden="true"
     >

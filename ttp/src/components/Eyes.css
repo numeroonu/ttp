@@ -7,58 +7,138 @@
 }
 
 .eyes__lids {
+  position: relative;
   display: flex;
-  gap: calc(13px * var(--s));
-  transition: transform 0.3s var(--ease-out), opacity 0.4s;
+  gap: calc(12px * var(--s));
+  transition: opacity 0.4s ease 0.2s;
+}
+
+/* Soft glow around the pair (a still gradient: much lighter than a live filter) */
+.eyes__lids::before {
+  content: '';
+  position: absolute;
+  inset: -90% -30%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(179, 40, 45, 0.4) 0%, rgba(139, 30, 30, 0.18) 40%, transparent 70%);
+}
+
+.eyes--amber .eyes__lids::before {
+  background: radial-gradient(ellipse, rgba(224, 163, 59, 0.35) 0%, rgba(224, 163, 59, 0.14) 40%, transparent 70%);
 }
 
 /* Eyes close and hide when your light gets too close */
-.eyes.is-shy .eyes__lids {
-  transform: scaleY(0.04);
-  opacity: 0;
+.eyes.is-shy .eyes__lids { opacity: 0; }
+.eyes.is-shy .eye__lid {
+  animation: none;
+  transform: translateY(0);
+  transition: transform 0.2s ease-in;
 }
 
+/* Almond shape: outer corner a little higher than the inner corner */
 .eye {
   position: relative;
   display: block;
-  width: calc(20px * var(--s));
-  height: calc(8px * var(--s));
-  border-radius: 60% 40% 60% 40% / 100% 100% 100% 100%;
+  width: calc(22px * var(--s));
+  height: calc(10px * var(--s));
   overflow: hidden;
-  animation: blink var(--blink) ease-in-out infinite;
-  animation-delay: calc(var(--d) + 1.5s);
+  clip-path: polygon(
+    0% 44%, 8% 29.7%, 16% 19%, 25% 9.8%, 35% 2.9%, 50% 0%, 65% 6.5%, 75% 15.8%, 84% 27.2%, 92% 39.7%,
+    100% 56%, 92% 65%, 84% 74.7%, 75% 84.4%, 65% 92.3%, 50% 96%, 35% 88.7%, 25% 78.4%, 16% 66.5%, 8% 55%
+  );
+  background: radial-gradient(ellipse at 50% 55%, #3a0b0a 0%, #1a0505 60%, #080202 100%);
 }
 
-.eye:last-child {
-  transform: scaleX(-1);
-  border-radius: 60% 40% 60% 40% / 100% 100% 100% 100%;
-}
-
-.eyes--red .eye {
-  background: radial-gradient(ellipse at 50% 50%, #ffcf8a 0%, #e0a33b 25%, #b3282d 60%, #4a0c0c 100%);
-  box-shadow: 0 0 calc(10px * var(--s)) rgba(179, 40, 45, 0.9), 0 0 calc(26px * var(--s)) rgba(139, 30, 30, 0.5);
-}
+.eye:last-child { transform: scaleX(-1); }
 
 .eyes--amber .eye {
-  background: radial-gradient(ellipse at 50% 50%, #fff3c4 0%, #e0a33b 40%, #7a4a10 100%);
-  box-shadow: 0 0 calc(10px * var(--s)) rgba(224, 163, 59, 0.9), 0 0 calc(26px * var(--s)) rgba(224, 163, 59, 0.4);
+  background: radial-gradient(ellipse at 50% 55%, #3a2408 0%, #1a1004 60%, #080502 100%);
 }
 
-/* Slit pupil, moved by --px and --py from JavaScript */
+/* Shadow from the upper lid and a darker rim along the lower lid */
+.eye::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.25) 30%, transparent 50%, transparent 82%, rgba(0, 0, 0, 0.45) 100%);
+  pointer-events: none;
+}
+
+/* Iris (with pupil) moved by --px and --py from JavaScript */
+.eye__iris {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: calc(10px * var(--s));
+  height: calc(10px * var(--s));
+  border-radius: 50%;
+  transform: translate(calc(-50% + var(--px, 0px)), calc(-50% + var(--py, 0px)));
+  transition: transform 0.18s linear;
+  animation: saccade 7s steps(1) infinite;
+  animation-delay: var(--d);
+}
+
+.eye:last-child .eye__iris {
+  transform: translate(calc(-50% - var(--px, 0px)), calc(-50% + var(--py, 0px)));
+}
+
+.eyes--red .eye__iris {
+  background:
+    radial-gradient(circle, transparent 58%, rgba(30, 2, 2, 0.9) 74%),
+    repeating-conic-gradient(from 7deg, rgba(255, 225, 160, 0.22) 0deg 3deg, rgba(60, 0, 0, 0.3) 3deg 8deg, transparent 8deg 12deg),
+    radial-gradient(circle, #fff1c2 0%, #ffbf5a 18%, #e0702a 36%, #a3161c 60%, #3d0607 100%);
+}
+
+.eyes--amber .eye__iris {
+  background:
+    radial-gradient(circle, transparent 58%, rgba(30, 16, 2, 0.9) 74%),
+    repeating-conic-gradient(from 7deg, rgba(255, 245, 200, 0.25) 0deg 3deg, rgba(60, 30, 0, 0.3) 3deg 8deg, transparent 8deg 12deg),
+    radial-gradient(circle, #fff8d8 0%, #ffd27a 20%, #e0a33b 42%, #8a5512 70%, #2e1a04 100%);
+}
+
+/* Soft-edged slit pupil that slowly widens and narrows */
 .eye__pupil {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: calc(2.6px * var(--s));
-  height: calc(9px * var(--s));
+  width: 24%;
+  height: 92%;
   border-radius: 50%;
-  background: #0b0a0d;
-  transform: translate(calc(-50% + var(--px, 0px)), calc(-50% + var(--py, 0px)));
-  transition: transform 0.18s linear;
+  background: radial-gradient(ellipse, #000 50%, rgba(0, 0, 0, 0.75) 72%, transparent 100%);
+  transform: translate(-50%, -50%);
+  animation: pupil 9s ease-in-out infinite;
+  animation-delay: var(--d);
 }
 
-.eye:last-child .eye__pupil {
-  transform: translate(calc(-50% - var(--px, 0px)), calc(-50% + var(--py, 0px)));
+/* Wet reflection of the light; stays put while the iris moves */
+.eye__shine {
+  position: absolute;
+  z-index: 3;
+  left: 36%;
+  top: 26%;
+  width: calc(2.6px * var(--s));
+  height: calc(1.8px * var(--s));
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(255, 250, 235, 0.95), rgba(255, 240, 210, 0.3) 55%, transparent 75%);
+}
+
+/* Mirrored eye: keep the reflection on the same side as the other eye */
+.eye:last-child .eye__shine { left: auto; right: 30%; }
+
+/* Upper eyelid that drops down to blink */
+.eye__lid {
+  position: absolute;
+  z-index: 4;
+  left: -5%;
+  top: 0;
+  width: 110%;
+  height: 115%;
+  border-radius: 0 0 50% 50% / 0 0 35% 35%;
+  background: linear-gradient(#050304 75%, #160606);
+  transform: translateY(-105%);
+  animation: blink var(--blink) ease-in-out infinite;
+  animation-delay: calc(var(--d) + 1.5s);
 }
 
 @keyframes eyes-appear {
@@ -67,7 +147,32 @@
 }
 
 @keyframes blink {
-  0%, 90%, 100% { scale: 1 1; }
-  93% { scale: 1 0.06; }
-  96% { scale: 1 1; }
+  0%, 89%, 100% { transform: translateY(-105%); }
+  92% { transform: translateY(0); }
+  95% { transform: translateY(-105%); }
+}
+
+/* Two quick blinks in a row */
+.eyes--double .eye__lid { animation-name: blink-double; }
+
+@keyframes blink-double {
+  0%, 82%, 100% { transform: translateY(-105%); }
+  85% { transform: translateY(0); }
+  88% { transform: translateY(-105%); }
+  91% { transform: translateY(0); }
+  94% { transform: translateY(-105%); }
+}
+
+@keyframes pupil {
+  0%, 100% { transform: translate(-50%, -50%) scaleX(1); }
+  50% { transform: translate(-50%, -50%) scaleX(1.9); }
+}
+
+/* Tiny darting movements, like a living eye */
+@keyframes saccade {
+  0% { translate: 0 0; }
+  22% { translate: calc(0.7px * var(--s)) calc(-0.2px * var(--s)); }
+  41% { translate: calc(-0.4px * var(--s)) 0; }
+  63% { translate: calc(0.3px * var(--s)) calc(0.3px * var(--s)); }
+  85% { translate: 0 0; }
 }

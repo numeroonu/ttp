@@ -9,12 +9,14 @@ import './Eyes.css'
  * size: scale of the eyes (1 = normal)
  * delay: seconds before the eyes appear
  * blink: seconds between blinks
+ * double: blink twice in a row each time
  * color: 'red' | 'amber'
  */
 export default function Eyes({
   size = 1,
   delay = 0,
   blink = 6,
+  double = false,
   color = 'red',
   shyRadius = 0,
   className = '',
@@ -58,13 +60,20 @@ export default function Eyes({
   return (
     <div
       ref={ref}
-      className={`eyes eyes--${color} ${shy ? 'is-shy' : ''} ${className}`}
+      className={`eyes eyes--${color} ${double ? 'eyes--double' : ''} ${shy ? 'is-shy' : ''} ${className}`}
       style={{ '--s': size, '--d': `${delay}s`, '--blink': `${blink}s`, ...style }}
       aria-hidden="true"
     >
       <div className="eyes__lids">
-        <span className="eye"><span className="eye__pupil" /></span>
-        <span className="eye"><span className="eye__pupil" /></span>
+        {[0, 1].map((i) => (
+          <span key={i} className="eye">
+            <span className="eye__iris">
+              <span className="eye__pupil" />
+            </span>
+            <span className="eye__shine" />
+            <span className="eye__lid" />
+          </span>
+        ))}
       </div>
     </div>
   )

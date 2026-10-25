@@ -1,0 +1,138 @@
+.bats {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Blood-red light behind the swarm so the black bats stand out */
+.bats__glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 120vmax;
+  height: 120vmax;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200, 60, 45, 0.55) 0%, rgba(139, 30, 30, 0.35) 22%, rgba(60, 12, 14, 0.15) 40%, transparent 60%);
+  transform: translate(-50%, -50%) scale(0.2);
+  opacity: 0;
+  animation: bats-glow 3.2s ease-out forwards;
+  animation-delay: var(--delay);
+}
+
+@keyframes bats-glow {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.3); }
+  25% { opacity: 1; }
+  70% { opacity: 0.9; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* The balete in the background; its crown is where the bats start */
+.bats__tree {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 60vmin;
+  height: 60vmin;
+  transform: translate(-50%, -50%);
+  opacity: 0.75;
+  animation:
+    tree-in 1.6s ease-out,
+    bat-gone 0.01s linear calc(var(--delay) + 2.5s) forwards;
+}
+
+@keyframes tree-in { from { opacity: 0; } }
+
+/* Every bat is the same size: tiny in the distance, huge as it flies past you */
+.bat {
+  position: absolute;
+  left: 50%;
+  top: calc(50% - 12vmin);
+  width: 34vmax;
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: bat-fly var(--dur) cubic-bezier(0.55, 0, 0.9, 0.5) forwards;
+  animation-delay: calc(var(--delay) + var(--bat-delay));
+}
+
+@keyframes bat-fly {
+  0% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0.02) rotate(0deg);
+  }
+  10% { opacity: 1; }
+  95% { opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1) rotate(var(--tilt));
+  }
+}
+
+.bat__body {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  will-change: transform;
+  animation: bat-bob calc(var(--flap) * 2) ease-in-out infinite;
+}
+
+.bat__body svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: #000;
+}
+
+/* Wings flap up and down from the shoulders */
+.bat__wing {
+  transform-origin: 50% 48%;
+  will-change: transform;
+  animation: bat-flap var(--flap) ease-in-out infinite alternate;
+}
+
+@keyframes bat-flap {
+  from { transform: scaleY(1); }
+  to { transform: scaleY(-0.55); }
+}
+
+@keyframes bat-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8%); }
+}
+
+/* ---------- The last bat fills the whole screen ---------- */
+
+.bat--final {
+  z-index: 2;
+  --flap: 0.22s;
+  /* Grows until it covers you, then is gone the instant it does */
+  animation:
+    bat-engulf 1.2s cubic-bezier(0.7, 0, 0.95, 0.6) calc(var(--delay) + 1.4s) forwards,
+    bat-gone 0.01s linear calc(var(--delay) + 2.5s) forwards;
+}
+
+@keyframes bat-engulf {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.02); }
+  15% { opacity: 1; }
+  100% { opacity: 1; transform: translate(-50%, -46%) scale(22); }
+}
+
+@keyframes bat-gone { to { opacity: 0; } }
+
+/* Cuts to pure black the moment the bat covers you, then clears for the candle */
+.bats__blackout {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: #000;
+  opacity: 0;
+  animation: blackout 0.6s ease-out calc(var(--delay) + 2.5s) forwards;
+}
+
+@keyframes blackout {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
