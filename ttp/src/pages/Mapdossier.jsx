@@ -1,6 +1,7 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../context/useLanguage'
-import './MapDossier.css'
+import './Mapdossier.css'
 
 /* ---------- tiny inline icons ---------- */
 const IconMountain = () => (
@@ -19,23 +20,30 @@ const IconPin = () => (
     <circle cx="12" cy="9.5" r="2.5" />
   </svg>
 )
-const IconBook = () => (
-  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5v-16z" />
-    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-  </svg>
-)
-const IconExternal = () => (
-  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M7 17L17 7M9 7h8v8" />
-  </svg>
-)
 
-/* "Author – Work title" → { author, work } */
+/* Hotspot photo. Hides itself if the file is missing, so it is safe to add images gradually. */
+function HotspotImage({ src, alt, credit }) {
+  const [failed, setFailed] = useState(false)
+  if (!src || failed) return null
+  return (
+    <figure className="md-entry__figure">
+      <div className="md-entry__frame">
+        <img src={src} alt={alt} loading="lazy" onError={() => setFailed(true)} />
+      </div>
+      {credit && <figcaption className="md-entry__credit">{credit}</figcaption>}
+    </figure>
+  )
+}
+
+/* "Author – Work title (1889)" → { author, work, year } */
 function splitSourceTitle(title) {
   const parts = title.split(' – ')
-  if (parts.length > 1) return { author: parts[0], work: parts.slice(1).join(' – ') }
-  return { author: null, work: title }
+  const author = parts.length > 1 ? parts[0] : null
+  let work = parts.length > 1 ? parts.slice(1).join(' – ') : title
+  const yearMatch = work.match(/\s*\((\d{4})\)\s*$/)
+  const year = yearMatch ? yearMatch[1] : null
+  if (yearMatch) work = work.slice(0, yearMatch.index)
+  return { author, work, year }
 }
 
 /**
@@ -58,7 +66,7 @@ export default function MapDossier({ region, selectedPin, onClearPin }) {
     <section
       className="md"
       style={{ '--md-accent': region.color }}
-      aria-label="Regional Details and Historical Archives"
+      aria-label={isFilipino ? 'Mga Detalye ng Rehiyon at Makasaysayang Talaan' : 'Regional Details and Historical Archives'}
     >
       {/* ===================== Focus (selected pin) OR Overview ===================== */}
       {selectedPin ? (
@@ -144,40 +152,45 @@ export default function MapDossier({ region, selectedPin, onClearPin }) {
       )}
 
       {/* ===================== Historic Supernatural Hotspots ===================== */}
-      <article className="md-card md-hotspots">
-        <header className="md-card__head">
-          <h3 className="md-section-title">
-            <span aria-hidden="true">✦</span>
-            {isFilipino ? 'Makasaysayang Pook ng Katatakutan' : 'Historic Supernatural Hotspots'}
-          </h3>
-          <span className="md-count">{region.hotspots.length}</span>
-        </header>
+      <article className="md-card md-section md-hotspots">
+        <h3 className="md-section-title">
+          {isFilipino ? 'Makasaysayang Pook ng Katatakutan' : 'Historic Supernatural Hotspots'}
+        </h3>
 
-        <ol className="md-timeline">
-          {region.hotspots.map((spot, i) => (
-            <li key={spot.title} className="md-spot">
-              <span className="md-spot__marker" aria-hidden="true">{i + 1}</span>
-              <div className="md-spot__body">
-                <h4 className="md-spot__title">{isFilipino ? spot.titleFil : spot.title}</h4>
-                <span className="md-spot__prov">
-                  <IconPin /> {spot.province}
+        <ul className="md-entries">
+          {region.hotspots.map((spot) => (
+            <li key={spot.title} className="md-entry">
+              <div className="md-entry__margin">
+                <IconPin />
+                <span className="md-entry__places">
+                  {spot.province
+                    .split('·')
+                    .map((p) => p.trim())
+                    .filter(Boolean)
+                    .map((p) => (
+                      <span key={p}>{p}</span>
+                    ))}
                 </span>
-                <p className="md-spot__lore">{isFilipino ? spot.loreFil : spot.lore}</p>
+              </div>
+              <div className="md-entry__main">
+                <HotspotImage
+                  src={spot.image}
+                  alt={isFilipino ? spot.titleFil : spot.title}
+                  credit={spot.imageCredit}
+                />
+                <h4 className="md-entry__title">{isFilipino ? spot.titleFil : spot.title}</h4>
+                <p className="md-entry__lore">{isFilipino ? spot.loreFil : spot.lore}</p>
               </div>
             </li>
           ))}
-        </ol>
+        </ul>
       </article>
 
       {/* ===================== Verified Academic Sources ===================== */}
-      <article className="md-card md-sources">
-        <header className="md-card__head">
-          <h3 className="md-section-title">
-            <span aria-hidden="true">✦</span>
-            {isFilipino ? 'Mga Na-verify na Batis at Pag-aaral' : 'Verified Academic Sources'}
-          </h3>
-          <span className="md-count">{region.sources.length}</span>
-        </header>
+      <article className="md-card md-section md-sources">
+        <h3 className="md-section-title">
+          {isFilipino ? 'Mga Na-verify na Batis at Pag-aaral' : 'Verified Academic Sources'}
+        </h3>
 
         <p className="md-sources__note">
           {isFilipino
@@ -185,28 +198,28 @@ export default function MapDossier({ region, selectedPin, onClearPin }) {
             : 'Folklore accounts in this region are cross-referenced with published references.'}
         </p>
 
-        <ul className="md-source-list">
-          {region.sources.map((src) => {
-            const { author, work } = splitSourceTitle(src.title)
+        <ul className="md-refs">
+          {region.sources.map((src, i) => {
+            const { author, work, year } = splitSourceTitle(src.title)
+            const callNo = `${region.id.slice(0, 3).toUpperCase()} · ${String(i + 1).padStart(2, '0')}`
             return (
-              <li key={src.url}>
-                <a
-                  href={src.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="md-source"
-                  aria-label={`${src.title} (${isFilipino ? 'bubukas sa bagong tab' : 'opens in a new tab'})`}
-                >
-                  <span className="md-source__icon"><IconBook /></span>
-                  <span className="md-source__body">
-                    {author && <span className="md-source__author">{author}</span>}
-                    <span className="md-source__work">{work}</span>
-                    <span className="md-source__note">
-                      {isFilipino && src.noteFil ? src.noteFil : src.note}
-                    </span>
-                  </span>
-                  <span className="md-source__go"><IconExternal /></span>
-                </a>
+              <li key={src.url} className="md-ref">
+                <span className="md-ref__callno">{callNo}</span>
+                {author && <p className="md-ref__author">{author}</p>}
+                <p className="md-ref__work">{work}</p>
+                <p className="md-ref__note">{isFilipino && src.noteFil ? src.noteFil : src.note}</p>
+                <div className="md-ref__foot">
+                  <span className="md-ref__year">{year}</span>
+                  <a
+                    href={src.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="md-ref__link"
+                    aria-label={`${src.title} (${isFilipino ? 'bubukas sa bagong tab' : 'opens in a new tab'})`}
+                  >
+                    {isFilipino ? 'Basahin ang batis' : 'Read source'} <span aria-hidden="true">↗</span>
+                  </a>
+                </div>
               </li>
             )
           })}
