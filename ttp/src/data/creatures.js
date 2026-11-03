@@ -413,6 +413,18 @@ export const creatures = [
       'Stingray tail whips (buntot pagi), throwing rock salt and wood ash onto roof beams, burning carabao horn or dry ginger root (luya), and shouting curses to shatter its acoustic glamour.',
     aral:
       'A warning against deceptive appearances: what feels distant and harmless may actually be an imminent danger right at your doorstep.',
+    regionalVariants: {
+      en: 'Wakwak and tik-tik are names used in Visayan accounts for night-flying or birdlike beings, but their descriptions and relationship to the broader aswang tradition vary by locality. Related stories are also reported in parts of Mindanao.',
+      fil: 'Ginagamit sa mga kuwentong Bisaya ang mga pangalang wakwak at tik-tik para sa mga nilalang na lumilipad sa gabi o kahawig ng ibon, ngunit nag-iiba ayon sa lugar ang paglalarawan sa kanila at ang kaugnayan nila sa mas malawak na tradisyon ng aswang. May kahawig ding mga salaysay sa ilang bahagi ng Mindanao.',
+    },
+    protectiveCustoms: {
+      en: 'Some stories describe people staying indoors after dark, keeping watch, or calling on locally familiar protections against feared night-flying beings. Specific objects and practices vary, so these accounts do not represent one universal custom.',
+      fil: 'Inilalarawan sa ilang kuwento ang pananatili ng mga tao sa loob ng bahay pagsapit ng gabi, pagbabantay, o paggamit ng mga pananggalang na kinikilala sa kanilang lugar laban sa kinatatakutang nililipad na nilalang. Nag-iiba ang mga bagay at gawi, kaya hindi ito iisang kaugaliang sinusunod ng lahat.',
+    },
+    notableEncounter: {
+      en: 'A recurring story pattern has people hearing a birdlike call outside a house at night and trying to judge how near the unseen creature may be. The sound is later retold as a warning associated with wakwak or tik-tik lore.',
+      fil: 'Sa paulit-ulit na hulma ng kuwento, nakaririnig ang mga tao ng tila huni ng ibon sa labas ng bahay sa gabi at sinusubukang tantiyahin kung gaano kalapit ang di-nakikitang nilalang. Isinasalaysay muli ang tunog bilang babalang iniuugnay sa alamat ng wakwak o tik-tik.',
+    },
     sources: [
       {
         author: 'Maximo D. Ramos',
@@ -466,6 +478,18 @@ export const creatures = [
       'Turn your clothing inside out (baligtarin ang damit). This confuses the Tiyanak, making it giggle and release its victim from its optical trap. Carrying blessed ash, garlic, or loud firecrackers will also drive it off.',
     aral:
       'A somber ancestral reflection on infant mortality and grief, while reminding wanderers to exercise caution even when situations appear innocent and defenseless.',
+    regionalVariants: {
+      en: 'Tiyanak is associated especially with Tagalog accounts, while related names and stories appear elsewhere in the Philippines. Some versions describe a child or infant spirit, and others emphasize its imitation of a baby’s cry; details vary by community and historical telling.',
+      fil: 'Lalong iniuugnay ang tiyanak sa mga kuwentong Tagalog, samantalang lumilitaw sa ibang bahagi ng Pilipinas ang mga kaugnay na pangalan at salaysay. Inilalarawan ito sa ilang bersiyon bilang espiritu ng bata o sanggol, at sa iba naman ay binibigyang-diin ang paggaya nito sa iyak ng sanggol; nag-iiba ang mga detalye ayon sa pamayanan at panahon ng pagsasalaysay.',
+    },
+    protectiveCustoms: {
+      en: 'Some folk accounts advise caution when hearing a baby cry in an isolated place after dark, rather than approaching without checking the surroundings. Reported charms or remedies differ among tellings and should not be treated as a single established practice.',
+      fil: 'Ipinapayo sa ilang kuwentong-bayan ang pag-iingat kapag may narinig na iyak ng sanggol sa liblib na lugar pagkagat ng dilim, sa halip na agad lumapit nang hindi sinusuri ang paligid. Nagkakaiba sa bawat salaysay ang mga binabanggit na anting-anting o panlunas at hindi dapat ituring na iisang takdang kaugalian.',
+    },
+    notableEncounter: {
+      en: 'A familiar story pattern describes a traveler hearing what sounds like an abandoned baby crying near a path or in the brush. When the person approaches to help, the cry is revealed in the tale as a tiyanak’s lure.',
+      fil: 'Inilalarawan sa pamilyar na hulma ng kuwento ang isang manlalakbay na nakaririnig ng tila iyak ng inabandonang sanggol malapit sa daan o masukal na bahagi. Nang lumapit ang tao upang tumulong, nabubunyag sa salaysay na pang-akit pala iyon ng tiyanak.',
+    },
     sources: [
       {
         author: 'F. Landa Jocano',
@@ -519,6 +543,18 @@ export const creatures = [
       'Consecrated virgin coconut oil made on Good Friday (lana); bright light from burning torches of coconut palm leaves (sulo); and blessed crucifixes.',
     aral:
       'A cultural critique of ill-gotten wealth and greed, warning that unearned riches attained through exploitation or dark bargains carry a ruinous curse.',
+    regionalVariants: {
+      en: 'Sigbin stories are most often associated with Cebuano and Boholano traditions, and descriptions differ between communities. Accounts vary in the creature’s appearance, movement, and association with sorcery or extraordinary wealth.',
+      fil: 'Pinakadalas iugnay ang mga kuwento tungkol sa sigbin sa mga tradisyong Cebuano at Boholano, at nagkakaiba ang paglalarawan dito sa bawat pamayanan. Nag-iiba rin sa mga salaysay ang anyo at kilos ng nilalang, pati ang kaugnayan nito sa pangkukulam o di-pangkaraniwang kayamanan.',
+    },
+    protectiveCustoms: {
+      en: 'Some accounts mention religious protections or seeking help from a traditional healer when a sigbin is feared. The specific remedies vary across stories and are reported beliefs, not a uniform regional practice.',
+      fil: 'Binabanggit sa ilang salaysay ang mga pananggalang na panrelihiyon o paghingi ng tulong sa tradisyonal na manggagamot kapag pinangangambahang may sigbin. Nagkakaiba ang mga panlunas sa bawat kuwento at mga paniniwalang naiuulat lamang ang mga ito, hindi iisang gawi sa buong rehiyon.',
+    },
+    notableEncounter: {
+      en: 'A recurring account describes an unexplained animal-like sound or presence near a settlement after dark, followed by rumors that a sigbin is nearby. In some stories, the creature is linked to a household believed to keep or command one, though details differ by locality.',
+      fil: 'Inilalarawan sa paulit-ulit na salaysay ang di-maipaliwanag na tunog o presensiyang tila hayop malapit sa pamayanan pagsapit ng gabi, na sinusundan ng usap-usapang may sigbin sa paligid. Sa ilang kuwento, iniuugnay ang nilalang sa sambahayang pinaniniwalaang nag-aalaga o nag-uutos dito, bagaman nag-iiba ang mga detalye ayon sa lugar.',
+    },
     sources: [
       {
         author: 'Francisco R. Demetrio, S.J.',
@@ -564,6 +600,18 @@ export const creatures = [
       'Only a master albularyo or mananambal with superior spiritual power can cure barang through santigwar (diagnostic ritual), counter-incantations, and blessed herbal decoctions. Seeking reconciliation and begging forgiveness from the offended party is the surest remedy.',
     aral:
       'Warns against arrogance, breach of contract, and looking down on the humble or defenseless in rural society, emphasizing accountability for one’s deeds.',
+    regionalVariants: {
+      en: 'Barang and the figure called mambabarang are especially associated with Visayan accounts, including Cebuano traditions. Descriptions of the practice, the practitioner, and the insects involved differ across communities and should not be assumed to be identical everywhere.',
+      fil: 'Lalong iniuugnay sa mga kuwentong Bisaya, kabilang ang mga tradisyong Cebuano, ang barang at ang tinatawag na mambabarang. Nagkakaiba sa bawat pamayanan ang paglalarawan sa gawain, manggagawa nito, at mga insektong sangkot, kaya hindi dapat ipalagay na magkakatulad ang lahat ng salaysay.',
+    },
+    protectiveCustoms: {
+      en: 'Some accounts describe consulting an albularyo or mananambal for diagnosis and counter-rituals when barang is suspected. The procedures vary by practitioner and community; these are traditional beliefs, not a single standardized remedy.',
+      fil: 'Inilalarawan sa ilang salaysay ang pagkonsulta sa albularyo o mananambal para sa pagsusuri at panlaban na ritwal kapag pinaghihinalaang may barang. Nag-iiba ang mga hakbang ayon sa manggagamot at pamayanan; mga tradisyonal na paniniwala ito, hindi iisang pamantayang lunas.',
+    },
+    notableEncounter: {
+      en: 'A recurring account begins with someone experiencing an unexplained illness or pain that is interpreted by family or neighbors as barang. They may seek a traditional healer, whose diagnostic or counter-ritual becomes part of the story.',
+      fil: 'Nagsisimula ang paulit-ulit na salaysay sa pagkakaroon ng di-maipaliwanag na karamdaman o pananakit na ipinapakahulugan ng pamilya o mga kapitbahay bilang barang. Maaari silang lumapit sa tradisyonal na manggagamot, na ang pagsusuri o panlaban na ritwal ay nagiging bahagi ng kuwento.',
+    },
     sources: [
       {
         author: 'Richard W. Lieban',
@@ -609,6 +657,18 @@ export const creatures = [
       'The spiritual counter-rites of an albularyo or mananambal using tawas (diagnostic alum), lana (blessed coconut oil concocted on Good Friday), crucifixes, buntot pagi (stingray tail whip), and confronting the sorcerer to force a reversal of the curse.',
     aral:
       'Reflects the socio-psychological tensions of close-knit rural life: warning that arrogance, broken promises, and callous treatment of neighbors invite destructive grievances that fracture communal peace.',
+    regionalVariants: {
+      en: 'Kulam and the term mangkukulam appear in accounts from different Philippine regions, but the practice is not described uniformly. Some tellings emphasize sympathetic magic, while others use kulam more broadly for harmful sorcery or a suspected curse.',
+      fil: 'Lumilitaw sa mga salaysay mula sa iba’t ibang rehiyon ng Pilipinas ang kulam at ang katawagang mangkukulam, ngunit hindi magkakatulad ang paglalarawan sa gawain. Binibigyang-diin ng ilang kuwento ang mahikang gumagamit ng kahawig o kaugnay na bagay, samantalang mas malawak na pangkukulam o hinihinalang sumpa ang kahulugan ng kulam sa iba.',
+    },
+    protectiveCustoms: {
+      en: 'In some communities, people seek an albularyo or mananambal for a traditional diagnosis and counter-ritual when kulam is suspected. The methods and beliefs differ locally and are not a universal or medically established remedy.',
+      fil: 'Sa ilang pamayanan, lumalapit ang mga tao sa albularyo o mananambal para sa tradisyonal na pagsusuri at panlaban na ritwal kapag pinaghihinalaang may kulam. Nagkakaiba sa bawat lugar ang mga pamamaraan at paniniwala, at hindi ito pangkalahatan o kinikilalang lunas medikal.',
+    },
+    notableEncounter: {
+      en: 'A common story pattern describes a person becoming ill after a dispute or perceived offense, with relatives suspecting kulam. The family may consult a traditional healer, and the suspected cause and response vary between tellings.',
+      fil: 'Inilalarawan sa karaniwang hulma ng kuwento ang pagkakasakit ng isang tao matapos ang alitan o inaakalang pagkakasala, kaya naghihinala ng kulam ang mga kamag-anak. Maaari silang sumangguni sa tradisyonal na manggagamot, at nag-iiba sa bawat salaysay ang pinaghihinalaang sanhi at tugon.',
+    },
     sources: [
       {
         author: 'Dr. José Rizal',
@@ -662,6 +722,18 @@ export const creatures = [
       'Always bow your head and speak clearly before passing: "Tabi-tabi po, Ingkong, makikiraan lamang po." If cursed, visit an albularyo for a tawas (alum diagnostic) ritual and place an offering (atang) of unsalted boiled chicken, tobacco, and coins at the base of the mound.',
     aral:
       'The philosophical heart of Filipino environmental etiquette: every corner of nature has an unseen custodian, demanding humility and mindful footsteps wherever we tread.',
+    regionalVariants: {
+      en: 'Accounts of the Nuno sa Punso appear in several Philippine communities, with local names and descriptions varying. The shared motif is an unseen elder or spirit associated with a mound or place in nature.',
+      fil: 'May mga salaysay tungkol sa Nuno sa Punso sa iba’t ibang pamayanan sa Pilipinas, at nag-iiba ang mga lokal na pangalan at paglalarawan. Karaniwang motif ang di-nakikitang matanda o espiritung kaugnay ng bunton o pook sa kalikasan.',
+    },
+    protectiveCustoms: {
+      en: 'A familiar custom is to say “Tabi-tabi po” before passing a mound or entering an undisturbed natural place, and to avoid disturbing it. Wording and practice vary among communities.',
+      fil: 'Isang kilalang kaugalian ang pagsabi ng “Tabi-tabi po” bago dumaan sa punso o pumasok sa isang di-ginagalaw na pook sa kalikasan, at ang pag-iwas na gambalain ito. Nagkakaiba ang pananalita at gawi sa bawat pamayanan.',
+    },
+    notableEncounter: {
+      en: 'A common story tells of someone stepping on or disturbing a mound and later becoming inexplicably ill. The family may interpret the illness as the Nuno’s displeasure and seek help according to local custom.',
+      fil: 'Sa karaniwang kuwento, natatapakan o nagagambala ng isang tao ang punso at kalaunan ay nagkakasakit nang walang malinaw na paliwanag. Maaaring ituring ng pamilya ang sakit bilang pagkadismaya ng Nuno at humingi ng tulong ayon sa lokal na kaugalian.',
+    },
     sources: [
       {
         author: 'Maximo D. Ramos',
@@ -715,6 +787,18 @@ export const creatures = [
       'Leave small plates of sweets or biscuits on window sills; keep rock salt sprinkled in the four corners of every room; hang blessed palm leaves (palaspas) over entrance doors.',
     aral:
       'Teaches mindfulness, cleanliness, and harmony in the home, reminding families to live peacefully alongside the unseen inhabitants of their domestic spaces.',
+    regionalVariants: {
+      en: 'Duwende stories occur in different parts of the Philippines, and descriptions and local names vary. Some accounts distinguish benevolent and troublesome beings, while others describe small spirits associated with homes or the land.',
+      fil: 'May mga kuwento tungkol sa duwende sa iba’t ibang bahagi ng Pilipinas, at nag-iiba ang mga paglalarawan at lokal na pangalan. Itinatangi sa ilang salaysay ang mabait at mapanggulong nilalang, samantalang inilalarawan naman sa iba ang maliliit na espiritung kaugnay ng tahanan o lupa.',
+    },
+    protectiveCustoms: {
+      en: 'Folklore commonly emphasizes treating places believed to be inhabited by spirits with respect and avoiding needless disturbance. Specific gestures or offerings differ by community and are not universal.',
+      fil: 'Karaniwang binibigyang-diin sa kuwentong-bayan ang paggalang sa mga pook na pinaniniwalaang tinitirhan ng mga espiritu at ang pag-iwas sa di-kinakailangang panggugulo. Nagkakaiba sa bawat pamayanan ang mga tiyak na kilos o alay at hindi pangkalahatan ang mga ito.',
+    },
+    notableEncounter: {
+      en: 'A familiar tale describes household objects going missing or a person experiencing unexplained pinches or illness, which are attributed to a duwende. Such accounts vary, and the events are understood through local belief.',
+      fil: 'Sa isang pamilyar na salaysay, nawawala ang mga gamit sa bahay o nakararanas ang isang tao ng di-maipaliwanag na kurot o sakit, na iniuugnay sa duwende. Nagkakaiba ang mga kuwentong ito, at inuunawa ang mga pangyayari ayon sa lokal na paniniwala.',
+    },
     sources: [
       {
         author: 'Francisco R. Demetrio, S.J.',
@@ -760,6 +844,18 @@ export const creatures = [
       'Never run after it or throw rocks at it. Turn your shirt inside out, recite the Apostles’ Creed (Sumasampalataya Ako), strike steel against flint, or throw holy salt to disperse its hypnotic bond.',
     aral:
       'A solemn reminder of mortality and the unresolved spiritual obligations owed to those who died without rites or burial, emphasizing prayers for departed souls.',
+    regionalVariants: {
+      en: 'Santelmo is described in some Philippine accounts as a wandering or floating light, with tellings connecting it to coastal, marsh, or other isolated places. The appearance and explanation differ across stories.',
+      fil: 'Inilalarawan sa ilang salaysay sa Pilipinas ang Santelmo bilang ligaw o lumulutang na liwanag, at iniuugnay ito sa mga baybayin, latian, o iba pang liblib na lugar. Nagkakaiba sa bawat kuwento ang anyo at paliwanag dito.',
+    },
+    protectiveCustoms: {
+      en: 'Some tellings advise people not to follow or approach the mysterious light, especially near water or hazardous ground. Other protective responses vary by local tradition.',
+      fil: 'Ipinapayo sa ilang salaysay na huwag sundan o lapitan ang mahiwagang liwanag, lalo na malapit sa tubig o mapanganib na lupa. Nagkakaiba naman ang ibang pananggalang ayon sa lokal na tradisyon.',
+    },
+    notableEncounter: {
+      en: 'A common account describes a traveler seeing a solitary light moving over a dark path, marsh, or shoreline. When the person follows it, the light seems to lead farther into the darkness, so the encounter is told as a warning against pursuit.',
+      fil: 'Inilalarawan sa karaniwang salaysay ang isang manlalakbay na nakakakita ng nag-iisang liwanag na gumagalaw sa madilim na daan, latian, o dalampasigan. Kapag sinundan ito, tila inilalayo pa ng liwanag ang tao sa dilim, kaya nagiging babala ang pagtatagpong ito laban sa pagsunod dito.',
+    },
     sources: [
       {
         author: 'Damiana L. Eugenio',
@@ -805,6 +901,18 @@ export const creatures = [
       'Iron blades (bolo or karit), bright bonfires, and salt. Traditional Bagobo families hold strict night-long vigils (pagpupuyat) over graves, keeping torchlights ablaze and brandishing steel blades until the burial mound has completely settled.',
     aral:
       'Demonstrates the supreme sanctity and communal dignity that indigenous Filipinos accord to the deceased, demanding vigilance and collective honor for resting ancestors.',
+    regionalVariants: {
+      en: 'Busaw or Buso appears in accounts associated with some indigenous communities of Mindanao, including Bagobo traditions. Descriptions and beliefs vary, so these names and accounts should not be treated as uniform across the island.',
+      fil: 'Lumilitaw ang Busaw o Buso sa mga salaysay na kaugnay ng ilang katutubong pamayanan sa Mindanao, kabilang ang mga tradisyong Bagobo. Nagkakaiba ang mga paglalarawan at paniniwala, kaya hindi dapat ituring na magkakapareho ang mga pangalan at salaysay sa buong pulo.',
+    },
+    protectiveCustoms: {
+      en: 'In some accounts, families keep watch at a burial, sometimes through the night, as a way to guard the deceased. Funeral practices differ among communities and should not be assumed to be universal.',
+      fil: 'Sa ilang salaysay, nagbabantay ang pamilya sa libing, kung minsan ay magdamag, upang pangalagaan ang yumao. Nagkakaiba ang mga gawi sa paglilibing sa bawat pamayanan at hindi dapat ipalagay na pangkalahatan ang mga ito.',
+    },
+    notableEncounter: {
+      en: 'A common story pattern places the Busaw near a recent burial, where people fear the grave may be disturbed after dark. The account centers on a community keeping watch over the dead, with details differing across tellings.',
+      fil: 'Sa karaniwang hulma ng kuwento, lumilitaw ang Busaw malapit sa bagong libing, at nangangamba ang mga tao na magambala ang puntod pagsapit ng gabi. Nakasentro ang salaysay sa pagbabantay ng pamayanan sa yumao, at nag-iiba ang mga detalye sa bawat bersiyon.',
+    },
     sources: [
       {
         author: 'Laura Watson Benedict',
@@ -850,6 +958,18 @@ export const creatures = [
       'Deafening communal cacophony: clashing metal pots and pans (kalampag ng kaldero), beating agongs, sounding trumpets, and singing sweet soothing melodies to persuade or scare the beast into regurgitating the moon back into the sky.',
     aral:
       'A powerful testament to the power of collective community action: showing that when ordinary human beings join their voices together in unity, they can drive away cosmic darkness and restore light to the world.',
+    regionalVariants: {
+      en: 'Bakunawa is best known in Visayan stories, where spellings and details vary between tellings. Some versions describe several moons and the serpent swallowing them, while the number and sequence are not uniform.',
+      fil: 'Pinakakilala ang Bakunawa sa mga kuwentong Bisaya, kung saan nag-iiba ang baybay at mga detalye sa bawat salaysay. Inilalarawan sa ilang bersiyon ang ilang buwan at ang paglulon sa mga ito ng ahas, ngunit hindi magkakapareho ang bilang at pagkakasunod-sunod.',
+    },
+    protectiveCustoms: {
+      en: 'In eclipse stories, people may make a loud communal noise with gongs or household metal objects to frighten the Bakunawa and help the moon return. The practice and its details vary among tellings.',
+      fil: 'Sa mga kuwento tungkol sa eklipse, maaaring gumawa ng malakas na ingay ang mga tao gamit ang gong o mga metal na gamit sa bahay upang takutin ang Bakunawa at maibalik ang buwan. Nagkakaiba sa bawat salaysay ang gawaing ito at mga detalye nito.',
+    },
+    notableEncounter: {
+      en: 'A familiar mythic episode begins when the moon darkens during an eclipse, interpreted as the Bakunawa trying to swallow it. People gather to make noise until the moon appears again, though the details vary across versions.',
+      fil: 'Nagsisimula ang isang pamilyar na tagpo sa mito kapag dumidilim ang buwan sa panahon ng eklipse, na ipinapakahulugang sinusubukan itong lunukin ng Bakunawa. Nagtitipon ang mga tao upang gumawa ng ingay hanggang muling makita ang buwan, bagaman nag-iiba ang mga detalye sa bawat bersiyon.',
+    },
     sources: [
       {
         author: 'Damiana L. Eugenio',

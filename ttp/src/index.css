@@ -218,21 +218,21 @@ button { font: inherit; }
 }
 
 .page-transition {
-  animation: page-fade 300ms ease-out both;
+  animation: page-fade 600ms ease-out both;
 }
 
 @keyframes page-fade {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .cr-card--enter {
-  animation: creature-card-enter 300ms var(--ease-out) both;
-  animation-delay: var(--card-stagger, 0ms);
+  animation: creature-card-enter 600ms var(--ease-out) both;
+  animation-delay: calc(var(--card-stagger, 0ms) + var(--card-stagger, 0ms));
 }
 
 @keyframes creature-card-enter {
-  from { opacity: 0; translate: 0 12px; }
+  from { opacity: 0; translate: 0 40px; }
   to { opacity: 1; translate: 0 0; }
 }
 
@@ -308,7 +308,7 @@ body .cr-modal-overlay.is-closing .cr-modal {
 
 .map-land.is-active-land {
   stroke-dasharray: 1;
-  animation: map-region-outline 600ms ease-out both;
+  animation: map-region-outline 1400ms ease-out both;
 }
 
 @keyframes map-region-outline {
@@ -318,16 +318,16 @@ body .cr-modal-overlay.is-closing .cr-modal {
   }
   to {
     stroke-dashoffset: 0;
-    filter: drop-shadow(0 0 12px rgba(224, 163, 59, 0.3));
+    filter: drop-shadow(0 0 20px rgba(224, 163, 59, 0.7));
   }
 }
 
 .map-dossier-wrap {
-  animation: map-dossier-enter 300ms var(--ease-out) both;
+  animation: map-dossier-enter 500ms var(--ease-out) both;
 }
 
 @keyframes map-dossier-enter {
-  from { opacity: 0; transform: translateX(20px); }
+  from { opacity: 0; transform: translateX(60px); }
   to { opacity: 1; transform: translateX(0); }
 }
 
@@ -340,20 +340,20 @@ body .cr-modal-overlay.is-closing .cr-modal {
   width: 1px;
   height: var(--orig-line-progress, 0%);
   background: linear-gradient(180deg, rgba(224, 163, 59, 0.8), rgba(224, 163, 59, 0.25));
-  box-shadow: 0 0 8px rgba(224, 163, 59, 0.35);
+  box-shadow: 0 0 14px rgba(224, 163, 59, 0.7);
   pointer-events: none;
 }
 
 .orig-epoch {
   z-index: 1;
   opacity: 0;
-  transform: translateX(-24px);
-  transition: opacity 500ms var(--ease-out), transform 500ms var(--ease-out),
+  transform: translateX(-60px);
+  transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out),
     border-color 0.3s, box-shadow 0.3s;
 }
 
 .orig-epoch:nth-child(even) {
-  transform: translateX(24px);
+  transform: translateX(60px);
 }
 
 .orig-epoch.is-visible {
@@ -364,7 +364,7 @@ body .cr-modal-overlay.is-closing .cr-modal {
 .cr-modal .cr-pill-tag--danger .cr-meter i.is-on {
   transform: scaleX(0);
   transform-origin: left center;
-  animation: creature-danger-fill 500ms ease-out both;
+  animation: creature-danger-fill 1100ms ease-out both;
 }
 
 .cr-modal .cr-pill-tag--danger .cr-meter i.is-on:nth-child(2) { animation-delay: 80ms; }
@@ -420,11 +420,11 @@ body .cr-modal-overlay.is-closing .cr-modal {
 }
 
 .mod-case-card--stamp {
-  animation: casefile-stamp 420ms var(--ease-out) both;
+  animation: casefile-stamp 500ms var(--ease-out) both;
 }
 
 @keyframes casefile-stamp {
-  from { opacity: 0; scale: 1.08; rotate: 1.5deg; }
+  from { opacity: 0; scale: 1.3; rotate: 4deg; }
   72% { opacity: 1; scale: 1.015; rotate: -0.3deg; }
   to { opacity: 1; scale: 1; rotate: 0deg; }
 }
@@ -456,9 +456,9 @@ body .cr-modal-overlay.is-closing .cr-modal {
 
 @keyframes superstition-tremble {
   0%, 100% { translate: 0; }
-  25% { translate: -1px 0; }
-  50% { translate: 1px 0; }
-  75% { translate: -0.5px 0; }
+  25% { translate: -3px 0; }
+  50% { translate: 3px 0; }
+  75% { translate: -1.5px 0; }
 }
 
 .sup-card--taboos .sup-card__label {
@@ -467,7 +467,7 @@ body .cr-modal-overlay.is-closing .cr-modal {
 
 .sup-card--taboos:hover .sup-card__label {
   color: var(--kandila);
-  text-shadow: 0 0 12px rgba(224, 163, 59, 0.35);
+  text-shadow: 0 0 18px rgba(224, 163, 59, 0.75);
 }
 
 .cr-header__title--ink {
@@ -477,6 +477,12 @@ body .cr-modal-overlay.is-closing .cr-modal {
 @keyframes creature-title-ink {
   from { filter: blur(6px); letter-spacing: 0.14em; }
   to { filter: blur(0); letter-spacing: 0.03em; }
+}
+
+.cr-card.cr-card:hover,
+.cr-card.cr-card:focus-visible {
+  transform: translateY(-12px);
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.65), 0 0 36px rgba(224, 163, 59, 0.3);
 }
 
 /* Respect people who turn off animations on their device */
