@@ -58,7 +58,7 @@ export default function CreatureCard({ creature, index = 0 }) {
               referrerPolicy="no-referrer"
             />
           ) : (
-            <div className="ccard__placeholder" aria-hidden="true">
+            <div className="ccard__placeholder ccard__placeholder--silhouette" aria-hidden="true">
               <span className="ccard__watermark baybayin">{localized.baybayin}</span>
               <Eyes
                 size={1.5}

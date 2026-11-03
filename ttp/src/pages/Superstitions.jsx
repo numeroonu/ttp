@@ -213,7 +213,7 @@ export default function Superstitions() {
       <main className="container sup-grid-section">
         <div className="sup-list" role="tabpanel" aria-live="polite">
           {filteredItems.map((item) => (
-            <article key={item.id} className={`sup-card sup-card--${item.category}`}>
+            <article key={item.id} className={`sup-card sup-card--${item.category} sup-card--tremble`}>
               <div className="sup-card__head">
                 <span className="sup-card__tag">
                   {item.category === 'taboos'

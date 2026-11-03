@@ -56,7 +56,7 @@ export default function App() {
       <ScrollToTop />
       <Navbar />
 
-      <main>
+      <main key={location.pathname} className="page-transition">
         <Routes>
           <Route path="/" element={<Home ready={!showIntro} />} />
           <Route path="/creatures" element={<Creatures />} />

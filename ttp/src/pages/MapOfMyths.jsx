@@ -166,6 +166,7 @@ export default function MapOfMyths() {
                   <g key={region.id}>
                     <path
                       d={region.landPath}
+                      pathLength={1}
                       className={`map-land ${isActive ? 'is-active-land' : 'is-dim-land'}`}
                       role="button"
                       tabIndex={0}
@@ -245,7 +246,7 @@ export default function MapOfMyths() {
         </section>
 
         {/* Right: regional dossier (own component) */}
-        <div className="map-dossier-wrap" ref={dossierRef}>
+        <div className="map-dossier-wrap" ref={dossierRef} key={selectedRegionId}>
           <MapDossier region={currentRegion} selectedPin={selectedPin} onClearPin={clearPin} />
         </div>
       </main>

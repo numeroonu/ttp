@@ -12,6 +12,15 @@
  * - Richard W. Lieban ("Cebuano Sorcery", University of California Press, 1967)
  */
 
+/**
+ * @typedef {Object} Creature
+ * @property {string} id
+ * @property {string} name
+ * @property {{en: string, fil: string}} [regionalVariants]
+ * @property {{en: string, fil: string}} [protectiveCustoms]
+ * @property {{en: string, fil: string}} [notableEncounter]
+ */
+
 export const creatures = [
   {
     id: 'aswang',
@@ -39,6 +48,18 @@ export const creatures = [
       'Buntot pagi (stingray tail whip), rock salt (asin), crushed native garlic (bawang), holy water, crucifix, and lana (blessed coconut oil concocted by an albularyo). Striking an aswang with a stingray tail causes it to scream and reveal its true identity.',
     aral:
       'A cultural reminder of community vigilance and tight-knit social solidarity; it served historically to protect expectant mothers and ensure rural homes remained safely guarded after dark.',
+    regionalVariants: {
+      en: 'In parts of the Visayas, especially Panay, aswang is a broad label for several feared beings, while other accounts distinguish witches, corpse-eaters, animal shapeshifters, and bird-like tik-tik or wakwak. Names, traits, and stories vary by community rather than describing one uniform creature.',
+      fil: 'Sa ilang bahagi ng Kabisayaan, lalo na sa Panay, malawak na katawagan ang aswang para sa iba’t ibang kinatatakutang nilalang; sa ibang salaysay, magkakahiwalay ang mangkukulam, kumakain ng bangkay, nag-aanyong hayop, at mga ibong tik-tik o wakwak. Nag-iiba ang mga pangalan at katangian ayon sa pamayanan, kaya hindi iisa ang anyo nito sa lahat ng kuwento.',
+    },
+    protectiveCustoms: {
+      en: 'Some traditions mention garlic, salt, or a buntot pagi, while others emphasize asking permission before passing a place and seeking an albularyo’s counsel. These are reported beliefs, not customs shared by every region or family.',
+      fil: 'Binabanggit sa ilang tradisyon ang bawang, asin, o buntot pagi; binibigyang-diin naman ng iba ang pagpapaalam bago dumaan sa isang lugar at paghingi ng payo sa albularyo. Mga paniniwalang naiuulat lamang ang mga ito at hindi kaugalian ng bawat rehiyon o pamilya.',
+    },
+    notableEncounter: {
+      en: 'A recurring oral-story pattern describes a household hearing an unfamiliar birdlike call or movement near the roof after dark. The family keeps watch and later tells neighbors, who interpret the sound through local aswang or tik-tik beliefs.',
+      fil: 'Sa paulit-ulit na hulma ng mga kuwentong-bayan, may sambahayang nakaririnig ng di-kilalang tila huni ng ibon o kaluskos sa bubong pagsapit ng gabi. Nagbabantay ang pamilya at nagkukuwento sa mga kapitbahay, na nagpapakahulugan sa tunog ayon sa lokal na paniniwala tungkol sa aswang o tik-tik.',
+    },
     sources: [
       {
         author: 'Maximo D. Ramos',
@@ -63,6 +84,14 @@ export const creatures = [
         publisher: 'University of the Philippines Press',
         url: 'https://press.up.edu.ph/store/books/view/825',
         note: 'Oral accounts collected from Panay and Western Visayas communities.',
+      },
+      {
+        author: 'Maximo D. Ramos',
+        title: 'The Aswang Complex in Philippine Folklore',
+        year: 1971,
+        publisher: 'Phoenix Publishing House',
+        url: 'https://www.aswangproject.com/the-aswang-complex-in-philippine-folklore/',
+        note: 'Reference for the varied aswang forms and protective beliefs summarized above.',
       },
     ],
   },
@@ -92,6 +121,18 @@ export const creatures = [
       'Sprinkle coarse sea salt, crushed garlic, or wood ash (abo) over the severed lower half while the torso is away. This burns the open flesh and prevents the torso from rejoining. Once the morning sun touches the detached upper half, she bursts into cinders.',
     aral:
       'Warns against hidden malice and living double lives; reinforces community responsibility to safeguard households and cherish maternal health.',
+    regionalVariants: {
+      en: 'The manananggal is especially associated with Tagalog and Bicol accounts, while some Visayan stories place similar flying or viscera-taking traits within broader aswang traditions. Details such as its appearance, prey, and the vulnerability of its separated lower body differ among tellings.',
+      fil: 'Lalong iniuugnay ang manananggal sa mga salaysay na Tagalog at Bikol, samantalang isinasama naman ng ilang kuwentong Bisaya ang kahawig nitong paglipad at panghuhuli sa mas malawak na tradisyon ng aswang. Nagkakaiba sa bawat salaysay ang anyo nito, biktima, at kahinaan ng naiwang ibabang katawan.',
+    },
+    protectiveCustoms: {
+      en: 'Some accounts advise placing salt, garlic, or ash on the lower half while the upper body is away; other tellings stress keeping watch and protecting the household at night. The details are local folklore motifs, not a universal ritual.',
+      fil: 'Ipinapayo sa ilang salaysay na budburan ng asin, bawang, o abo ang ibabang katawan habang wala ang itaas; binibigyang-diin naman ng ibang kuwento ang pagbabantay at pagprotekta sa tahanan sa gabi. Mga lokal na sangkap ng alamat ang mga ito, hindi iisang ritwal para sa lahat.',
+    },
+    notableEncounter: {
+      en: 'A familiar story has people in a rural home hearing wings or a scratching sound above the roof after nightfall. They suspect a manananggal is nearby and keep watch until dawn, when it is said to return to its hidden lower body.',
+      fil: 'Sa isang pamilyar na hulma ng kuwento, nakaririnig ang mga tao sa isang bahay-bukid ng pagaspas o kaluskos sa bubong pagsapit ng gabi. Hinala nilang may manananggal sa paligid kaya nagbabantay sila hanggang madaling-araw, kung kailan sinasabing bumabalik ito sa nakatagong ibabang katawan.',
+    },
     sources: [
       {
         author: 'Maximo D. Ramos',
@@ -116,6 +157,14 @@ export const creatures = [
         publisher: 'The Aswang Project',
         url: 'https://www.aswangproject.com/manananggal-evolution/',
         note: 'Comparative mythological origins linking to Indonesian and Malaysian variants.',
+      },
+      {
+        author: 'Maximo D. Ramos',
+        title: 'The Creatures of Philippine Lower Mythology',
+        year: 1990,
+        publisher: 'Phoenix Publishing House',
+        url: 'https://www.aswangproject.com/creatures-philippine-lower-mythology/',
+        note: 'Reference for regional flying viscera-sucker traditions and reported countermeasures.',
       },
     ],
   },
@@ -145,6 +194,18 @@ export const creatures = [
       'Turn your shirt or upper clothing completely inside out (baligtarin ang damit). This instantly breaks its optical glamour and reveals the true path home. To master or tame a Tikbalang, one must leap onto its back and pluck three golden or glowing hairs from its mane.',
     aral:
       'A lesson in environmental humility: never wander arrogantly off established forest trails, and always show deep reverence for the sacred stillness of the wilderness.',
+    regionalVariants: {
+      en: 'The tikbalang is prominent in Tagalog accounts of forests and mountain paths, with details of its horse-like form and tricks varying between tellings. Other communities have their own stories of spirits that mislead travelers; those beings are related motifs, not automatically the same figure.',
+      fil: 'Tampok ang tikbalang sa mga kuwentong Tagalog tungkol sa kagubatan at mga landas sa bundok, ngunit nag-iiba sa bawat salaysay ang anyong-kabayo at mga panlilinlang nito. May sarili ring mga kuwento ang ibang pamayanan tungkol sa mga espiritung nagliligaw ng manlalakbay; magkahawig na tema ang mga ito ngunit hindi nangangahulugang iisang nilalang.',
+    },
+    protectiveCustoms: {
+      en: 'A commonly repeated remedy is turning one’s clothing inside out to break the confusion and find the path again. Some tellings also recommend respectfully asking permission when entering wooded places; neither practice is universal.',
+      fil: 'Karaniwang inuulit na panlaban ang pagbabaligtad ng damit upang maputol ang pagkalito at matagpuan muli ang daan. Inirerekomenda rin sa ilang salaysay ang magalang na pagpapaalam bago pumasok sa masukal na lugar; hindi pangkalahatan ang mga kaugaliang ito.',
+    },
+    notableEncounter: {
+      en: 'A recurring traveler’s tale begins with someone losing the way on a familiar forest path and repeatedly returning to the same landmark. Local lore may attribute the confusion to a tikbalang, and some versions have the traveler turn their clothing inside out to escape it.',
+      fil: 'Nagsisimula ang paulit-ulit na salaysay ng manlalakbay sa pagkaligaw niya sa pamilyar na landas sa gubat at paulit-ulit na pagbabalik sa iisang palatandaan. Iniuugnay ng lokal na alamat ang pagkalitong ito sa tikbalang, at sa ilang bersiyon ay binabaligtad ng manlalakbay ang kanyang damit upang makawala.',
+    },
     sources: [
       {
         author: 'Isabelo de los Reyes',
@@ -169,6 +230,14 @@ export const creatures = [
         publisher: 'The Aswang Project',
         url: 'https://www.aswangproject.com/tikbalang/',
         note: 'Examination of horse iconography introduced prior to and during Spanish trade.',
+      },
+      {
+        author: 'Damiana L. Eugenio',
+        title: 'Philippine Folk Literature: The Legends',
+        year: 1993,
+        publisher: 'University of the Philippines Press',
+        url: 'https://press.up.edu.ph/store/books/view/825',
+        note: 'Reference for regional legends of travelers becoming lost in mountain country.',
       },
     ],
   },
@@ -198,6 +267,18 @@ export const creatures = [
       'Show genuine respect before passing or resting near big trees by reciting "Tabi-tabi po Ingkong." Wearing an anting-anting (blessed talisman) or possessing the Kapre’s magical white stone (mutya) can compel him to grant wishes or become a loyal lifelong protector.',
     aral:
       'Encourages the preservation and veneration of centennial trees and native flora, teaching that ancient trees are living sanctuaries deserving of respect.',
+    regionalVariants: {
+      en: 'Many Tagalog accounts describe a large, often cigar-smoking being associated with old trees; the tree named and the details of its behavior vary by locality. The term kapre and related names such as agta do not always refer to identical beings across communities.',
+      fil: 'Inilalarawan sa maraming kuwentong Tagalog ang isang malaking nilalang, kadalasang humihithit ng tabako, na nananahan sa matatandang puno; nag-iiba ayon sa lugar ang uri ng puno at mga kilos nito. Hindi laging iisa ang tinutukoy ng katawagang kapre at mga kaugnay na pangalan gaya ng agta sa iba’t ibang pamayanan.',
+    },
+    protectiveCustoms: {
+      en: 'Stories commonly stress showing respect before passing an old tree, sometimes by saying “tabi-tabi po,” and avoiding damage to its branches or roots. Specific offerings and protective objects vary by account and should not be treated as a single standard practice.',
+      fil: 'Karaniwang binibigyang-diin ng mga kuwento ang paggalang bago dumaan sa matandang puno, kung minsan ay sa pagsasabi ng “tabi-tabi po,” at pag-iwas sa pagsira ng mga sanga o ugat nito. Nag-iiba sa bawat salaysay ang mga alay at pananggalang kaya hindi dapat ituring na iisang takdang kaugalian.',
+    },
+    notableEncounter: {
+      en: 'In a familiar account, a passerby smells cigar smoke or hears movement high in a tree despite seeing no one. The event is interpreted locally as a kapre watching from its tree, and the traveler is warned not to disturb the place.',
+      fil: 'Sa isang pamilyar na salaysay, naaamoy ng nagdaraan ang usok ng tabako o nakaririnig ng kaluskos sa mataas na puno kahit walang nakikitang tao. Ipinapakahulugan ito sa lugar bilang pagmamasid ng kapre mula sa puno, kaya pinapayuhan ang manlalakbay na huwag gambalain ang pook.',
+    },
     sources: [
       {
         author: 'Maximo D. Ramos',
@@ -222,6 +303,14 @@ export const creatures = [
         publisher: 'The Aswang Project',
         url: 'https://www.aswangproject.com/kapre/',
         note: 'Origin analysis from Spanish-era trade terms and indigenous animism.',
+      },
+      {
+        author: 'Maximo D. Ramos',
+        title: 'The Creatures of Philippine Lower Mythology',
+        year: 1990,
+        publisher: 'Phoenix Publishing House',
+        url: 'https://www.aswangproject.com/creatures-philippine-lower-mythology/',
+        note: 'Reference for tree-dwelling giants and the local variation of nature-spirit lore.',
       },
     ],
   },
@@ -251,6 +340,18 @@ export const creatures = [
       'Environmental reverence and humility: never hunt or harvest without asking permission; return borrowed items promptly; speak softly; and place respectful offerings (atang) of cooked rice, white flowers, and ginger at the mountain boundary.',
     aral:
       'The paramount ancestral philosophy of environmental guardianship: nature is a sacred, living sanctuary protected by unseen custodians, demanding humility, restraint, and perpetual stewardship.',
+    regionalVariants: {
+      en: 'Diwata is a broad term for revered spirits or deities whose stories differ by community. Local mountain-guardian legends include Maria Makiling in Laguna, Maria Sinukuan in Pampanga, and Maria Cacao in Cebu; they are distinct regional traditions rather than one standardized biography.',
+      fil: 'Malawak na katawagan ang diwata para sa mga iginagalang na espiritu o bathala, at nag-iiba ang mga kuwento ayon sa pamayanan. Kabilang sa mga lokal na alamat ng tagapagbantay ng bundok sina Maria Makiling sa Laguna, Maria Sinukuan sa Pampanga, at Maria Cacao sa Cebu; magkakaibang tradisyong panrehiyon ang mga ito, hindi iisang talambuhay.',
+    },
+    protectiveCustoms: {
+      en: 'Some local traditions describe asking permission before entering a forest or taking from it, and leaving respectful offerings such as flowers or rice. Practices differ among communities; care for the land and restraint are recurring themes rather than a universal ritual.',
+      fil: 'Inilalarawan sa ilang lokal na tradisyon ang pagpapaalam bago pumasok sa gubat o kumuha mula rito, at pag-iiwan ng magalang na alay gaya ng bulaklak o kanin. Nagkakaiba ang mga gawi sa bawat pamayanan; paulit-ulit na tema ang pangangalaga sa lupa at pagpipigil, hindi iisang ritwal para sa lahat.',
+    },
+    notableEncounter: {
+      en: 'A recurring mountain-guardian motif tells of a traveler or hunter meeting an unfamiliar woman in the forest who offers help or food. In some local versions, respect for the mountain brings good fortune, while greed or harm to the land leads to losing the path or being turned away.',
+      fil: 'Sa paulit-ulit na tema tungkol sa tagapagbantay ng bundok, nakatatagpo ang manlalakbay o mangangaso ng di-kilalang babae sa gubat na nag-aalok ng tulong o pagkain. Sa ilang lokal na bersiyon, nagdudulot ng magandang kapalaran ang paggalang sa bundok, samantalang nauuwi sa pagkaligaw o pagtataboy ang kasakiman at pananakit sa kalikasan.',
+    },
     sources: [
       {
         author: 'Jordan Clark',
@@ -275,6 +376,14 @@ export const creatures = [
         publisher: 'University of the Philippines Press',
         url: 'https://press.up.edu.ph/store/books/view/825',
         note: 'Comprehensive academic documentation of Maria Makiling, Sinukuan, and Cacao legends.',
+      },
+      {
+        author: 'Damiana L. Eugenio',
+        title: 'Philippine Folk Literature: The Legends',
+        year: 1993,
+        publisher: 'University of the Philippines Press',
+        url: 'https://press.up.edu.ph/store/books/view/825',
+        note: 'Reference for distinct regional mountain-guardian legends and their recurring story motifs.',
       },
     ],
   },

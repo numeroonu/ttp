@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import Fog from '../components/Fog'
 import Candle from '../components/Candle'
@@ -153,6 +154,59 @@ const EPOCHS = [
 
 export default function Origins() {
   const { isFilipino, t } = useLanguage()
+  const timelineRef = useRef(null)
+
+  useEffect(() => {
+    const timeline = timelineRef.current
+    if (!timeline) return undefined
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const updateLine = () => {
+      if (reduceMotion) {
+        timeline.style.setProperty('--orig-line-progress', '100%')
+        return
+      }
+      const bounds = timeline.getBoundingClientRect()
+      const progress = Math.min(
+        1,
+        Math.max(0, (window.innerHeight - bounds.top) / (bounds.height + window.innerHeight)),
+      )
+      timeline.style.setProperty('--orig-line-progress', `${progress * 100}%`)
+    }
+
+    const entries = timeline.querySelectorAll('.orig-epoch')
+    if (reduceMotion) {
+      entries.forEach((entry) => entry.classList.add('is-visible'))
+      updateLine()
+      return undefined
+    }
+
+    const observer = new IntersectionObserver(
+      (observedEntries) => {
+        observedEntries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible')
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' },
+    )
+    entries.forEach((entry) => observer.observe(entry))
+
+    updateLine()
+    window.addEventListener('scroll', updateLine, { passive: true })
+    window.addEventListener('resize', updateLine)
+    const resizeObserver = new ResizeObserver(updateLine)
+    resizeObserver.observe(timeline)
+
+    return () => {
+      observer.disconnect()
+      resizeObserver.disconnect()
+      window.removeEventListener('scroll', updateLine)
+      window.removeEventListener('resize', updateLine)
+    }
+  }, [])
 
   return (
     <div className="orig-page">
@@ -176,7 +230,7 @@ export default function Origins() {
       </header>
 
       {/* Epochs Timeline */}
-      <main className="container orig-timeline">
+      <main className="container orig-timeline" ref={timelineRef}>
         {EPOCHS.map((epoch) => (
           <article key={epoch.num} className="orig-epoch">
             {/* Epoch Marker Head */}

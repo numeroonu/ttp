@@ -231,7 +231,7 @@ export default function ModernLegends() {
       <main className="container mod-cases-section">
         <div className="mod-cases-grid">
           {filteredCases.map((c) => (
-            <article key={c.id} className="mod-case-card">
+            <article key={`${activeEra}-${c.id}`} className="mod-case-card mod-case-card--stamp">
               <div className="mod-case-card__header">
                 <span className="mod-case-num">{c.caseNum}</span>
                 <span className="baybayin mod-case-baybayin" aria-hidden="true">{c.baybayin}</span>

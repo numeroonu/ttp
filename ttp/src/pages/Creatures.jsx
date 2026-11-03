@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import { useLocation, useNavigate, Link } from 'react-router-dom'
+import { createPortal } from 'react-dom'
 import Eyes from '../components/Eyes'
 import Candle from '../components/Candle'
 import Fog from '../components/Fog'
@@ -66,7 +67,10 @@ export default function Creatures() {
   const [islandFilter, setIslandFilter] = useState('all')
   const [dangerFilter, setDangerFilter] = useState('all')
   const [isAudioPlaying, setIsAudioPlaying] = useState(false)
+  const [isModalClosing, setIsModalClosing] = useState(false)
+  const [slideDirection, setSlideDirection] = useState(null)
   const modalContentRef = useRef(null)
+  const closeTimeoutRef = useRef(null)
   const controlsRef = useRef(null)
   const wasStuckRef = useRef(false)
   const [filtersOpen, setFiltersOpen] = useState(true)
@@ -110,16 +114,33 @@ export default function Creatures() {
     return getLocalizedCreature(selectedCreatureRaw, language)
   }, [selectedCreatureRaw, language])
 
-  const openModal = useCallback(
-    (creature) => {
-      navigate(`/creatures#${creature.id}`)
-    },
-    [navigate]
-  )
+  const openModal = useCallback((creature, direction = null) => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current)
+      closeTimeoutRef.current = null
+    }
+    setIsModalClosing(false)
+    setSlideDirection(direction)
+    navigate(`/creatures#${creature.id}`)
+  }, [navigate])
 
   const closeModal = useCallback(() => {
-    navigate('/creatures')
-  }, [navigate])
+    if (isModalClosing) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      navigate('/creatures')
+      return
+    }
+    setIsModalClosing(true)
+    closeTimeoutRef.current = setTimeout(() => {
+      closeTimeoutRef.current = null
+      navigate('/creatures')
+      setIsModalClosing(false)
+    }, 250)
+  }, [isModalClosing, navigate])
+
+  useEffect(() => () => {
+    if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current)
+  }, [])
 
   // Scroll to creature on hash change if present
   useEffect(() => {
@@ -232,17 +253,17 @@ export default function Creatures() {
 
   const goToPrevious = () => {
     if (currentIndex > 0) {
-      openModal(creatures[currentIndex - 1])
+      openModal(creatures[currentIndex - 1], 'left')
     } else {
-      openModal(creatures[creatures.length - 1])
+      openModal(creatures[creatures.length - 1], 'left')
     }
   }
 
   const goToNext = () => {
     if (currentIndex < creatures.length - 1) {
-      openModal(creatures[currentIndex + 1])
+      openModal(creatures[currentIndex + 1], 'right')
     } else {
-      openModal(creatures[0])
+      openModal(creatures[0], 'right')
     }
   }
 
@@ -263,7 +284,7 @@ export default function Creatures() {
             {t('creatures.baybayinKicker')}
           </p>
 
-          <h1 className="cr-header__title">
+          <h1 className="cr-header__title cr-header__title--ink">
             {t('creatures.titleMain')} <em>{t('creatures.titleEm')}</em>
           </h1>
           <p className="cr-header__subtitle">
@@ -477,9 +498,10 @@ export default function Creatures() {
 
                 return (
                   <article
-                    key={creature.id}
+                    key={`${creature.id}|${searchQuery}|${islandFilter}|${dangerFilter}`}
                     id={creature.id}
-                    className={`cr-card cr-tone--${tone}`}
+                    className={`cr-card cr-card--enter cr-tone--${tone}`}
+                    style={{ '--card-stagger': `${Math.min(idx, 11) * 40}ms` }}
                     onClick={() => openModal(creature)}
                     role="button"
                     tabIndex={0}
@@ -558,8 +580,13 @@ export default function Creatures() {
       </section>
 
       {/* Modal / Secret Dossier ("Lihim na Tala ng Albularyo") */}
-      {selectedCreature && (
-        <div className="cr-modal-overlay" onClick={closeModal} role="dialog" aria-modal="true">
+      {selectedCreature && createPortal((
+        <div
+          className={`cr-modal-overlay ${isModalClosing ? 'is-closing' : ''}`}
+          onClick={closeModal}
+          role="dialog"
+          aria-modal="true"
+        >
           <div
             className={`cr-modal cr-tone--${getDangerTone(selectedCreature)}`}
             onClick={(e) => e.stopPropagation()}
@@ -601,6 +628,12 @@ export default function Creatures() {
               </button>
             </div>
 
+            <div
+              key={selectedCreature.id}
+              className={`cr-modal__content-slide ${
+                slideDirection ? `is-sliding-${slideDirection}` : ''
+              }`}
+            >
             {/* Modal Header */}
             <header className="cr-modal__header">
               <div className="cr-modal__eye-stage">
@@ -615,7 +648,7 @@ export default function Creatures() {
                     <div className="cr-modal__art-overlay" />
                   </div>
                 ) : (
-                  <div className="cr-modal__eye-bg">
+                  <div className="cr-modal__eye-bg cr-modal__eye-bg--silhouette">
                     <span className="cr-modal__watermark baybayin">{selectedCreature.baybayin}</span>
                     <Eyes
                       size={2.2}
@@ -764,6 +797,46 @@ export default function Creatures() {
                   )}
                 </ul>
               </section>
+
+              {[
+                {
+                  key: 'regionalVariants',
+                  roman: 'VII.',
+                  titleFil: 'Mga Pagkakaiba ayon sa Rehiyon',
+                  titleEn: 'Regional Variants',
+                  subtitleFil: 'Regional Variants',
+                  subtitleEn: 'Pagkakaiba ayon sa Rehiyon',
+                },
+                {
+                  key: 'protectiveCustoms',
+                  roman: 'VIII.',
+                  titleFil: 'Mga Kaugalian at Pananggalang',
+                  titleEn: 'Protective Customs',
+                  subtitleFil: 'Protective Customs',
+                  subtitleEn: 'Mga Kaugalian at Pananggalang',
+                },
+                {
+                  key: 'notableEncounter',
+                  roman: 'IX.',
+                  titleFil: 'Karaniwang Salaysay ng Pagtatagpo',
+                  titleEn: 'Notable Encounter',
+                  subtitleFil: 'Notable Encounter',
+                  subtitleEn: 'Karaniwang Salaysay ng Pagtatagpo',
+                },
+              ].map(({ key, roman, titleFil, titleEn, subtitleFil, subtitleEn }) => {
+                const text = selectedCreature[key]?.[isFilipino ? 'fil' : 'en']
+                if (!text) return null
+                return (
+                  <section key={key} className="cr-section">
+                    <h3 className="cr-section__title">
+                      <span className="cr-section__roman">{roman}</span> {isFilipino ? titleFil : titleEn}
+                      <span className="cr-section__subtitle">{isFilipino ? subtitleFil : subtitleEn}</span>
+                    </h3>
+                    <p className="cr-section__text">{text}</p>
+                  </section>
+                )
+              })}
+            </div>
             </div>
 
             {/* Modal Bottom Actions */}
@@ -787,7 +860,7 @@ export default function Creatures() {
             </div>
           </div>
         </div>
-      )}
+      ), document.body)}
     </div>
   )
 }
