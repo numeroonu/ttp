@@ -1,3 +1,12 @@
+/*
+ * Coordinates are real latitude / longitude. A site marks the province or
+ * landmark where a legend is told, not a recorded sighting, so its location
+ * is representative rather than exact.
+ */
+
+/** The whole archipelago: the opening view of the Map of Myths. */
+export const PHILIPPINES_BOUNDS = [[4.6, 116.9], [19.6, 126.7]]
+
 export const REGIONS_DATA = [
   {
     id: 'luzon',
@@ -14,19 +23,62 @@ export const REGIONS_DATA = [
       'Luzon’s immense cordilleras, volcanic peaks (Mt. Makiling and Mt. Mayon), and dense tropical rainforests gave rise to territorial spirits tied to trees and terrain. The Tagalogs, Ilocanos, and Bicolanos shared oral accounts of towering equine tricksters, arboreal giants smoking endless cigars, and chthonic mound elders who enforce environmental etiquette with severe curses.',
     overviewFil:
       'Ang matatayog na kabundukan ng Luzon tulad ng Sierra Madre, Bundok Makiling, at Mayon ay naging kanlungan ng mga espiritung tagapagbantay ng kalikasan. Ang mga Tagalog, Ilocano, at Bicolano ay may mayamang salaysay ukol sa mga Tikbalang na nagliligaw ng manlalakbay, Kapre na humihithit ng tabako sa balete, at Nuno sa Punso na nagpaparusa sa lapastangan.',
-    landPath:
-      'M130,30 C150,20 185,25 195,50 C205,75 225,95 235,125 C245,150 215,175 190,195 C175,208 150,215 135,190 C120,165 110,120 120,70 Z',
-    label: { x: 108, y: 112, anchor: 'end' },
+    bounds: [[12.6, 119.6], [18.7, 124.4]],
+    center: [16.2, 121.1],
     color: '#e0a33b',
     pins: [
-      { id: 'diwata', name: 'Diwata', type: 'Nature Deity', typeFil: 'Diyosa ng Kalikasan', x: 47, y: 34, territory: 'Mt. Makiling & Arayat' },
-      { id: 'tikbalang', name: 'Tikbalang', type: 'Forest Guardian', typeFil: 'Bantay-Gubat', x: 58, y: 25, territory: 'Sierra Madre & Rizal' },
-      { id: 'kapre', name: 'Kapre', type: 'Tree Giant', typeFil: 'Higante sa Puno', x: 52, y: 38, territory: 'Balete Groves, Laguna' },
-      { id: 'mangkukulam', name: 'Mangkukulam', type: 'Sympathetic Witch', typeFil: 'Manggagaway', x: 39, y: 14, territory: 'Pangasinan & Central Luzon' },
-      { id: 'nuno-sa-punso', name: 'Nuno sa Punso', type: 'Mound Ancestor', typeFil: 'Espiritu ng Punso', x: 41, y: 22, territory: 'Central Luzon' },
-      { id: 'tiyanak', name: 'Tiyanak', type: 'Deceptive Imp', typeFil: 'Mapanlinlang na Sanggol', x: 42, y: 43, territory: 'Batangas Wilds' },
-      { id: 'santelmo', name: 'Santelmo', type: 'Soul Flame', typeFil: 'Apoy ng Kaluluwa', x: 62, y: 33, territory: 'Mindoro & Bicol Coast' },
-      { id: 'duwende', name: 'Duwende', type: 'House & Earth Sprite', typeFil: 'Espiritu ng Lupa', x: 40, y: 30, territory: 'Tagalog Rafters' },
+      {
+        id: 'diwata', name: 'Diwata', type: 'Nature Deity', typeFil: 'Diyosa ng Kalikasan', territory: 'Mt. Makiling & Arayat',
+        sites: [
+          { place: 'Mt. Makiling, Laguna', lat: 14.1361, lng: 121.1942 },
+          { place: 'Mt. Arayat, Pampanga', lat: 15.2, lng: 120.7417 },
+        ],
+      },
+      {
+        id: 'tikbalang', name: 'Tikbalang', type: 'Forest Guardian', typeFil: 'Bantay-Gubat', territory: 'Sierra Madre & Rizal',
+        sites: [
+          { place: 'Sierra Madre, Rizal', lat: 14.62, lng: 121.42 },
+          { place: 'Sierra Madre, Quezon', lat: 14.76, lng: 121.63 },
+        ],
+      },
+      {
+        id: 'kapre', name: 'Kapre', type: 'Tree Giant', typeFil: 'Higante sa Puno', territory: 'Balete Groves, Laguna',
+        sites: [
+          { place: 'Balete groves, Laguna', lat: 14.14, lng: 121.42 },
+        ],
+      },
+      {
+        id: 'mangkukulam', name: 'Mangkukulam', type: 'Sympathetic Witch', typeFil: 'Manggagaway', territory: 'Pangasinan & Central Luzon',
+        sites: [
+          { place: 'Pangasinan', lat: 15.95, lng: 120.35 },
+          { place: 'Pampanga, Central Luzon', lat: 15.03, lng: 120.69 },
+        ],
+      },
+      {
+        id: 'nuno-sa-punso', name: 'Nuno sa Punso', type: 'Mound Ancestor', typeFil: 'Espiritu ng Punso', territory: 'Central Luzon',
+        sites: [
+          { place: 'Nueva Ecija, Central Luzon', lat: 15.49, lng: 120.97 },
+        ],
+      },
+      {
+        id: 'tiyanak', name: 'Tiyanak', type: 'Deceptive Imp', typeFil: 'Mapanlinlang na Sanggol', territory: 'Batangas Wilds',
+        sites: [
+          { place: 'Batangas wilds', lat: 13.85, lng: 121.1 },
+        ],
+      },
+      {
+        id: 'santelmo', name: 'Santelmo', type: 'Soul Flame', typeFil: 'Apoy ng Kaluluwa', territory: 'Mindoro & Bicol Coast',
+        sites: [
+          { place: 'Mindoro coast', lat: 13.41, lng: 121.17 },
+          { place: 'Bicol coast, Albay', lat: 13.15, lng: 123.74 },
+        ],
+      },
+      {
+        id: 'duwende', name: 'Duwende', type: 'House & Earth Sprite', typeFil: 'Espiritu ng Lupa', territory: 'Tagalog Rafters',
+        sites: [
+          { place: 'Bulacan, Tagalog heartland', lat: 14.84, lng: 120.85 },
+        ],
+      },
     ],
     hotspots: [
       {
@@ -87,17 +139,49 @@ export const REGIONS_DATA = [
       'The Visayan archipelago is the historical heartland of the Aswang complex and maritime serpent mythology. Its fragmented geography of sheltered straits and isolated coastal barangays fostered vivid traditions of self-segmenting horrors, shadow-eating cryptids, insect sorcery, and the colossal moon-devouring sea dragon Bakunawa.',
     overviewFil:
       'Ang Kabisayaan ang sentro ng mga kwento ng Aswang, Manananggal, at serpiyente ng dagat. Dahil sa pagkakahiwa-hiwalay ng mga pulo at liblib na baybayin, lumaganap ang mga tradisyon ukol sa mga lumilipad na kalahating-katawan, pambabarang gamit ang mga kulisap, at ang kosmiko dragon na Bakunawa.',
-    landPath:
-      'M145,235 C175,225 210,230 230,245 C250,260 265,285 245,305 C220,315 190,305 165,295 C145,280 135,250 145,235 Z',
-    label: { x: 130, y: 250, anchor: 'end' },
+    bounds: [[9.0, 121.8], [12.7, 125.9]],
+    center: [10.9, 123.7],
     color: '#8b1e1e',
     pins: [
-      { id: 'aswang', name: 'Aswang', type: 'Viscera Sucker', typeFil: 'Bampirang Maninila', x: 44, y: 58, territory: 'Panay & Capiz' },
-      { id: 'manananggal', name: 'Manananggal', type: 'Segmenting Terror', typeFil: 'Lumilipad na Hati-Katawan', x: 58, y: 62, territory: 'Central Visayas' },
-      { id: 'wakwak', name: 'Wakwak', type: 'Avian Vampire', typeFil: 'Ibong Bampira', x: 72, y: 58, territory: 'Leyte & Samar' },
-      { id: 'sigbin', name: 'Sigbin', type: 'Shadow Cryptid', typeFil: 'Mahiwagang Hayop', x: 56, y: 66, territory: 'Cebu & Bohol' },
-      { id: 'mambabarang', name: 'Mambabarang', type: 'Insect Hexer', typeFil: 'Manggagaway ng Kulisap', x: 45, y: 70, territory: 'Siquijor Island' },
-      { id: 'bakunawa', name: 'Bakunawa', type: 'Celestial Dragon', typeFil: 'Dragon ng Dagat at Buwan', x: 64, y: 52, territory: 'Visayan Sea' },
+      {
+        id: 'aswang', name: 'Aswang', type: 'Viscera Sucker', typeFil: 'Bampirang Maninila', territory: 'Panay & Capiz',
+        sites: [
+          { place: 'Capiz, Panay', lat: 11.5, lng: 122.72 },
+          { place: 'Iloilo, Panay', lat: 10.85, lng: 122.55 },
+        ],
+      },
+      {
+        id: 'manananggal', name: 'Manananggal', type: 'Segmenting Terror', typeFil: 'Lumilipad na Hati-Katawan', territory: 'Central Visayas',
+        sites: [
+          { place: 'Cebu, Central Visayas', lat: 10.38, lng: 123.68 },
+        ],
+      },
+      {
+        id: 'wakwak', name: 'Wakwak', type: 'Avian Vampire', typeFil: 'Ibong Bampira', territory: 'Leyte & Samar',
+        sites: [
+          { place: 'Leyte', lat: 11.1, lng: 124.75 },
+          { place: 'Samar', lat: 11.8, lng: 125.05 },
+        ],
+      },
+      {
+        id: 'sigbin', name: 'Sigbin', type: 'Shadow Cryptid', typeFil: 'Mahiwagang Hayop', territory: 'Cebu & Bohol',
+        sites: [
+          { place: 'Southern Cebu', lat: 9.88, lng: 123.55 },
+          { place: 'Bohol', lat: 9.85, lng: 124.17 },
+        ],
+      },
+      {
+        id: 'mambabarang', name: 'Mambabarang', type: 'Insect Hexer', typeFil: 'Manggagaway ng Kulisap', territory: 'Siquijor Island',
+        sites: [
+          { place: 'Siquijor Island', lat: 9.19, lng: 123.57 },
+        ],
+      },
+      {
+        id: 'bakunawa', name: 'Bakunawa', type: 'Celestial Dragon', typeFil: 'Dragon ng Dagat at Buwan', territory: 'Visayan Sea',
+        sites: [
+          { place: 'Visayan Sea', lat: 11.5, lng: 123.65 },
+        ],
+      },
     ],
     hotspots: [
       {
@@ -158,13 +242,23 @@ export const REGIONS_DATA = [
       'In the southern island of Mindanao, rich indigenous belief systems preserved by the Bagobo, Mandaya, and Manobo peoples flourished largely insulated from early Spanish missions. Their oral traditions center on fearsome flesh-eating ghouls (Busaw) and ancient spirit pantheons preserved in monumental epics like the Bagobo Tuwaang.',
     overviewFil:
       'Sa malawak na lupain ng Mindanao, ang mga katutubong pamayanan tulad ng mga Bagobo, Mandaya, at Manobo ay nagpanatili ng orihinal nilang kosmolohiya. Nananatili ang mga kwento ukol sa Busaw (kumakain ng bangkay sa libingan) at mga dakilang epiko tulad ng Tuwaang.',
-    landPath:
-      'M165,325 C205,315 255,310 275,340 C290,365 285,410 250,425 C215,435 175,420 155,395 C140,370 145,340 165,325 Z',
-    label: { x: 215, y: 448, anchor: 'middle' },
+    bounds: [[5.5, 121.8], [10.0, 126.7]],
+    center: [7.9, 124.9],
     color: '#b3282d',
     pins: [
-      { id: 'busaw', name: 'Busaw / Buso', type: 'Corpse Ghoul', typeFil: 'Halimaw sa Libingan', x: 58, y: 84, territory: 'Davao & Mt. Apo' },
-      { id: 'wakwak', name: 'Wakwak', type: 'Avian Predator', typeFil: 'Panggabing Ibong Maninila', x: 68, y: 76, territory: 'Surigao & Agusan' },
+      {
+        id: 'busaw', name: 'Busaw / Buso', type: 'Corpse Ghoul', typeFil: 'Halimaw sa Libingan', territory: 'Davao & Mt. Apo',
+        sites: [
+          { place: 'Mt. Apo, Davao', lat: 6.987, lng: 125.271 },
+        ],
+      },
+      {
+        id: 'wakwak', name: 'Wakwak', type: 'Avian Predator', typeFil: 'Panggabing Ibong Maninila', territory: 'Surigao & Agusan',
+        sites: [
+          { place: 'Surigao', lat: 9.7, lng: 125.55 },
+          { place: 'Agusan', lat: 8.75, lng: 125.72 },
+        ],
+      },
     ],
     hotspots: [
       {
@@ -211,11 +305,3 @@ export const REGIONS_DATA = [
     ],
   },
 ]
-
-// Decorative island (no spirits documented yet) so the archipelago reads correctly.
-export const OTHER_LAND = {
-  id: 'palawan',
-  name: 'Palawan',
-  landPath: 'M80,210 C90,230 75,270 60,310 C50,330 45,340 40,335 C42,310 65,250 80,210 Z',
-  label: { x: 24, y: 352, anchor: 'start' },
-}

@@ -2,63 +2,108 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Fog from '../components/Fog'
 import Candle from '../components/Candle'
+import PhilippinesMap, { LABEL_ZOOM, PIN_ZOOM } from '../components/PhilippinesMap'
 import MapDossier from './Mapdossier'
 import { useLanguage } from '../context/useLanguage'
-import { REGIONS_DATA, OTHER_LAND } from '../data/Mapofmythsdata'
+import { PHILIPPINES_BOUNDS, REGIONS_DATA } from '../data/Mapofmythsdata'
 import './MapOfMyths.css'
 
-const MAP_W = 340
-const MAP_H = 460
 const DEFAULT_REGION_ID = 'visayas'
+/** Closest the opening view may start, so it always shows the island-group badges. */
+const OVERVIEW_ZOOM = 6
+/** How close a selected pin is framed. */
+const PIN_FOCUS_ZOOM = 9
+/** Pushes the pin below centre so its popup fits above it. */
+const POPUP_ROOM_PX = 130
 
-/** Enter / Space activate an SVG element that acts as a button. */
-const onActivateKey = (handler) => (e) => {
-  if (e.key === 'Enter' || e.key === ' ') {
-    e.preventDefault()
-    handler()
-  }
-}
+const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+const inBounds = ([[south, west], [north, east]], { lat, lng }) =>
+  lat >= south && lat <= north && lng >= west && lng <= east
 
 export default function MapOfMyths() {
   const [selectedRegionId, setSelectedRegionId] = useState(DEFAULT_REGION_ID)
   const [selectedPin, setSelectedPin] = useState(null)
-  const dossierRef = useRef(null)
+  const [selectedSite, setSelectedSite] = useState(null)
+  const [zoom, setZoom] = useState(OVERVIEW_ZOOM)
+  const mapRef = useRef(null)
   const { isFilipino, t } = useLanguage()
 
   const currentRegion =
     REGIONS_DATA.find((r) => r.id === selectedRegionId) ||
     REGIONS_DATA.find((r) => r.id === DEFAULT_REGION_ID)
 
-  const regionName = isFilipino ? currentRegion.nameFil : currentRegion.name
+  const flyTo = useCallback((center, targetZoom) => {
+    mapRef.current?.flyTo(center, targetZoom, { animate: !prefersReducedMotion(), duration: 1.2 })
+  }, [])
 
-  const selectRegion = useCallback((id) => {
-    setSelectedRegionId(id)
+  const clearPin = useCallback(() => {
     setSelectedPin(null)
+    setSelectedSite(null)
   }, [])
 
-  const clearPin = useCallback(() => setSelectedPin(null), [])
+  const selectRegion = useCallback(
+    (id) => {
+      setSelectedRegionId(id)
+      clearPin()
+      const map = mapRef.current
+      const region = REGIONS_DATA.find((r) => r.id === id)
+      if (!map || !region) return
+      // Small screens can't fit a whole region at pin zoom; pins still have to show.
+      flyTo(region.center, Math.max(map.getBoundsZoom(region.bounds), PIN_ZOOM))
+    },
+    [clearPin, flyTo],
+  )
 
-  // On stacked (tablet / phone) layouts the dossier sits below the map, so
-  // bring the new focus card into view when a creature is picked.
-  const selectPin = useCallback((pin) => {
-    setSelectedPin(pin)
-    if (typeof window !== 'undefined' && window.matchMedia('(max-width: 1024px)').matches) {
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      requestAnimationFrame(() => {
-        dossierRef.current?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' })
+  const selectPin = useCallback(
+    (regionId, pin, site) => {
+      setSelectedRegionId(regionId)
+      setSelectedPin(pin)
+      setSelectedSite(site)
+      const map = mapRef.current
+      if (!map) return
+      const targetZoom = Math.max(map.getZoom(), PIN_FOCUS_ZOOM)
+      const point = map.project([site.lat, site.lng], targetZoom).subtract([0, POPUP_ROOM_PX])
+      flyTo(map.unproject(point, targetZoom), targetZoom)
+    },
+    [flyTo],
+  )
+
+  const handleMapReady = useCallback(({ target: map }) => {
+    const fitted = Math.min(map.getBoundsZoom(PHILIPPINES_BOUNDS), OVERVIEW_ZOOM)
+    map.setView(map.getCenter(), fitted, { animate: false })
+    setZoom(fitted)
+  }, [])
+
+  // The panel follows the map: panning into another island group switches to it.
+  const handleViewChange = useCallback(
+    (map) => {
+      const nextZoom = map.getZoom()
+      const center = map.getCenter()
+      setZoom(nextZoom)
+      if (nextZoom < PIN_ZOOM) {
+        clearPin()
+        return
+      }
+      if (selectedPin) return
+      setSelectedRegionId((id) => {
+        const current = REGIONS_DATA.find((r) => r.id === id)
+        if (current && inBounds(current.bounds, center)) return id
+        return REGIONS_DATA.find((r) => inBounds(r.bounds, center))?.id ?? id
       })
-    }
-  }, [])
+    },
+    [clearPin, selectedPin],
+  )
 
   // Esc closes the focus card.
   useEffect(() => {
     if (!selectedPin) return undefined
     const onKey = (e) => {
-      if (e.key === 'Escape') setSelectedPin(null)
+      if (e.key === 'Escape') clearPin()
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [selectedPin])
+  }, [selectedPin, clearPin])
 
   return (
     <div className="map-page">
@@ -114,110 +159,35 @@ export default function MapOfMyths() {
             </div>
             <span className="map-canvas__hint">
               {isFilipino
-                ? 'I-click ang mga pulo o nilalang para sa buong detalye'
-                : 'Select an island, then a creature pin, for field notes'}
+                ? 'Lumapit sa alinmang lugar para makita ang mga pin, at i-click ang pin para malaman kung anong nilalang ang naroon'
+                : 'Zoom in on any place to reveal its pins, then click one to see what creature is there'}
             </span>
           </div>
 
-          <div className="map-stage">
-            <svg
-              viewBox={`0 0 ${MAP_W} ${MAP_H}`}
-              className="map-stage__svg"
-              role="group"
-              aria-label={isFilipino ? `Mapa ng ${regionName}` : `Map of ${regionName}`}
-            >
-              <defs>
-                <pattern id="seaGrid" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(138, 133, 144, 0.05)" strokeWidth="0.5" />
-                </pattern>
-                <radialGradient id="mapGlow" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stopColor="rgba(224, 163, 59, 0.15)" />
-                  <stop offset="100%" stopColor="transparent" />
-                </radialGradient>
-              </defs>
-
-              <rect width="100%" height="100%" fill="url(#seaGrid)" />
-              <circle cx="170" cy="230" r="160" fill="url(#mapGlow)" pointerEvents="none" />
-
-              {/* Compass rose */}
-              <g className="map-compass" transform="translate(300 52)" aria-hidden="true">
-                <circle r="13" />
-                <path className="map-compass__needle" d="M0,-11 L3,0 L0,11 L-3,0 Z" />
-                <text y="-17" textAnchor="middle">N</text>
-              </g>
-
-              {/* Decorative island */}
-              <path d={OTHER_LAND.landPath} className="map-land map-land--static is-dim-land" aria-hidden="true" />
-              <text
-                x={OTHER_LAND.label.x}
-                y={OTHER_LAND.label.y}
-                textAnchor={OTHER_LAND.label.anchor}
-                className="map-region-label"
-                aria-hidden="true"
-              >
-                {OTHER_LAND.name}
-              </text>
-
-              {/* Selectable regions */}
-              {REGIONS_DATA.map((region) => {
-                const isActive = region.id === selectedRegionId
-                const name = isFilipino ? region.nameFil : region.name
-                return (
-                  <g key={region.id}>
-                    <path
-                      d={region.landPath}
-                      pathLength={1}
-                      className={`map-land ${isActive ? 'is-active-land' : 'is-dim-land'}`}
-                      role="button"
-                      tabIndex={0}
-                      aria-pressed={isActive}
-                      aria-label={isFilipino ? `Piliin ang ${name}` : `Select ${name}`}
-                      onClick={() => selectRegion(region.id)}
-                      onKeyDown={onActivateKey(() => selectRegion(region.id))}
-                    />
-                    <text
-                      x={region.label.x}
-                      y={region.label.y}
-                      textAnchor={region.label.anchor}
-                      className={`map-region-label ${isActive ? 'is-active' : ''}`}
-                      aria-hidden="true"
-                    >
-                      {name}
-                    </text>
-                  </g>
-                )
-              })}
-
-              {/* Creature pins for the active region */}
-              {currentRegion.pins.map((pin) => {
-                const isSelected = selectedPin?.id === pin.id
-                const cx = (pin.x / 100) * MAP_W
-                const cy = (pin.y / 100) * MAP_H
-                return (
-                  <g
-                    key={pin.id}
-                    className={`map-pin-group ${isSelected ? 'is-selected-pin' : ''}`}
-                    role="button"
-                    tabIndex={0}
-                    aria-pressed={isSelected}
-                    aria-label={`${pin.name}, ${isFilipino ? pin.typeFil : pin.type}`}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      selectPin(pin)
-                    }}
-                    onKeyDown={onActivateKey(() => selectPin(pin))}
-                  >
-                    <circle cx={cx} cy={cy} r="14" className="map-pin-pulse" />
-                    <circle cx={cx} cy={cy} r="6" className="map-pin-dot" />
-                    <circle cx={cx} cy={cy} r="2.5" className="map-pin-core" />
-                    <text x={cx + 10} y={cy + 4} className="map-pin-text">
-                      {pin.name}
-                    </text>
-                  </g>
-                )
-              })}
-            </svg>
+          <div className={`map-stage ${zoom >= LABEL_ZOOM ? 'is-close' : ''}`}>
+            <PhilippinesMap
+              ref={mapRef}
+              zoom={zoom}
+              selectedPin={selectedPin}
+              selectedSite={selectedSite}
+              onSelectRegion={selectRegion}
+              onSelectPin={selectPin}
+              onClearPin={clearPin}
+              onViewChange={handleViewChange}
+              onReady={handleMapReady}
+            />
+            {zoom < PIN_ZOOM && (
+              <p className="map-stage__hint">
+                {isFilipino ? 'Lumapit para makita ang mga nilalang' : 'Zoom in to find what lurks there'}
+              </p>
+            )}
           </div>
+
+          <p className="map-stage-note">
+            {isFilipino
+              ? 'Ang mga pin ay tumutukoy sa lalawigan o pook kung saan isinasalaysay ang alamat, hindi sa tiyak na lugar ng pagkakita.'
+              : 'Pins mark the province or landmark where each legend is told, not exact sightings.'}
+          </p>
 
           {/* Creature chips under the map */}
           <div className="map-pin-list">
@@ -233,7 +203,7 @@ export default function MapOfMyths() {
                     type="button"
                     className={`map-pin-chip ${isSelected ? 'is-active' : ''}`}
                     aria-pressed={isSelected}
-                    onClick={() => selectPin(pin)}
+                    onClick={() => selectPin(currentRegion.id, pin, pin.sites[0])}
                   >
                     <span className="map-pin-chip__dot" aria-hidden="true" />
                     <span className="map-pin-chip__name">{pin.name}</span>
@@ -246,7 +216,7 @@ export default function MapOfMyths() {
         </section>
 
         {/* Right: regional dossier (own component) */}
-        <div className="map-dossier-wrap" ref={dossierRef} key={selectedRegionId}>
+        <div className="map-dossier-wrap" key={selectedRegionId}>
           <MapDossier region={currentRegion} selectedPin={selectedPin} onClearPin={clearPin} />
         </div>
       </main>
