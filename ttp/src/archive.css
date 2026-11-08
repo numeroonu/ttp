@@ -1,0 +1,164 @@
+/* Shared archive details. Page layouts and the original palette stay in their own stylesheets. */
+:root {
+  --archive-line: rgba(224, 163, 59, .24);
+  --archive-surface: rgba(224, 163, 59, .035);
+  --archive-radius: 4px;
+  --archive-space: clamp(18px, 3vw, 30px);
+  --archive-motion: 240ms;
+}
+
+.archive-page-loading {
+  display: grid;
+  align-content: center;
+  min-height: 65svh;
+  padding-top: 100px;
+  padding-bottom: 60px;
+  color: var(--usok);
+  font-family: var(--font-note);
+  font-size: 26px;
+}
+
+.archive-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 9px 15px;
+  border: 1px solid var(--archive-line);
+  border-radius: var(--archive-radius);
+  background: var(--archive-surface);
+  color: var(--papel);
+  font: inherit;
+  font-size: 15px;
+  line-height: 1.35;
+  cursor: pointer;
+  transition: background var(--archive-motion), border-color var(--archive-motion);
+}
+.archive-button:hover,
+.archive-button[aria-pressed="true"] {
+  background: rgba(224, 163, 59, .1);
+  border-color: var(--kandila);
+  color: var(--kandila);
+}
+.archive-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.nav__actions > .archive-button { white-space: nowrap; font-size: 13px; padding: 7px 10px; }
+.nav__mobile > .archive-button { align-self: flex-start; margin-bottom: 16px; }
+.cr-modal__title-box > .archive-button { margin: 14px 0; }
+
+.archive-art { width: 100%; height: 100%; object-fit: cover; }
+.archive-art--ink {
+  display: block;
+  color: #b09b78;
+  padding: 10px;
+  background: radial-gradient(ellipse at 50% 40%, #272120, #0b0a0d 78%);
+}
+.ccard__art .archive-art,
+.cr-card__art .archive-art {
+  filter: saturate(.6) sepia(.12) brightness(.78) contrast(1.1);
+  transition: filter 500ms var(--ease-out), transform 700ms var(--ease-out);
+}
+.ccard:focus-within .archive-art,
+.ccard:hover .archive-art,
+.cr-card:focus-visible .archive-art,
+.cr-card:hover .archive-art { filter: saturate(.85) sepia(.06) brightness(.94) contrast(1.06); }
+.cr-card__art::after { box-shadow: inset 0 0 0 8px rgba(11, 10, 13, .22); }
+.cr-card__index { font-variant-numeric: tabular-nums; }
+.cr-header__meta { flex-wrap: wrap; }
+
+.folklore-trail { padding-top: 38px; padding-bottom: 55px; }
+.folklore-trail > div { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 20px; }
+.folklore-trail a {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: var(--archive-space);
+  border: 1px solid var(--archive-line);
+  border-radius: var(--archive-radius);
+  background: var(--archive-surface);
+  color: var(--papel);
+  transition: border-color var(--archive-motion), background var(--archive-motion);
+}
+.folklore-trail a:hover { border-color: var(--kandila); background: rgba(224, 163, 59, .075); }
+.folklore-trail a > span:last-child { margin-left: auto; color: var(--kandila); }
+.folklore-trail__number { font: 23px var(--font-note); color: var(--kandila); }
+.folklore-trail--dossier { padding: 25px var(--archive-space); border-top: 1px solid var(--archive-line); }
+.folklore-trail--dossier > div { grid-template-columns: 1fr; }
+.folklore-trail--dossier a { padding: 13px 16px; }
+
+.notebook-page { padding-top: 140px; padding-bottom: 90px; min-height: 75svh; }
+.notebook-header { max-width: 760px; margin-bottom: 40px; }
+.notebook-header h1 { font-size: clamp(42px, 7vw, 76px); margin: 18px 0; }
+.notebook-header > p:not(.kicker) { color: var(--usok); }
+.notebook-stamps { display: flex; flex-wrap: wrap; gap: 16px; margin: 28px 0 20px; }
+.notebook-stamp {
+  display: inline-flex;
+  flex-direction: column;
+  min-width: 115px;
+  padding: 12px 18px;
+  border: 1px dashed rgba(183, 178, 189, .35);
+  border-radius: 50%;
+  text-align: center;
+  color: var(--usok);
+  font-family: var(--font-heading-sc);
+}
+.notebook-stamp small { font: 13px var(--font-body); }
+.notebook-stamp.is-collected { border: 3px double var(--kandila); color: var(--kandila); background: var(--archive-surface); }
+.notebook-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 24px; }
+.notebook-entry { overflow: hidden; border: 1px solid var(--archive-line); border-radius: var(--archive-radius); background: var(--anino); }
+.notebook-entry__link { display: block; color: var(--papel); }
+.notebook-entry__link > .archive-art { height: 230px; }
+.notebook-entry__link > :not(.archive-art) { margin: 16px 22px; }
+.notebook-entry__link .kicker { font-size: 12px; }
+.notebook-entry h2 { font-size: 30px; }
+.notebook-entry p { color: var(--usok); }
+.notebook-entry__read { display: block; color: var(--kandila); }
+.notebook-entry > .archive-button { margin: 0 22px 22px; }
+.notebook-empty { padding: clamp(24px, 5vw, 48px); border: 1px dashed var(--archive-line); background: var(--archive-surface); }
+.notebook-empty h2 { font-size: clamp(28px, 4vw, 38px); }
+.notebook-empty p { margin: 18px 0 24px; color: var(--usok); }
+
+/* Small material cues distinguish chapters without rebuilding their cards. */
+.sup-card { border-left: 2px solid rgba(224, 163, 59, .42); background-image: linear-gradient(90deg, rgba(224, 163, 59, .035), transparent 45%); }
+.sup-card__tag { font-family: var(--font-note); font-size: 20px; }
+.mod-case-card { border-top: 2px solid rgba(139, 30, 30, .65); }
+.mod-case-card__header { border-bottom: 1px dashed var(--archive-line); }
+.orig-epoch__roman { text-shadow: 1px 1px 0 rgba(224, 163, 59, .12); }
+.map-canvas-card { outline: 1px solid var(--archive-line); outline-offset: 5px; }
+.podcasts-dial { box-shadow: 0 0 28px rgba(224, 163, 59, .06); }
+
+/* Reading stays still; the home forest remains the main cinematic moment. */
+body::after { animation: none; opacity: .045; }
+.sup-card--tremble:hover { animation: none; }
+.cr-card--enter { animation-duration: 450ms; }
+.cr-modal .cr-pill-tag--danger .cr-meter i.is-on { animation-duration: 400ms; }
+.cr-card.cr-card:hover,
+.cr-card.cr-card:focus-visible { transform: translateY(-6px); }
+
+@media (hover: none) {
+  .ccard__reveal { grid-template-rows: 1fr 1fr; }
+  .ccard__art .archive-art,
+  .cr-card__art .archive-art { filter: saturate(.8) brightness(.9); transform: none; }
+}
+@media (max-width: 640px) {
+  .nav__actions > .archive-button { display: none; }
+  .folklore-trail > div { grid-template-columns: 1fr; }
+  .notebook-page { padding-top: 110px; }
+  .notebook-stamps { gap: 8px; }
+  .notebook-stamp { min-width: 90px; padding: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .archive-art { transition: none !important; transform: none !important; }
+  .hero__trees--back, .hero__trees--front, .hero__content { transform: none; }
+  .hero__content { opacity: 1; }
+  .cr-card.cr-card:hover, .cr-card.cr-card:focus-visible { transform: none; }
+}

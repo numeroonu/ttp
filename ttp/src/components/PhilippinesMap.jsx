@@ -6,6 +6,7 @@ import 'leaflet/dist/leaflet.css'
 import { useLanguage } from '../context/useLanguage'
 import { creatures } from '../data/creatures'
 import { getLocalizedCreature } from '../data/creatureTranslations'
+import CreatureArtwork from './CreatureArtwork'
 import { PHILIPPINES_BOUNDS, REGIONS_DATA } from '../data/Mapofmythsdata'
 
 /** Below this zoom the map shows island-group badges; at or above it, creature pins. */
@@ -70,7 +71,7 @@ function CreaturePopup({ pin, site, onClose }) {
       <button type="button" className="map-popup__close" onClick={onClose} aria-label={t('common.close')}>
         ✕
       </button>
-      {creature?.image && <img className="map-popup__image" src={creature.image} alt="" />}
+      {creature && <CreatureArtwork className="map-popup__image" creature={creature} />}
       <div className="map-popup__body">
         <span className="map-popup__place">{site.place}</span>
         <h3 className="map-popup__name">{pin.name}</h3>

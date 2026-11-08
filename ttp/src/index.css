@@ -228,7 +228,7 @@ button { font: inherit; }
 
 .cr-card--enter {
   animation: creature-card-enter 600ms var(--ease-out) both;
-  animation-delay: calc(var(--card-stagger, 0ms) + var(--card-stagger, 0ms));
+  animation-delay: var(--card-stagger, 0ms);
 }
 
 @keyframes creature-card-enter {

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import Fog from '../components/Fog'
 import Candle from '../components/Candle'
 import PhilippinesMap, { LABEL_ZOOM, PIN_ZOOM } from '../components/PhilippinesMap'
@@ -22,7 +22,11 @@ const inBounds = ([[south, west], [north, east]], { lat, lng }) =>
   lat >= south && lat <= north && lng >= west && lng <= east
 
 export default function MapOfMyths() {
-  const [selectedRegionId, setSelectedRegionId] = useState(DEFAULT_REGION_ID)
+  const location = useLocation()
+  const [selectedRegionId, setSelectedRegionId] = useState(() => {
+    const region = new URLSearchParams(location.search).get('region')
+    return REGIONS_DATA.some((item) => item.id === region) ? region : DEFAULT_REGION_ID
+  })
   const [selectedPin, setSelectedPin] = useState(null)
   const [selectedSite, setSelectedSite] = useState(null)
   const [zoom, setZoom] = useState(OVERVIEW_ZOOM)
@@ -70,10 +74,18 @@ export default function MapOfMyths() {
   )
 
   const handleMapReady = useCallback(({ target: map }) => {
+    mapRef.current = map
     const fitted = Math.min(map.getBoundsZoom(PHILIPPINES_BOUNDS), OVERVIEW_ZOOM)
     map.setView(map.getCenter(), fitted, { animate: false })
     setZoom(fitted)
-  }, [])
+    const params = new URLSearchParams(location.search)
+    const region = REGIONS_DATA.find((item) => item.id === params.get('region'))
+    if (region) {
+      const pin = region.pins.find((item) => item.id === params.get('creature'))
+      if (pin?.sites.length) selectPin(region.id, pin, pin.sites[0])
+      else selectRegion(region.id)
+    }
+  }, [location.search, selectPin, selectRegion])
 
   // The panel follows the map: panning into another island group switches to it.
   const handleViewChange = useCallback(

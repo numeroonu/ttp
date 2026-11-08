@@ -1,18 +1,33 @@
-import { useCallback, useEffect, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 
 import LoadingScreen from './components/LoadingScreen'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Home from './pages/Home'
-import Creatures from './pages/Creatures'
-import MapOfMyths from './pages/MapOfMyths'
-import Superstitions from './pages/Superstitions'
-import Origins from './pages/Origins'
-import ModernLegends from './pages/ModernLegends'
-import Podcasts from './pages/Podcasts'
-import About from './pages/About'
 import Placeholder from './pages/Placeholder'
+import FolkloreTrail from './components/FolkloreTrail'
+import { useLanguage } from './context/useLanguage'
+// Keep page styles in the initial stylesheet so their cascade remains stable
+// when route code arrives later (particularly the shared archive refinements).
+import './pages/Creatures.css'
+import './pages/MapOfMyths.css'
+import './pages/Mapdossier.css'
+import './pages/Superstitions.css'
+import './pages/Origins.css'
+import './pages/ModernLegends.css'
+import './pages/Podcasts.css'
+import './pages/About.css'
+import './archive.css'
+
+const Creatures = lazy(() => import('./pages/Creatures'))
+const MapOfMyths = lazy(() => import('./pages/MapOfMyths'))
+const Superstitions = lazy(() => import('./pages/Superstitions'))
+const Origins = lazy(() => import('./pages/Origins'))
+const ModernLegends = lazy(() => import('./pages/ModernLegends'))
+const Podcasts = lazy(() => import('./pages/Podcasts'))
+const About = lazy(() => import('./pages/About'))
+const Notebook = lazy(() => import('./pages/Notebook'))
 
 /*
  * true  = the "Tabi-tabi po" intro plays once per browser tab (best for visitors)
@@ -40,6 +55,8 @@ function ScrollToTop() {
 }
 
 export default function App() {
+  const location = useLocation()
+  const { isFilipino } = useLanguage()
   const [showIntro, setShowIntro] = useState(shouldShowIntro)
 
   const finishIntro = useCallback(() => {
@@ -57,6 +74,11 @@ export default function App() {
       <Navbar />
 
       <main key={location.pathname} className="page-transition">
+        <Suspense fallback={
+          <div className="archive-page-loading container" role="status">
+            {isFilipino ? 'Binubuksan ang mga tala…' : 'Opening the field notes…'}
+          </div>
+        }>
         <Routes>
           <Route path="/" element={<Home ready={!showIntro} />} />
           <Route path="/creatures" element={<Creatures />} />
@@ -66,12 +88,15 @@ export default function App() {
           <Route path="/modern-legends" element={<ModernLegends />} />
           <Route path="/podcasts" element={<Podcasts />} />
           <Route path="/stories" element={<Podcasts />} />
+          <Route path="/notebook" element={<Notebook />} />
           <Route path="/about" element={<About />} />
           <Route
             path="*"
             element={<Placeholder title="Naligaw ka." filipino="You got lost" owner={null} lost />}
           />
         </Routes>
+        <FolkloreTrail />
+        </Suspense>
       </main>
 
       <Footer />

@@ -34,7 +34,7 @@ export default function Home({ ready = true }) {
   // Scroll position -> CSS variable (drives parallax and the moon eclipse)
   useEffect(() => {
     const hero = heroRef.current
-    if (!hero) return
+    if (!hero || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     let raf = 0
     const update = () => {
       raf = 0
@@ -55,7 +55,7 @@ export default function Home({ ready = true }) {
   // Cursor position -> CSS variables (drives the candle light and mouse parallax)
   const onHeroMove = (e) => {
     const hero = heroRef.current
-    if (!hero) return
+    if (!hero || e.pointerType === 'touch' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const r = hero.getBoundingClientRect()
     const x = e.clientX - r.left
     const y = e.clientY - r.top

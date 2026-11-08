@@ -1,14 +1,19 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import { useLocation, useNavigate, Link } from 'react-router-dom'
 import { createPortal } from 'react-dom'
-import Eyes from '../components/Eyes'
+import CreatureArtwork from '../components/CreatureArtwork'
+import { EncounterToggle, SaveCreature } from '../components/ArchiveTools'
+import FolkloreTrail from '../components/FolkloreTrail'
+import { toggleSound, useFieldNotebook } from '../utils/fieldNotebook'
 import Candle from '../components/Candle'
 import Fog from '../components/Fog'
 import { creatures } from '../data/creatures'
 import { getLocalizedCreature } from '../data/creatureTranslations'
 import { useLanguage } from '../context/useLanguage'
-import { startAmbience, stopAmbience } from '../utils/ambience'
+import { playJumpscareSound } from '../utils/jumpscareSound'
 import './Creatures.css'
+
+const JUMPSCARE_DURATION = 720
 
 const ISLANDS = [
   { id: 'all', fil: 'Lahat', en: 'All' },
@@ -66,11 +71,13 @@ export default function Creatures() {
   const [searchQuery, setSearchQuery] = useState('')
   const [islandFilter, setIslandFilter] = useState('all')
   const [dangerFilter, setDangerFilter] = useState('all')
-  const [isAudioPlaying, setIsAudioPlaying] = useState(false)
+  const { sound: isAudioPlaying, encounters, saved } = useFieldNotebook()
   const [isModalClosing, setIsModalClosing] = useState(false)
   const [slideDirection, setSlideDirection] = useState(null)
+  const [jumpscareCreature, setJumpscareCreature] = useState(null)
   const modalContentRef = useRef(null)
   const closeTimeoutRef = useRef(null)
+  const jumpscareTimeoutRef = useRef(null)
   const controlsRef = useRef(null)
   const wasStuckRef = useRef(false)
   const [filtersOpen, setFiltersOpen] = useState(true)
@@ -124,6 +131,23 @@ export default function Creatures() {
     navigate(`/creatures#${creature.id}`)
   }, [navigate])
 
+  const startJumpscare = useCallback((creature) => {
+    if (jumpscareTimeoutRef.current) return
+
+    if (!encounters || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      openModal(creature)
+      return
+    }
+
+    if (isAudioPlaying) playJumpscareSound()
+    setJumpscareCreature(creature)
+    jumpscareTimeoutRef.current = window.setTimeout(() => {
+      jumpscareTimeoutRef.current = null
+      setJumpscareCreature(null)
+      openModal(creature)
+    }, JUMPSCARE_DURATION)
+  }, [openModal, encounters, isAudioPlaying])
+
   const closeModal = useCallback(() => {
     if (isModalClosing) return
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -140,6 +164,7 @@ export default function Creatures() {
 
   useEffect(() => () => {
     if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current)
+    if (jumpscareTimeoutRef.current) clearTimeout(jumpscareTimeoutRef.current)
   }, [])
 
   // Scroll to creature on hash change if present
@@ -155,13 +180,13 @@ export default function Creatures() {
   // Handle ESC key to close modal
   useEffect(() => {
     const onKeyDown = (e) => {
-      if (e.key === 'Escape') {
+      if (selectedCreature && e.key === 'Escape') {
         closeModal()
       }
     }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
-  }, [closeModal])
+  }, [closeModal, selectedCreature])
 
   // Lock body scroll when modal is open and reset modal scroll
   useEffect(() => {
@@ -178,15 +203,31 @@ export default function Creatures() {
     }
   }, [selectedCreature])
 
-  const toggleSound = () => {
-    if (isAudioPlaying) {
-      stopAmbience()
-      setIsAudioPlaying(false)
-    } else {
-      const ok = startAmbience()
-      if (ok) setIsAudioPlaying(true)
+  const hasSelectedCreature = Boolean(selectedCreature)
+  useEffect(() => {
+    if (!hasSelectedCreature) return
+    const previous = document.activeElement
+    const panel = modalContentRef.current
+    panel?.focus({ preventScroll: true })
+    const trapFocus = (event) => {
+      if (event.key !== 'Tab' || !panel) return
+      const items = [...panel.querySelectorAll('button:not(:disabled), a[href], input, [tabindex="0"]')]
+        .filter((item) => item.getClientRects().length)
+      const first = items[0]
+      const last = items[items.length - 1]
+      if (!first) { event.preventDefault(); return }
+      if (event.shiftKey && (document.activeElement === first || document.activeElement === panel)) {
+        event.preventDefault(); last.focus()
+      } else if (!event.shiftKey && (document.activeElement === last || document.activeElement === panel)) {
+        event.preventDefault(); first.focus()
+      }
     }
-  }
+    document.addEventListener('keydown', trapFocus)
+    return () => {
+      document.removeEventListener('keydown', trapFocus)
+      if (previous?.isConnected) previous.focus({ preventScroll: true })
+    }
+  }, [hasSelectedCreature])
 
   // Filtered creatures
   const filteredCreatures = useMemo(() => {
@@ -296,6 +337,8 @@ export default function Creatures() {
           </p>
 
           <div className="cr-header__meta">
+            <EncounterToggle />
+            <Link className="archive-button" to="/notebook">{isFilipino ? "Aking Kuwaderno" : "My Notebook"} ({saved.length})</Link>
             <span className="cr-pill">
               <strong>{creatures.length}</strong> {t('creatures.documentedCount')}
             </span>
@@ -306,6 +349,7 @@ export default function Creatures() {
               type="button"
               className={`cr-audio-toggle ${isAudioPlaying ? 'is-active' : ''}`}
               onClick={toggleSound}
+              aria-pressed={isAudioPlaying}
               title={isAudioPlaying ? t('creatures.soundOnLabel') : t('creatures.soundOffLabel')}
             >
               <span className="cr-audio-icon" aria-hidden="true">
@@ -502,13 +546,13 @@ export default function Creatures() {
                     id={creature.id}
                     className={`cr-card cr-card--enter cr-tone--${tone}`}
                     style={{ '--card-stagger': `${Math.min(idx, 11) * 40}ms` }}
-                    onClick={() => openModal(creature)}
+                    onClick={() => startJumpscare(creature)}
                     role="button"
                     tabIndex={0}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault()
-                        openModal(creature)
+                        startJumpscare(creature)
                       }
                     }}
                     aria-label={
@@ -518,30 +562,11 @@ export default function Creatures() {
                     }
                   >
                     <div className="cr-card__art">
-                      {creature.image ? (
-                        <img
-                          src={creature.image}
-                          alt={`Illustration of the ${creature.name}`}
-                          className="cr-card__img"
-                          loading="lazy"
-                          referrerPolicy="no-referrer"
-                        />
-                      ) : (
-                        <div className="cr-card__placeholder">
-                          <span className="cr-card__watermark baybayin">{creature.baybayin}</span>
-                          <Eyes
-                            size={1.3}
-                            color={creature.eyes || 'red'}
-                            blink={4 + (idx % 4) * 1.2}
-                            delay={0.2 + (idx % 3) * 0.3}
-                            className="cr-card__eyes"
-                          />
-                        </div>
-                      )}
+                      <CreatureArtwork creature={creature} className="cr-card__img" />
                       <div className="cr-card__badges">
                         <span className="cr-badge cr-badge--island">{creature.island}</span>
                       </div>
-                      <span className="cr-card__index">{String(idx + 1).padStart(2, '0')}</span>
+                      <span className="cr-card__index">{saved.includes(creature.id) && <span aria-label={isFilipino ? 'Naitala sa kuwaderno' : 'Saved in notebook'}>◆ </span>}{String(creatures.findIndex((entry) => entry.id === creature.id) + 1).padStart(2, '0')}</span>
                     </div>
 
                     <div className="cr-card__content">
@@ -579,6 +604,17 @@ export default function Creatures() {
         </div>
       </section>
 
+      {jumpscareCreature && createPortal(
+        <div className="cr-jumpscare" aria-hidden="true">
+          {jumpscareCreature.image ? (
+            <img src={jumpscareCreature.image} alt="" className="cr-jumpscare__image" />
+          ) : (
+            <span className="cr-jumpscare__fallback baybayin">{jumpscareCreature.baybayin}</span>
+          )}
+        </div>,
+        document.body
+      )}
+
       {/* Modal / Secret Dossier ("Lihim na Tala ng Albularyo") */}
       {selectedCreature && createPortal((
         <div
@@ -586,11 +622,13 @@ export default function Creatures() {
           onClick={closeModal}
           role="dialog"
           aria-modal="true"
+          aria-labelledby="creature-dossier-name"
         >
           <div
             className={`cr-modal cr-tone--${getDangerTone(selectedCreature)}`}
             onClick={(e) => e.stopPropagation()}
             ref={modalContentRef}
+            tabIndex={-1}
           >
             {/* Modal Top Bar */}
             <div className="cr-modal__nav">
@@ -637,33 +675,16 @@ export default function Creatures() {
             {/* Modal Header */}
             <header className="cr-modal__header">
               <div className="cr-modal__eye-stage">
-                {selectedCreature.image ? (
-                  <div className="cr-modal__art-banner">
-                    <img
-                      src={selectedCreature.image}
-                      alt={`Artwork of ${selectedCreature.name}`}
-                      className="cr-modal__art-img"
-                      referrerPolicy="no-referrer"
-                    />
-                    <div className="cr-modal__art-overlay" />
-                  </div>
-                ) : (
-                  <div className="cr-modal__eye-bg cr-modal__eye-bg--silhouette">
-                    <span className="cr-modal__watermark baybayin">{selectedCreature.baybayin}</span>
-                    <Eyes
-                      size={2.2}
-                      color={selectedCreature.eyes || 'red'}
-                      blink={4}
-                      delay={0.1}
-                      className="cr-modal__eyes"
-                    />
-                  </div>
-                )}
+                <div className="cr-modal__art-banner">
+                  <CreatureArtwork creature={selectedCreature} className="cr-modal__art-img" loading="eager" />
+                  <div className="cr-modal__art-overlay" />
+                </div>
               </div>
 
               <div className="cr-modal__title-box">
                 <p className="baybayin cr-modal__baybayin">{selectedCreature.baybayin}</p>
-                <h2 className="cr-modal__name">{selectedCreature.name}</h2>
+                <h2 id="creature-dossier-name" className="cr-modal__name">{selectedCreature.name}</h2>
+                <SaveCreature creature={selectedCreature} />
                 <p className="cr-modal__class-tag">{selectedCreature.classification}</p>
 
                 <div className="cr-modal__tags">
@@ -839,6 +860,7 @@ export default function Creatures() {
             </div>
             </div>
 
+            <FolkloreTrail creature={selectedCreature} />
             {/* Modal Bottom Actions */}
             <div className="cr-modal__foot">
               <div className="cr-modal__foot-pager">

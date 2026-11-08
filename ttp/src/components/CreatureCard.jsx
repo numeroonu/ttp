@@ -1,9 +1,14 @@
-import { useRef } from 'react'
-import { Link } from 'react-router-dom'
-import Eyes from './Eyes'
+import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import CreatureArtwork from './CreatureArtwork'
+import { useFieldNotebook } from '../utils/fieldNotebook'
 import { useLanguage } from '../context/useLanguage'
 import { getLocalizedCreature } from '../data/creatureTranslations'
+import { playJumpscareSound } from '../utils/jumpscareSound'
 import './CreatureCard.css'
+
+const JUMPSCARE_DURATION = 720
 
 /**
  * Creature preview card.
@@ -13,13 +18,40 @@ import './CreatureCard.css'
  */
 export default function CreatureCard({ creature, index = 0 }) {
   const ref = useRef(null)
+  const jumpscareTimeoutRef = useRef(null)
+  const [isJumpScaring, setIsJumpScaring] = useState(false)
+  const navigate = useNavigate()
   const { language, isFilipino } = useLanguage()
 
+  const { encounters, sound } = useFieldNotebook()
   const localized = getLocalizedCreature(creature, language)
+
+  useEffect(() => () => {
+    if (jumpscareTimeoutRef.current) clearTimeout(jumpscareTimeoutRef.current)
+  }, [])
+
+  const onCardClick = (event) => {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+    event.preventDefault()
+    if (jumpscareTimeoutRef.current) return
+
+    const destination = `/creatures#${localized.id}`
+    if (!encounters || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      navigate(destination)
+      return
+    }
+
+    if (sound) playJumpscareSound()
+    setIsJumpScaring(true)
+    jumpscareTimeoutRef.current = window.setTimeout(() => {
+      jumpscareTimeoutRef.current = null
+      navigate(destination)
+    }, JUMPSCARE_DURATION)
+  }
 
   const onMove = (e) => {
     const el = ref.current
-    if (!el) return
+    if (!el || e.pointerType === 'touch' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const r = el.getBoundingClientRect()
     const x = (e.clientX - r.left) / r.width
     const y = (e.clientY - r.top) / r.height
@@ -37,6 +69,7 @@ export default function CreatureCard({ creature, index = 0 }) {
   }
 
   return (
+    <>
     <article
       ref={ref}
       className="ccard"
@@ -47,28 +80,11 @@ export default function CreatureCard({ creature, index = 0 }) {
       <Link
         to={`/creatures#${localized.id}`}
         className="ccard__link"
+        onClick={onCardClick}
         aria-label={isFilipino ? `Basahin ang tungkol sa ${localized.name}` : `Read about the ${localized.name}`}
       >
         <div className="ccard__art">
-          {localized.image ? (
-            <img
-              src={localized.image}
-              alt={`Illustration of the ${localized.name}`}
-              loading="lazy"
-              referrerPolicy="no-referrer"
-            />
-          ) : (
-            <div className="ccard__placeholder ccard__placeholder--silhouette" aria-hidden="true">
-              <span className="ccard__watermark baybayin">{localized.baybayin}</span>
-              <Eyes
-                size={1.5}
-                color={localized.eyes}
-                blink={4 + index * 1.3}
-                delay={0.3 + index * 0.2}
-                className="ccard__eyes"
-              />
-            </div>
-          )}
+          <CreatureArtwork creature={localized} />
           <span className="ccard__num">{String(index + 1).padStart(2, '0')}</span>
         </div>
 
@@ -90,5 +106,16 @@ export default function CreatureCard({ creature, index = 0 }) {
         </div>
       </Link>
     </article>
+    {isJumpScaring && createPortal(
+      <div className="ccard__jumpscare" aria-hidden="true">
+        {localized.image ? (
+          <img src={localized.image} alt="" className="ccard__jumpscare-image" />
+        ) : (
+          <span className="ccard__jumpscare-fallback baybayin">{localized.baybayin}</span>
+        )}
+      </div>,
+      document.body
+    )}
+    </>
   )
 }

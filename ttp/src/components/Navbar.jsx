@@ -3,13 +3,14 @@ import { Link, NavLink } from 'react-router-dom'
 import { getLocalizedNavLinks } from '../data/navLinks'
 import { useLanguage } from '../context/useLanguage'
 import LanguageToggle from './LanguageToggle'
-import { startAmbience, stopAmbience } from '../utils/ambience'
+import { toggleSound, useFieldNotebook } from '../utils/fieldNotebook'
+import { EncounterToggle } from './ArchiveTools'
 import './Navbar.css'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(() => window.scrollY > 40)
   const [open, setOpen] = useState(false)
-  const [sound, setSound] = useState(false)
+  const { sound } = useFieldNotebook()
   const [collapsed, setCollapsed] = useState(false)
   const navRef = useRef(null)
   const innerRef = useRef(null)
@@ -39,6 +40,7 @@ export default function Navbar() {
         logo.offsetWidth + links.scrollWidth + actions.offsetWidth + gap * 2 + burgerAllowance
 
       setCollapsed(needed > available)
+      if (needed <= available) setOpen(false)
     }
 
     measure()
@@ -80,23 +82,6 @@ export default function Navbar() {
     }
   }, [open])
 
-  // If the full nav fits again (window resized or language changed), close the menu
-  useEffect(() => {
-    if (!collapsed) setOpen(false)
-  }, [collapsed])
-
-  // Stop the sound if the visitor leaves the site open in the background
-  useEffect(() => () => stopAmbience(), [])
-
-  const toggleSound = () => {
-    if (sound) {
-      stopAmbience()
-      setSound(false)
-    } else if (startAmbience()) {
-      setSound(true)
-    }
-  }
-
   return (
     <header
       ref={navRef}
@@ -129,6 +114,7 @@ export default function Navbar() {
 
         <div className="nav__actions" ref={actionsRef}>
           <LanguageToggle compact={false} />
+          <EncounterToggle />
 
           <button
             type="button"
@@ -169,6 +155,7 @@ export default function Navbar() {
       </div>
 
       <div id="mobile-menu" className="nav__mobile" hidden={!open}>
+        <EncounterToggle />
         <div className="nav__mobile-lang-wrap">
           <span className="nav__mobile-lang-label">
             {language === 'fil' ? 'Piliin ang Wika' : 'Language'}

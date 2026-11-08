@@ -7,6 +7,7 @@ export const NAV_LINKS = [
   { to: '/origins', label: 'Origins', labelEn: 'Origins', labelFil: 'Pinagmulan' },
   { to: '/modern-legends', label: 'Modern Legends', labelEn: 'Modern Legends', labelFil: 'Makabagong Alamat' },
   { to: '/podcasts', label: 'Podcasts & Stories', labelEn: 'Podcasts & Stories', labelFil: 'Kwento sa Hatinggabi' },
+  { to: '/notebook', label: 'My Notebook', labelEn: 'My Notebook', labelFil: 'Aking Kuwaderno' },
   { to: '/about', label: 'About', labelEn: 'About Us', labelFil: 'Tungkol sa Amin' },
 ]
 

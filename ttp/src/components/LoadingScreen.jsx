@@ -31,15 +31,16 @@ import './LoadingScreen.css'
  *  4  "Makikiraan po kami."
  *  5  the candle is blown out, darkness falls
  *  6  eyes open in the dark
- *  7  the "ask permission" button appears
+ *  7  the scene ends and the intro enters automatically
  *
  * When the visitor clicks, the eyes shut, the candle relights and flares,
  * and the light swallows the screen to reveal the Home page.
  */
 
-const PHASE_TIMES = [4600, 5600, 6600, 8400, 10100, 12300, 13700]
+const PHASE_TIMES = [3800, 4700, 5500, 7000, 8500, 10500, 11800]
 const LAST_PHASE = PHASE_TIMES.length
-const EXIT_DURATION = 2300
+const EXIT_DURATION = 1800
+const AUTO_ENTER_DELAY = 1200
 
 const TITLE = 'Tabi-tabi po…'
 // Baybayin for "ta-bi ta-bi po"
@@ -163,6 +164,12 @@ export default function LoadingScreen({ onFinish }) {
     setLeaving(true)
   }, [])
 
+  useEffect(() => {
+    if (phase < LAST_PHASE || leaving) return
+    const timer = setTimeout(enter, AUTO_ENTER_DELAY)
+    return () => clearTimeout(timer)
+  }, [phase, leaving, enter])
+
   // Press Enter or Space to go in too
   useEffect(() => {
     const onKey = (e) => {
@@ -184,7 +191,7 @@ export default function LoadingScreen({ onFinish }) {
       className={`loader ${dark ? 'is-dark' : ''} ${leaving ? 'is-leaving' : ''}`}
       role="dialog"
       aria-modal="true"
-      aria-label="Tabi-tabi po. Ask permission to enter the site."
+      aria-label="Tabi-tabi po intro"
     >
       <div className="loader__vignette" />
       {/* Darkness that follows the candle light when it is blown out */}
@@ -258,17 +265,6 @@ export default function LoadingScreen({ onFinish }) {
               </span>
             </div>
           </div>
-
-          <button
-            type="button"
-            className={`btn loader__enter ${on(7)}`}
-            onClick={enter}
-            tabIndex={phase >= LAST_PHASE ? 0 : -1}
-          >
-            Magpaalam at Pumasok
-            <span className="btn__arrow" aria-hidden="true">→</span>
-          </button>
-          <p className={`loader__hint ${on(7)}`}>Ask permission to enter</p>
         </div>
       </div>
     </div>
