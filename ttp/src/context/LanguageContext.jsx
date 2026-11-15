@@ -6,16 +6,17 @@ const STORAGE_KEY = 'ttp_language'
 
 export function LanguageProvider({ children }) {
   const [language, setLanguageState] = useState(() => {
+    let initialLanguage = 'fil'
     try {
       const saved = localStorage.getItem(STORAGE_KEY)
       if (saved === 'fil' || saved === 'en') {
-        return saved
+        initialLanguage = saved
       }
     } catch {
       // ignore localStorage errors (e.g. incognito restrictions)
     }
-    // Default to Filipino as cultural heritage platform
-    return 'fil'
+    document.documentElement.lang = initialLanguage
+    return initialLanguage
   })
 
   useEffect(() => {
@@ -25,7 +26,7 @@ export function LanguageProvider({ children }) {
       // ignore
     }
     // Set document lang attribute
-    document.documentElement.lang = language === 'fil' ? 'tl' : 'en'
+    document.documentElement.lang = language
   }, [language])
 
   const setLanguage = useCallback((newLang) => {

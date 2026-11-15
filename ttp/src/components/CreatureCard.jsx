@@ -9,6 +9,7 @@ import { playJumpscareSound } from '../utils/jumpscareSound'
 import './CreatureCard.css'
 
 const JUMPSCARE_DURATION = 720
+const JUMPSCARE_FADE_DURATION = 180
 
 /**
  * Creature preview card.
@@ -20,6 +21,7 @@ export default function CreatureCard({ creature, index = 0 }) {
   const ref = useRef(null)
   const jumpscareTimeoutRef = useRef(null)
   const [isJumpScaring, setIsJumpScaring] = useState(false)
+  const [isJumpScareFading, setIsJumpScareFading] = useState(false)
   const navigate = useNavigate()
   const { language, isFilipino } = useLanguage()
 
@@ -41,12 +43,36 @@ export default function CreatureCard({ creature, index = 0 }) {
       return
     }
 
-    if (sound) playJumpscareSound()
+    const soundPlayback = sound ? playJumpscareSound(creature) : Promise.resolve()
+    let soundFinished = !sound
+    let minimumVisualTimeElapsed = false
+    const startFadeIfReady = () => {
+      if (soundFinished && minimumVisualTimeElapsed) setIsJumpScareFading(true)
+    }
+    soundPlayback.then(() => {
+      soundFinished = true
+      startFadeIfReady()
+    })
+    setIsJumpScareFading(false)
     setIsJumpScaring(true)
     jumpscareTimeoutRef.current = window.setTimeout(() => {
-      jumpscareTimeoutRef.current = null
-      navigate(destination)
-    }, JUMPSCARE_DURATION)
+      minimumVisualTimeElapsed = true
+      startFadeIfReady()
+    }, JUMPSCARE_DURATION - JUMPSCARE_FADE_DURATION)
+  }
+
+  const finishJumpscare = (event) => {
+    if (
+      event.target !== event.currentTarget ||
+      event.pseudoElement ||
+      !isJumpScareFading ||
+      !jumpscareTimeoutRef.current
+    ) return
+    clearTimeout(jumpscareTimeoutRef.current)
+    jumpscareTimeoutRef.current = null
+    setIsJumpScaring(false)
+    setIsJumpScareFading(false)
+    navigate(`/creatures#${localized.id}`)
   }
 
   const onMove = (e) => {
@@ -107,7 +133,11 @@ export default function CreatureCard({ creature, index = 0 }) {
       </Link>
     </article>
     {isJumpScaring && createPortal(
-      <div className="ccard__jumpscare" aria-hidden="true">
+      <div
+        className={`ccard__jumpscare${isJumpScareFading ? ' is-fading' : ''}`}
+        onAnimationEnd={finishJumpscare}
+        aria-hidden="true"
+      >
         {localized.image ? (
           <img src={localized.image} alt="" className="ccard__jumpscare-image" />
         ) : (

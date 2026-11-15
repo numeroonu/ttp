@@ -97,3 +97,23 @@ export function stopAmbience() {
     oldMaster.disconnect()
   }, 900)
 }
+
+export function duckAmbience() {
+  if (!ctx || !nodes || !master) return () => {}
+
+  const activeMaster = master
+  const now = ctx.currentTime
+  activeMaster.gain.cancelScheduledValues(now)
+  activeMaster.gain.setValueAtTime(activeMaster.gain.value, now)
+  activeMaster.gain.linearRampToValueAtTime(0.18, now + 0.08)
+
+  let restored = false
+  return () => {
+    if (restored || master !== activeMaster || !nodes) return
+    restored = true
+    const restoreAt = ctx.currentTime
+    activeMaster.gain.cancelScheduledValues(restoreAt)
+    activeMaster.gain.setValueAtTime(activeMaster.gain.value, restoreAt)
+    activeMaster.gain.linearRampToValueAtTime(0.9, restoreAt + 1.5)
+  }
+}

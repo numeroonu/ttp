@@ -14,6 +14,7 @@ import { playJumpscareSound } from '../utils/jumpscareSound'
 import './Creatures.css'
 
 const JUMPSCARE_DURATION = 720
+const JUMPSCARE_FADE_DURATION = 180
 
 const ISLANDS = [
   { id: 'all', fil: 'Lahat', en: 'All' },
@@ -75,6 +76,7 @@ export default function Creatures() {
   const [isModalClosing, setIsModalClosing] = useState(false)
   const [slideDirection, setSlideDirection] = useState(null)
   const [jumpscareCreature, setJumpscareCreature] = useState(null)
+  const [isJumpscareFading, setIsJumpscareFading] = useState(false)
   const modalContentRef = useRef(null)
   const closeTimeoutRef = useRef(null)
   const jumpscareTimeoutRef = useRef(null)
@@ -139,14 +141,37 @@ export default function Creatures() {
       return
     }
 
-    if (isAudioPlaying) playJumpscareSound()
+    const soundPlayback = isAudioPlaying ? playJumpscareSound(creature) : Promise.resolve()
+    let soundFinished = !isAudioPlaying
+    let minimumVisualTimeElapsed = false
+    const startFadeIfReady = () => {
+      if (soundFinished && minimumVisualTimeElapsed) setIsJumpscareFading(true)
+    }
+    soundPlayback.then(() => {
+      soundFinished = true
+      startFadeIfReady()
+    })
+    setIsJumpscareFading(false)
     setJumpscareCreature(creature)
     jumpscareTimeoutRef.current = window.setTimeout(() => {
-      jumpscareTimeoutRef.current = null
-      setJumpscareCreature(null)
-      openModal(creature)
-    }, JUMPSCARE_DURATION)
+      minimumVisualTimeElapsed = true
+      startFadeIfReady()
+    }, JUMPSCARE_DURATION - JUMPSCARE_FADE_DURATION)
   }, [openModal, encounters, isAudioPlaying])
+
+  const finishJumpscare = (event) => {
+    if (
+      event.target !== event.currentTarget ||
+      event.pseudoElement ||
+      !isJumpscareFading ||
+      !jumpscareTimeoutRef.current
+    ) return
+    clearTimeout(jumpscareTimeoutRef.current)
+    jumpscareTimeoutRef.current = null
+    setJumpscareCreature(null)
+    setIsJumpscareFading(false)
+    openModal(jumpscareCreature)
+  }
 
   const closeModal = useCallback(() => {
     if (isModalClosing) return
@@ -605,7 +630,11 @@ export default function Creatures() {
       </section>
 
       {jumpscareCreature && createPortal(
-        <div className="cr-jumpscare" aria-hidden="true">
+        <div
+          className={`cr-jumpscare${isJumpscareFading ? ' is-fading' : ''}`}
+          onAnimationEnd={finishJumpscare}
+          aria-hidden="true"
+        >
           {jumpscareCreature.image ? (
             <img src={jumpscareCreature.image} alt="" className="cr-jumpscare__image" />
           ) : (

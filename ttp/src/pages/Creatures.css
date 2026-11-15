@@ -1410,6 +1410,15 @@
   animation: cr-jumpscare-shake 720ms steps(2, end) both;
 }
 
+.cr-jumpscare.is-fading,
+.ccard__jumpscare.is-fading {
+  animation: jumpscare-fade-out 180ms ease-out both;
+}
+
+@keyframes jumpscare-fade-out {
+  to { opacity: 0; }
+}
+
 .cr-jumpscare::before {
   content: '';
   position: absolute;
