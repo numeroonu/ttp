@@ -192,6 +192,58 @@
   animation: ccard-jumpscare-shake 720ms steps(2, end) both;
 }
 
+.ccard__jumpscare--mild {
+  animation-duration: 520ms;
+  --scare-scale: 1.18;
+}
+
+.ccard__jumpscare--high {
+  animation-duration: 680ms;
+  --scare-scale: 1.32;
+}
+
+.ccard__jumpscare--lethal {
+  animation-duration: 820ms;
+  --scare-scale: 1.48;
+}
+
+.ccard__jumpscare--cosmic {
+  animation-duration: 1050ms;
+  --scare-scale: 1.72;
+}
+
+.ccard__jumpscare--mild .ccard__jumpscare-image,
+.ccard__jumpscare--mild .ccard__jumpscare-fallback,
+.ccard__jumpscare--high .ccard__jumpscare-image,
+.ccard__jumpscare--high .ccard__jumpscare-fallback,
+.ccard__jumpscare--lethal .ccard__jumpscare-image,
+.ccard__jumpscare--lethal .ccard__jumpscare-fallback,
+.ccard__jumpscare--cosmic .ccard__jumpscare-image,
+.ccard__jumpscare--cosmic .ccard__jumpscare-fallback {
+  animation-duration: inherit;
+}
+
+.ccard__jumpscare--manananggal .ccard__jumpscare-image,
+.ccard__jumpscare--manananggal .ccard__jumpscare-fallback {
+  transform-origin: center 22%;
+  animation-name: ccard-manananggal-lunge;
+}
+
+.ccard__jumpscare--tikbalang .ccard__jumpscare-image,
+.ccard__jumpscare--tikbalang .ccard__jumpscare-fallback,
+.ccard__jumpscare--bakunawa .ccard__jumpscare-image,
+.ccard__jumpscare--bakunawa .ccard__jumpscare-fallback {
+  animation-name: ccard-creature-charge;
+}
+
+.ccard__jumpscare--wakwak .ccard__jumpscare-image,
+.ccard__jumpscare--wakwak .ccard__jumpscare-fallback,
+.ccard__jumpscare--sigbin .ccard__jumpscare-image,
+.ccard__jumpscare--sigbin .ccard__jumpscare-fallback {
+  transform-origin: 50% 80%;
+  animation-name: ccard-creature-swoop;
+}
+
 .ccard__jumpscare::before {
   content: '';
   position: absolute;
@@ -240,4 +292,28 @@
   34% { opacity: 0.25; }
   48% { opacity: 0.75; }
   70% { opacity: 0; }
+}
+
+@keyframes ccard-manananggal-lunge {
+  0% { opacity: 0; transform: scale(0.12) translate(25vw, -35vh) rotate(18deg); }
+  18% { opacity: 1; transform: scale(0.46) translate(12vw, -12vh) rotate(-7deg); }
+  48% { transform: scale(1.42) translate(-2vw, 2vh) rotate(4deg); }
+  68% { transform: scale(1.12) rotate(-2deg); }
+  100% { opacity: 1; transform: scale(var(--scare-scale, 1.48)); }
+}
+
+@keyframes ccard-creature-charge {
+  0% { opacity: 0; transform: scale(0.16) translateX(-70vw) skewX(-12deg); }
+  14% { opacity: 1; transform: scale(0.38) translateX(-28vw) skewX(8deg); }
+  44% { transform: scale(1.52) translateX(2vw) skewX(-5deg); }
+  62% { transform: scale(1.12) translateX(-1vw) skewX(3deg); }
+  100% { opacity: 1; transform: scale(var(--scare-scale, 1.48)); }
+}
+
+@keyframes ccard-creature-swoop {
+  0% { opacity: 0; transform: scale(0.12) translateY(-50vh) rotate(-28deg); }
+  20% { opacity: 1; transform: scale(0.58) translateY(-10vh) rotate(14deg); }
+  52% { transform: scale(1.48) translateY(4vh) rotate(-5deg); }
+  72% { transform: scale(1.1) rotate(3deg); }
+  100% { opacity: 1; transform: scale(var(--scare-scale, 1.48)); }
 }

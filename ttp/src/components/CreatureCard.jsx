@@ -6,10 +6,8 @@ import { useFieldNotebook } from '../utils/fieldNotebook'
 import { useLanguage } from '../context/useLanguage'
 import { getLocalizedCreature } from '../data/creatureTranslations'
 import { playJumpscareSound } from '../utils/jumpscareSound'
+import { getJumpscareProfile } from '../utils/jumpscareProfile'
 import './CreatureCard.css'
-
-const JUMPSCARE_DURATION = 720
-const JUMPSCARE_FADE_DURATION = 180
 
 /**
  * Creature preview card.
@@ -44,6 +42,7 @@ export default function CreatureCard({ creature, index = 0 }) {
     }
 
     const soundPlayback = sound ? playJumpscareSound(creature) : Promise.resolve()
+    const profile = getJumpscareProfile(creature)
     let soundFinished = !sound
     let minimumVisualTimeElapsed = false
     const startFadeIfReady = () => {
@@ -58,7 +57,7 @@ export default function CreatureCard({ creature, index = 0 }) {
     jumpscareTimeoutRef.current = window.setTimeout(() => {
       minimumVisualTimeElapsed = true
       startFadeIfReady()
-    }, JUMPSCARE_DURATION - JUMPSCARE_FADE_DURATION)
+    }, profile.duration - profile.fade)
   }
 
   const finishJumpscare = (event) => {
@@ -134,7 +133,12 @@ export default function CreatureCard({ creature, index = 0 }) {
     </article>
     {isJumpScaring && createPortal(
       <div
-        className={`ccard__jumpscare${isJumpScareFading ? ' is-fading' : ''}`}
+        className={[
+          'ccard__jumpscare',
+          `ccard__jumpscare--${getJumpscareProfile(localized).tone}`,
+          `ccard__jumpscare--${localized.id}`,
+          isJumpScareFading ? 'is-fading' : '',
+        ].filter(Boolean).join(' ')}
         onAnimationEnd={finishJumpscare}
         aria-hidden="true"
       >

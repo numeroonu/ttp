@@ -291,7 +291,7 @@ export const TRANSLATIONS = {
         'Ang mga kwentong ito ay nararapat ipagmalaki nang may pagsusuri, paggalang, at pagkakaisa, malaya sa anumang diskriminasyong pang-rehiyon.',
       podcastsBannerTitle: 'Gusto Mo Bang Makinig sa mga Kwentong Hatinggabi?',
       podcastsBannerDesc:
-        'Tumungo sa aming nakalaang pahina ng mga podcast upang pakinggan ang The Greasy Midnight Podcast, Stories After Dark, at iba pa sa Spotify.',
+        'Tumungo sa aming nakalaang pahina ng mga podcast upang pakinggan ang Sitio Pangil at iba pang kwentong aswang sa Spotify.',
       podcastsBannerBtn: 'Pumunta sa mga Podcast',
       bibTitle: 'Direktoryo ng mga Akademikong Batis',
       bibDesc:
@@ -601,7 +601,7 @@ export const TRANSLATIONS = {
         'These legends belong to all Filipinos. They should be celebrated with pride, analytical curiosity, and dignity, free from geographic discrimination.',
       podcastsBannerTitle: 'Want to Listen to Midnight Stories?',
       podcastsBannerDesc:
-        'Visit our dedicated Podcasts & Stories page to stream The Greasy Midnight Podcast, Stories After Dark, and more on Spotify.',
+        'Visit our dedicated Podcasts & Stories page to stream Sitio Pangil and other aswang stories on Spotify.',
       podcastsBannerBtn: 'Go to Podcasts',
       bibTitle: 'Verified Academic Bibliography Directory',
       bibDesc:

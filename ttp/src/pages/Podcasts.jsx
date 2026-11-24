@@ -261,19 +261,21 @@ export default function Podcasts() {
                   </div>
 
                   <div className="podcast-row__actions">
-                    <button
-                      type="button"
-                      className="podcast-play"
-                      aria-expanded={activeEmbedId === podcast.id}
-                      aria-label={
-                        activeEmbedId === podcast.id
-                          ? (isFilipino ? 'Isara ang Player' : 'Hide player')
-                          : (isFilipino ? 'Buksan ang Player' : 'Preview player')
-                      }
-                      onClick={() => toggleEmbed(podcast.id)}
-                    >
-                      {activeEmbedId === podcast.id ? '✕' : '▶'}
-                    </button>
+                    {podcast.spotifyId && (
+                      <button
+                        type="button"
+                        className="podcast-play"
+                        aria-expanded={activeEmbedId === podcast.id}
+                        aria-label={
+                          activeEmbedId === podcast.id
+                            ? (isFilipino ? 'Isara ang Player' : 'Hide player')
+                            : (isFilipino ? 'Buksan ang Player' : 'Preview player')
+                        }
+                        onClick={() => toggleEmbed(podcast.id)}
+                      >
+                        {activeEmbedId === podcast.id ? '✕' : '▶'}
+                      </button>
+                    )}
                     <a
                       href={podcast.url}
                       target="_blank"

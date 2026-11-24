@@ -1410,6 +1410,67 @@
   animation: cr-jumpscare-shake 720ms steps(2, end) both;
 }
 
+.cr-jumpscare--mild {
+  animation-duration: 520ms;
+  --scare-scale: 1.18;
+  --scare-color: rgba(191, 142, 54, 0.42);
+}
+
+.cr-jumpscare--high {
+  animation-duration: 680ms;
+  --scare-scale: 1.32;
+  --scare-color: rgba(196, 96, 32, 0.52);
+}
+
+.cr-jumpscare--lethal {
+  animation-duration: 820ms;
+  --scare-scale: 1.48;
+  --scare-color: rgba(153, 12, 24, 0.68);
+}
+
+.cr-jumpscare--cosmic {
+  animation-duration: 1050ms;
+  --scare-scale: 1.72;
+  --scare-color: rgba(91, 18, 117, 0.72);
+}
+
+.cr-jumpscare--mild .cr-jumpscare__image,
+.cr-jumpscare--mild .cr-jumpscare__fallback,
+.cr-jumpscare--high .cr-jumpscare__image,
+.cr-jumpscare--high .cr-jumpscare__fallback,
+.cr-jumpscare--lethal .cr-jumpscare__image,
+.cr-jumpscare--lethal .cr-jumpscare__fallback,
+.cr-jumpscare--cosmic .cr-jumpscare__image,
+.cr-jumpscare--cosmic .cr-jumpscare__fallback {
+  animation-duration: inherit;
+}
+
+.cr-jumpscare--manananggal .cr-jumpscare__image,
+.cr-jumpscare--manananggal .cr-jumpscare__fallback {
+  transform-origin: center 22%;
+  animation-name: cr-manananggal-lunge;
+}
+
+.cr-jumpscare--tikbalang .cr-jumpscare__image,
+.cr-jumpscare--tikbalang .cr-jumpscare__fallback,
+.cr-jumpscare--bakunawa .cr-jumpscare__image,
+.cr-jumpscare--bakunawa .cr-jumpscare__fallback {
+  animation-name: cr-creature-charge;
+}
+
+.cr-jumpscare--wakwak .cr-jumpscare__image,
+.cr-jumpscare--wakwak .cr-jumpscare__fallback,
+.cr-jumpscare--sigbin .cr-jumpscare__image,
+.cr-jumpscare--sigbin .cr-jumpscare__fallback {
+  transform-origin: 50% 80%;
+  animation-name: cr-creature-swoop;
+}
+
+.cr-jumpscare--cosmic .cr-jumpscare__image,
+.cr-jumpscare--cosmic .cr-jumpscare__fallback {
+  filter: contrast(1.35) brightness(1.05) saturate(0.95) hue-rotate(-8deg);
+}
+
 .cr-jumpscare.is-fading,
 .ccard__jumpscare.is-fading {
   animation: jumpscare-fade-out 180ms ease-out both;
@@ -1467,6 +1528,30 @@
   34% { opacity: 0.25; }
   48% { opacity: 0.75; }
   70% { opacity: 0; }
+}
+
+@keyframes cr-manananggal-lunge {
+  0% { opacity: 0; transform: scale(0.12) translate(25vw, -35vh) rotate(18deg); }
+  18% { opacity: 1; transform: scale(0.46) translate(12vw, -12vh) rotate(-7deg); }
+  48% { transform: scale(1.42) translate(-2vw, 2vh) rotate(4deg); }
+  68% { transform: scale(1.12) rotate(-2deg); }
+  100% { opacity: 1; transform: scale(var(--scare-scale, 1.48)); }
+}
+
+@keyframes cr-creature-charge {
+  0% { opacity: 0; transform: scale(0.16) translateX(-70vw) skewX(-12deg); }
+  14% { opacity: 1; transform: scale(0.38) translateX(-28vw) skewX(8deg); }
+  44% { transform: scale(1.52) translateX(2vw) skewX(-5deg); }
+  62% { transform: scale(1.12) translateX(-1vw) skewX(3deg); }
+  100% { opacity: 1; transform: scale(var(--scare-scale, 1.48)); }
+}
+
+@keyframes cr-creature-swoop {
+  0% { opacity: 0; transform: scale(0.12) translateY(-50vh) rotate(-28deg); }
+  20% { opacity: 1; transform: scale(0.58) translateY(-10vh) rotate(14deg); }
+  52% { transform: scale(1.48) translateY(4vh) rotate(-5deg); }
+  72% { transform: scale(1.1) rotate(3deg); }
+  100% { opacity: 1; transform: scale(var(--scare-scale, 1.48)); }
 }
 
 /* =========================================================

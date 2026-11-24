@@ -11,10 +11,8 @@ import { creatures } from '../data/creatures'
 import { getLocalizedCreature } from '../data/creatureTranslations'
 import { useLanguage } from '../context/useLanguage'
 import { playJumpscareSound } from '../utils/jumpscareSound'
+import { getJumpscareProfile } from '../utils/jumpscareProfile'
 import './Creatures.css'
-
-const JUMPSCARE_DURATION = 720
-const JUMPSCARE_FADE_DURATION = 180
 
 const ISLANDS = [
   { id: 'all', fil: 'Lahat', en: 'All' },
@@ -142,6 +140,7 @@ export default function Creatures() {
     }
 
     const soundPlayback = isAudioPlaying ? playJumpscareSound(creature) : Promise.resolve()
+    const profile = getJumpscareProfile(creature)
     let soundFinished = !isAudioPlaying
     let minimumVisualTimeElapsed = false
     const startFadeIfReady = () => {
@@ -156,7 +155,7 @@ export default function Creatures() {
     jumpscareTimeoutRef.current = window.setTimeout(() => {
       minimumVisualTimeElapsed = true
       startFadeIfReady()
-    }, JUMPSCARE_DURATION - JUMPSCARE_FADE_DURATION)
+    }, profile.duration - profile.fade)
   }, [openModal, encounters, isAudioPlaying])
 
   const finishJumpscare = (event) => {
@@ -631,7 +630,12 @@ export default function Creatures() {
 
       {jumpscareCreature && createPortal(
         <div
-          className={`cr-jumpscare${isJumpscareFading ? ' is-fading' : ''}`}
+          className={[
+            'cr-jumpscare',
+            `cr-jumpscare--${getJumpscareProfile(jumpscareCreature).tone}`,
+            `cr-jumpscare--${jumpscareCreature.id}`,
+            isJumpscareFading ? 'is-fading' : '',
+          ].filter(Boolean).join(' ')}
           onAnimationEnd={finishJumpscare}
           aria-hidden="true"
         >
